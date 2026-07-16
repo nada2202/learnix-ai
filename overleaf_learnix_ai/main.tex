@@ -1,0 +1,2479 @@
+\documentclass[12pt,a4paper]{report}
+
+% =========================================================
+% Rapport PFE Learnix AI - version corrigée
+% Compiler recommandé sur Overleaf : XeLaTeX ou LuaLaTeX
+% =========================================================
+
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{helvet}
+  \renewcommand{\familydefault}{\sfdefault}
+\else
+  \usepackage{fontspec}
+  \IfFontExistsTF{Calibri}{
+    \setmainfont{Calibri}
+    \setsansfont{Calibri}
+  }{
+    \IfFontExistsTF{Carlito}{
+      \setmainfont{Carlito}
+      \setsansfont{Carlito}
+    }{
+      \setmainfont{TeX Gyre Heros}
+      \setsansfont{TeX Gyre Heros}
+    }
+  }
+\fi
+
+\usepackage[french]{babel}
+\usepackage[a4paper,margin=2.5cm,headheight=16pt]{geometry}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+
+\definecolor{learnixblue}{HTML}{0B5CAD}
+\definecolor{learnixdark}{HTML}{12324A}
+\definecolor{learnixlight}{HTML}{EAF4FF}
+\definecolor{learnixline}{HTML}{BBD7F2}
+\definecolor{learnixgray}{HTML}{526273}
+\definecolor{codebg}{HTML}{F3F4F6}
+\definecolor{codeframe}{HTML}{BBD7F2}
+\definecolor{codekeyword}{HTML}{0B5CAD}
+\definecolor{codestring}{HTML}{B91C1C}
+\definecolor{codecomment}{HTML}{15803D}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={import,from,function,const,let,var,return,if,else,try,catch,finally,await,async,export,default,class,new,null,true,false},
+  sensitive=true,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  string=[b]",
+  morestring=[b]'
+}
+
+\lstdefinestyle{learnixcode}{
+  backgroundcolor=\color{codebg},
+  frame=single,
+  rulecolor=\color{codeframe},
+  framerule=0.6pt,
+  framesep=6pt,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries\color{codekeyword},
+  commentstyle=\itshape\color{codecomment},
+  stringstyle=\color{codestring},
+  breaklines=true,
+  breakatwhitespace=true,
+  postbreak=\mbox{\textcolor{learnixgray}{$\hookrightarrow$}\space},
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=2,
+  numbers=left,
+  numberstyle=\tiny\color{learnixgray},
+  stepnumber=1,
+  numbersep=8pt,
+  xleftmargin=0.8cm,
+  xrightmargin=0.2cm,
+  framexleftmargin=0.55cm,
+  aboveskip=0.5cm,
+  belowskip=0.35cm,
+  captionpos=b
+}
+\lstset{style=learnixcode}
+
+\geometry{margin=2.5cm}
+\onehalfspacing
+\setlength{\parskip}{0.25em}
+\setlength{\parindent}{0.7cm}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=learnixblue,
+    urlcolor=learnixblue,
+    citecolor=learnixblue
+}
+
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\color{learnixdark}}
+  {\filleft\Large\color{learnixblue}\chaptername~\thechapter}
+  {0.5em}
+  {\titlerule[1pt]\vspace{0.7em}\fontsize{20}{24}\selectfont}
+  [\vspace{0.5em}{\color{learnixblue}\titlerule[1pt]}]
+\titleformat{\section}
+  {\normalfont\bfseries\color{learnixdark}\fontsize{16}{20}\selectfont}
+  {\thesection}{0.8em}{}
+\titleformat{\subsection}
+  {\normalfont\bfseries\color{learnixdark}\fontsize{14}{18}\selectfont}
+  {\thesubsection}{0.8em}{}
+\titlespacing*{\chapter}{0pt}{-0.3cm}{1.1cm}
+\titlespacing*{\section}{0pt}{0.7cm}{0.25cm}
+\titlespacing*{\subsection}{0pt}{0.45cm}{0.15cm}
+
+\captionsetup{labelfont={bf,color=learnixblue}, textfont=it, font=small}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{learnixblue}{Learnix AI}}
+\fancyhead[R]{\textcolor{learnixgray}{Projet de Fin d'Études}}
+\fancyfoot[L]{\textcolor{learnixgray}{Alexsys Solutions}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{learnixline}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\footrule}{\hbox to\headwidth{\color{learnixline}\leaders\hrule height \footrulewidth\hfill}}
+
+\newcommand{\safeincludegraphics}[2][]{%
+\IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+\fcolorbox{learnixblue}{learnixlight}{\begin{minipage}[c][2.4cm][c]{0.35\textwidth}\centering\small Image à insérer\\\texttt{#2}\end{minipage}}}}
+
+\newcommand{\placeholderfigure}[2]{
+\begin{figure}[H]
+\centering
+\fcolorbox{learnixblue}{learnixlight}{
+\begin{minipage}[c][7.2cm][c]{0.85\textwidth}
+\centering
+{\Large\bfseries\color{learnixdark} #1}\\[0.5cm]
+{\small Remplacer cette zone par l'image ou la capture correspondante.}
+\end{minipage}
+}
+\caption{#2}
+\end{figure}
+}
+
+\newcommand{\fronttitle}[1]{
+\begin{center}
+{\color{learnixblue}\rule{0.35\textwidth}{1pt}}\\[0.4cm]
+{\fontsize{20}{24}\selectfont\bfseries\color{learnixdark} #1}\\[0.2cm]
+{\color{learnixblue}\rule{0.18\textwidth}{1pt}}
+\end{center}
+}
+
+\begin{document}
+
+% =========================
+% PAGE DE GARDE
+% =========================
+
+\begin{titlepage}
+\thispagestyle{empty}
+
+\begin{center}
+\begin{minipage}{0.42\textwidth}
+\raggedright
+\safeincludegraphics[width=3.5cm]{WhatsApp Image 2026-06-29 at 4.46.03 PM.jpeg}
+\end{minipage}
+\hfill
+\begin{minipage}{0.42\textwidth}
+\raggedleft
+\safeincludegraphics[width=3.5cm]{alexsys-logo-png_seeklogo-398795.png}
+\end{minipage}
+
+\vspace{1.3cm}
+
+{\color{learnixblue}\rule{\textwidth}{1.2pt}}\\[0.4cm]
+{\large\bfseries Filière : Génie des Systèmes d'Information}\\[0.7cm]
+{\fontsize{20}{24}\selectfont\bfseries Projet de Fin d'Études}\\[0.9cm]
+
+\fcolorbox{learnixblue}{learnixlight}{
+\begin{minipage}{0.88\textwidth}
+\centering
+\vspace{0.7cm}
+{\fontsize{26}{32}\selectfont\bfseries\color{learnixdark} Learnix AI}\\[0.35cm]
+{\Large\color{learnixblue} Plateforme éducative intelligente et adaptative}\\[0.7cm]
+\end{minipage}}
+
+\vspace{0.45cm}
+{\color{learnixblue}\rule{\textwidth}{1.2pt}}\\[1.2cm]
+
+\begin{tabular}{>{\bfseries\color{learnixdark}}p{5cm}p{7cm}}
+Réalisé par : & Nada Bendyab \\
+Encadrante académique : & Mme Sanae El Oukkal \\
+Encadrant professionnel : & M. Taha El Marzouki \\
+Entreprise d'accueil : & Alexsys Solutions \\
+\end{tabular}
+
+\vfill
+{\large Année universitaire 2025--2026}
+\end{center}
+\end{titlepage}
+
+\pagenumbering{arabic}
+
+% =========================
+% DEDICACE
+% =========================
+
+\clearpage
+\thispagestyle{plain}
+\addcontentsline{toc}{chapter}{Dédicace}
+
+\fronttitle{Dédicace}
+
+\vspace{1.5cm}
+
+Je dédie ce travail à mes très chers parents, pour leur amour,
+leur soutien inconditionnel et tous les sacrifices consentis afin de
+m'offrir les meilleures conditions de réussite.
+
+À mon père et à ma mère, qui ont toujours cru en moi et m'ont encouragée
+à poursuivre mes études avec détermination, patience et confiance.
+
+À ma famille, pour son affection, son soutien moral et ses encouragements
+tout au long de mon parcours académique.
+
+À mes enseignants, qui ont contribué à ma formation universitaire par
+leurs connaissances, leurs conseils et leur dévouement.
+
+À mes amis et collègues, pour les moments de partage, d'entraide et de
+collaboration qui ont enrichi mon parcours universitaire.
+
+À toutes les personnes qui ont contribué de près ou de loin à ma réussite,
+je dédie ce travail en témoignage de ma reconnaissance et de mon profond respect.
+
+\vspace{1cm}
+
+\begin{flushright}
+\textbf{Nada Bendyab}
+\end{flushright}
+
+% =========================
+% REMERCIEMENTS
+% =========================
+
+\clearpage
+\thispagestyle{plain}
+\addcontentsline{toc}{chapter}{Remerciements}
+
+\fronttitle{Remerciements}
+
+\vspace{1.5cm}
+
+Avant tout, je remercie Dieu Tout-Puissant de m'avoir accordé la force,
+la patience et la persévérance nécessaires pour mener à bien ce projet
+de fin d'études.
+
+Je tiens à exprimer ma profonde gratitude à mon encadrante académique,
+Mme Sanae El Oukkal, pour son accompagnement, sa disponibilité, ses
+conseils pertinents et son suivi tout au long de la réalisation de ce projet.
+
+Je remercie également mon encadrant professionnel, M. Taha El Marzouki,
+ainsi que toute l'équipe d'Alexsys Solutions pour leur accueil chaleureux,
+leur encadrement professionnel et les connaissances acquises durant mon stage.
+
+Mes sincères remerciements s'adressent aussi à l'ensemble du corps professoral
+et administratif de l'Université Internationale de Casablanca pour la qualité
+de la formation reçue durant mon parcours universitaire.
+
+Enfin, je remercie ma famille, mes amis et toutes les personnes qui ont
+contribué de près ou de loin à la réussite de ce travail.
+
+% =========================
+% RESUME
+% =========================
+
+\clearpage
+\thispagestyle{plain}
+\addcontentsline{toc}{chapter}{Résumé}
+
+\fronttitle{Résumé}
+
+\vspace{1.5cm}
+
+Dans le cadre de mon projet de fin d'études, j'ai développé
+\textbf{Learnix AI}, une plateforme éducative intelligente basée sur
+l'intelligence artificielle. Cette solution vise à améliorer l'expérience
+d'apprentissage des étudiants et à faciliter le travail des enseignants à
+travers des outils numériques modernes.
+
+La plateforme permet notamment l'analyse de documents pédagogiques,
+la génération automatique d'exercices et de quiz à partir de supports de cours,
+la correction assistée des réponses, l'assistance pédagogique et le suivi des
+résultats. Elle propose également des recommandations simples à partir de
+l'historique d'apprentissage.
+
+L'objectif principal de ce projet est de proposer un environnement
+d'apprentissage personnalisé, interactif et efficace, capable d'accompagner
+les étudiants dans leur progression académique tout en offrant aux enseignants
+des outils de suivi et d'évaluation.
+
+Learnix AI repose sur une architecture web moderne composée d'une interface
+frontend développée avec React, d'un backend réalisé avec Flask et d'une base
+de données MySQL. L'intégration de l'intelligence artificielle permet d'apporter
+une valeur ajoutée au processus pédagogique, notamment par l'automatisation de
+certaines tâches répétitives et par la personnalisation de l'accompagnement.
+
+Ce rapport présente l'ensemble des étapes de réalisation du projet, depuis
+l'analyse du besoin jusqu'à la conception, le développement, les tests et les
+perspectives d'évolution.
+
+\vspace{0.5cm}
+
+\textbf{Mots-clés :} Intelligence Artificielle, E-learning, Plateforme éducative,
+Learnix AI, Chatbot, Correction automatique, React, Flask, MySQL.
+
+% =========================
+% ABSTRACT
+% =========================
+
+\clearpage
+\thispagestyle{plain}
+\addcontentsline{toc}{chapter}{Abstract}
+
+\fronttitle{Abstract}
+
+\vspace{1.5cm}
+
+As part of my final year project, I developed \textbf{Learnix AI}, an intelligent
+educational platform based on Artificial Intelligence. This solution aims to
+improve the learning experience of students and support teachers through modern
+digital tools.
+
+The platform provides educational document analysis, automatic exercise and quiz
+generation from course materials, intelligent answer correction, educational
+assistance, result tracking and simple recommendations based on the learner's history.
+
+The main objective of this project is to provide a personalized, interactive and
+efficient learning environment that supports students throughout their academic
+progress while offering teachers useful monitoring and assessment tools.
+
+Learnix AI is based on a modern web architecture composed of a React frontend,
+a Flask backend and a MySQL database. Artificial Intelligence is integrated to
+automate pedagogical tasks, generate learning activities and provide guided
+support to students.
+
+This report presents the different steps of the project, including context
+analysis, requirements specification, system design, implementation, testing
+and future improvements.
+
+\vspace{0.5cm}
+
+\textbf{Keywords:} Artificial Intelligence, E-learning, Educational Platform,
+Learnix AI, Chatbot, Automatic Correction, React, Flask, MySQL.
+
+% =========================
+% LISTES
+% =========================
+
+\clearpage
+\addcontentsline{toc}{chapter}{Liste des figures}
+\listoffigures
+
+\clearpage
+\addcontentsline{toc}{chapter}{Liste des tableaux}
+\listoftables
+
+\clearpage
+\thispagestyle{plain}
+\addcontentsline{toc}{chapter}{Liste des sigles et acronymes}
+
+\fronttitle{Liste des sigles et acronymes}
+
+\vspace{1cm}
+
+\begin{center}
+\begin{tabular}{|>{\bfseries}m{4cm}|m{9cm}|}
+\hline
+Abréviation & Désignation \\
+\hline
+IA & Intelligence Artificielle \\
+\hline
+AI & Artificial Intelligence \\
+\hline
+LLM & Large Language Model \\
+\hline
+API & Application Programming Interface \\
+\hline
+REST & Representational State Transfer \\
+\hline
+PDF & Portable Document Format \\
+\hline
+OCR & Optical Character Recognition \\
+\hline
+SQL & Structured Query Language \\
+\hline
+BDD & Base de Données \\
+\hline
+SGBD & Système de Gestion de Base de Données \\
+\hline
+UI & User Interface \\
+\hline
+UX & User Experience \\
+\hline
+JWT & JSON Web Token \\
+\hline
+CRUD & Create, Read, Update, Delete \\
+\hline
+UML & Unified Modeling Language \\
+\hline
+UIC & Université Internationale de Casablanca \\
+\hline
+\end{tabular}
+\end{center}
+
+\clearpage
+\tableofcontents
+
+% =========================
+% INTRODUCTION
+% =========================
+
+\clearpage
+
+\chapter*{Introduction Générale}
+\addcontentsline{toc}{chapter}{Introduction Générale}
+
+La transformation numérique connaît aujourd'hui une évolution rapide dans tous
+les secteurs, notamment dans le domaine de l'éducation. L'intégration des
+technologies intelligentes dans les environnements d'apprentissage offre de
+nouvelles possibilités pour améliorer l'acquisition des connaissances,
+personnaliser les parcours pédagogiques et optimiser le suivi des apprenants.
+
+Cependant, les plateformes éducatives classiques présentent encore plusieurs
+limites. Elles proposent souvent un contenu identique à tous les étudiants,
+sans tenir compte de leurs niveaux, de leurs difficultés ou de leurs rythmes
+d'apprentissage. De plus, certaines tâches pédagogiques, telles que la création
+d'exercices, la correction des réponses et l'analyse des résultats, restent
+longues et répétitives pour les enseignants.
+
+Dans ce contexte, l'intelligence artificielle constitue une solution prometteuse
+pour accompagner les étudiants et assister les enseignants. Elle permet de
+générer automatiquement des exercices, de corriger les réponses, d'analyser les
+performances et de proposer un accompagnement personnalisé.
+
+C'est dans cette perspective que s'inscrit le projet \textbf{Learnix AI}, une
+plateforme éducative intelligente conçue pour faciliter l'apprentissage,
+améliorer le suivi pédagogique et offrir une expérience interactive adaptée aux
+besoins des utilisateurs.
+
+Ce projet répond à un besoin réel observé dans le domaine de l'éducation :
+mettre à disposition des apprenants un outil capable de transformer un simple
+support de cours en contenu interactif, exploitable et adapté. Ainsi, au lieu de
+se limiter à la lecture passive d'un document, l'étudiant peut importer un
+fichier PDF, demander un résumé, générer des questions, répondre à des quiz et
+obtenir une correction instantanée.
+
+Le projet s'adresse également aux enseignants, qui peuvent utiliser la plateforme
+pour gagner du temps dans la préparation des évaluations et dans le suivi des
+résultats. Grâce aux outils d'intelligence artificielle intégrés, certaines
+tâches répétitives peuvent être automatisées, ce qui permet à l'enseignant de se
+concentrer davantage sur l'accompagnement pédagogique.
+
+Sur le plan technique, Learnix AI repose sur des technologies modernes et
+complémentaires. React permet de développer une interface utilisateur dynamique
+et ergonomique. Flask assure la gestion du backend et des API. MySQL permet de
+stocker les données de manière structurée. Enfin, l'API Groq et le modèle Llama
+sont utilisés pour fournir les fonctionnalités intelligentes, comme la génération
+de quiz, la correction automatique et l'assistance conversationnelle.
+
+La réalisation de cette plateforme a nécessité une démarche complète allant de
+l'étude de l'existant à la conception UML, puis à la réalisation technique et aux
+tests. Le projet combine ainsi plusieurs domaines étudiés durant la formation :
+développement web, base de données, modélisation, intelligence artificielle,
+sécurité et expérience utilisateur.
+
+Ce rapport présente les différentes étapes de réalisation de ce projet, depuis
+le contexte général et l'analyse des besoins jusqu'à la conception, le
+développement, les tests et la mise en œuvre de la solution.
+
+% =========================
+% CHAPITRE 1
+% =========================
+
+\chapter{Contexte Général du Projet}
+
+\section{Introduction}
+
+Ce chapitre présente le contexte général dans lequel s'inscrit notre projet de
+fin d'études. Il introduit l'organisme d'accueil, Alexsys Solutions, puis
+présente le cadrage du projet, sa problématique, ses objectifs ainsi que la
+solution proposée.
+
+\section{Présentation de l'organisme d'accueil}
+
+\subsection{Présentation de l'entreprise : Alexsys Solutions}
+
+Fondée en 2020, \textbf{Alexsys Solutions} est une entreprise marocaine spécialisée dans le conseil en technologies innovantes et en management pour les entreprises. Basée à Casablanca, avec des bureaux à Rabat et à Paris, elle s'appuie sur une équipe cumulant plus de 25 ans d'expérience dans le domaine des solutions numériques.
+
+Passionnée par l'innovation, l'entreprise se positionne comme un partenaire de confiance pour accompagner ses clients dans leur transformation digitale, en leur offrant des solutions efficaces, adaptées et durables.
+
+L'entreprise intervient auprès d'organisations ayant besoin d'améliorer leurs
+processus métiers, de moderniser leurs systèmes d'information et d'intégrer des
+solutions numériques adaptées à leurs besoins. Son activité s'inscrit dans un
+contexte où les entreprises recherchent de plus en plus des outils rapides,
+performants et sécurisés afin d'améliorer leur compétitivité.
+
+Dans le cadre de mon stage, Alexsys Solutions m'a offert un environnement
+professionnel favorable à l'apprentissage, à l'expérimentation et à la mise en
+pratique des connaissances acquises durant ma formation universitaire. Ce stage
+a constitué une opportunité importante pour comprendre le fonctionnement d'un
+projet informatique réel, depuis l'analyse du besoin jusqu'à la réalisation
+technique.
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=0.35\textwidth]{alexsys-logo-png_seeklogo-398795.png}
+\caption{Logo Alexsys Solutions}
+\end{figure}
+
+\subsection{Domaines de compétences}
+
+Alexsys Solutions se distingue par une expertise pluridisciplinaire couvrant plusieurs domaines stratégiques liés aux systèmes d'information, au développement logiciel, à la data et à l'intelligence artificielle.
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=0.70\textwidth]{domaine d'expertise.png}
+\caption{Domaines d'expertise d'Alexsys Solutions}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Applications et innovation :} développement d'applications web, mobile et cloud ;
+    \item \textbf{Intelligence artificielle :} machine learning, vision par ordinateur et chatbots ;
+    \item \textbf{Data et analytique :} Big Data, Business Intelligence et analyse de données ;
+    \item \textbf{Architecture et urbanisation des SI :} conception d'architectures applicatives ;
+    \item \textbf{Intégration d'entreprise :} gestion d'API et solutions d'intégration ;
+    \item \textbf{RPA, Cloud, Infrastructure et Sécurité :} automatisation, cloud et sécurité.
+\end{itemize}
+
+Ces domaines montrent que l'entreprise possède une vision globale des systèmes
+d'information. Elle ne se limite pas uniquement au développement logiciel, mais
+propose également des services liés à l'analyse, au conseil, à l'intégration,
+à l'automatisation et à l'intelligence artificielle.
+
+Cette diversité de compétences représente un atout important pour la réalisation
+du projet Learnix AI, car celui-ci combine plusieurs aspects : développement web,
+gestion de base de données, intelligence artificielle, traitement de documents
+et expérience utilisateur.
+
+\subsection{Secteurs d'activité}
+
+L'entreprise intervient dans divers secteurs stratégiques, notamment le transport, l'éducation, l'industrie, la santé, le secteur financier et les organismes publics.
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=0.70\textwidth]{secteurs.png}
+\caption{Secteurs d'activité d'Alexsys Solutions}
+\end{figure}
+
+La diversité des secteurs d'intervention permet à Alexsys Solutions d'adapter
+ses méthodes de travail selon les besoins de chaque client. Chaque secteur
+possède ses propres contraintes, ses exigences métiers et ses priorités. Par
+exemple, dans le secteur de l'éducation, les besoins concernent souvent la
+gestion pédagogique, le suivi des apprenants, la digitalisation des cours et
+l'amélioration de l'expérience d'apprentissage.
+
+Le choix d'un projet éducatif intelligent s'inscrit donc naturellement dans les
+domaines d'intérêt de l'entreprise, notamment en raison de l'importance croissante
+de l'intelligence artificielle dans l'enseignement et la formation.
+
+\subsection{Solutions proposées}
+
+Alexsys Solutions propose une approche complète structurée autour de trois piliers : le conseil, la réalisation de projets et la maintenance.
+
+\begin{itemize}
+    \item \textbf{Conseil :} audit, stratégie et choix d'outils adaptés ;
+    \item \textbf{Projet :} développement sur mesure et transformation digitale ;
+    \item \textbf{Maintenance :} support technique, insourcing et outsourcing.
+\end{itemize}
+
+L'entreprise propose également des solutions innovantes dans la gestion métier, le traitement rapide des tickets, l'intelligence artificielle appliquée aux ressources humaines et la gestion environnementale.
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=0.75\textwidth]{solutions.png}
+\caption{Solutions proposées par Alexsys Solutions}
+\end{figure}
+
+Dans le cadre de Learnix AI, cette logique de solution complète se retrouve dans
+la manière de concevoir la plateforme : analyser le besoin, proposer une
+architecture adaptée, développer les fonctionnalités principales, tester le
+système et préparer son évolution future.
+
+\subsection{Clients}
+
+Alexsys Solutions accompagne plusieurs clients et partenaires dans leurs projets de transformation digitale, d'intégration de solutions numériques et d'innovation technologique.
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=0.75\textwidth]{client alexsys.png}
+\caption{Clients d'Alexsys Solutions}
+\end{figure}
+
+La collaboration avec différents clients permet à l'entreprise de renforcer son
+expertise et de développer des solutions adaptées à des environnements variés.
+Cette expérience constitue un cadre favorable pour accueillir des projets
+innovants comme Learnix AI.
+
+\section{Cadrage du projet}
+
+\subsection{Problématique du projet}
+
+Dans le domaine de l'éducation, les étudiants rencontrent souvent des difficultés pour comprendre certains cours, s'entraîner efficacement et suivre leur progression. Les plateformes classiques proposent généralement des ressources pédagogiques, mais elles restent souvent limitées en termes de personnalisation, d'assistance intelligente et de correction automatique.
+
+De plus, les enseignants consacrent beaucoup de temps à la préparation des quiz, à la correction des réponses et au suivi des résultats des étudiants. Ces tâches peuvent devenir répétitives et difficiles à gérer, surtout lorsque le nombre d'apprenants est important.
+
+Face à cette situation, il devient nécessaire de proposer une solution éducative intelligente capable d'accompagner les étudiants, d'automatiser certaines tâches pédagogiques et de faciliter le suivi des performances.
+
+La problématique principale de ce projet est donc :
+
+\begin{quote}
+Comment concevoir et développer une plateforme éducative intelligente permettant de personnaliser l'apprentissage, générer automatiquement des quiz à partir de documents pédagogiques, corriger les réponses et suivre la progression des étudiants ?
+\end{quote}
+
+Cette problématique englobe plusieurs sous-problèmes. Le premier concerne
+l'accompagnement de l'étudiant lorsqu'il travaille seul sur un support de cours.
+Le deuxième concerne la capacité à transformer automatiquement un contenu
+pédagogique en exercices exploitables. Le troisième concerne la correction
+automatique des réponses, qui doit être compréhensible et utile pour l'apprenant.
+Enfin, le quatrième concerne la gestion pédagogique globale, incluant les rôles
+administrateur, directeur, enseignant et étudiant.
+
+\subsection{Objectif du projet}
+
+L'objectif principal de ce projet est de concevoir et développer \textbf{Learnix AI}, une plateforme éducative intelligente et adaptative basée sur l'intelligence artificielle.
+
+Plus précisément, ce projet vise à :
+
+\begin{itemize}
+    \item Faciliter l'apprentissage des étudiants à travers un assistant IA pédagogique ;
+    \item Permettre l'importation et l'analyse de documents PDF ou images ;
+    \item Générer automatiquement des résumés, exercices et quiz personnalisés ;
+    \item Corriger automatiquement les réponses des étudiants ;
+    \item Fournir un score, un feedback détaillé et des recommandations adaptées ;
+    \item Offrir aux enseignants un espace pour gérer les cours, les quiz et les résultats ;
+    \item Permettre aux directeurs de gérer les classes, les modules et les utilisateurs ;
+    \item Centraliser les fonctionnalités pédagogiques dans une seule plateforme.
+\end{itemize}
+
+Ces objectifs traduisent la volonté de proposer une plateforme complète et
+évolutive. Learnix AI ne se limite pas à un simple générateur de quiz ; elle
+vise à créer un environnement numérique d'apprentissage intégrant plusieurs
+fonctionnalités complémentaires.
+
+\subsection{Solution proposée}
+
+La solution proposée consiste à développer une application web intelligente
+organisée autour de plusieurs espaces utilisateurs. Chaque rôle dispose d'un
+ensemble de fonctionnalités adaptées à ses besoins.
+
+L'administrateur supervise l'ensemble du système. Le directeur gère son
+établissement, ses classes, ses modules et les demandes de rattachement.
+L'enseignant peut gérer les cours, les quiz et les résultats des étudiants.
+L'étudiant peut importer des documents, utiliser l'assistant IA, générer des
+exercices et consulter ses résultats.
+
+L'intelligence artificielle est intégrée au cœur du système pour analyser les
+supports pédagogiques, générer du contenu, corriger les réponses et proposer une
+assistance personnalisée. Cette intégration permet de rendre la plateforme plus
+interactive, plus flexible et plus adaptée aux besoins des apprenants.
+
+\section{Conduite du projet}
+
+\subsection{Méthodologie du travail}
+
+Pour mener à bien ce projet, nous avons adopté une démarche progressive basée sur l'analyse, la conception, le développement, les tests et l'amélioration continue.
+
+La méthode suivie s'inspire d'une approche agile, permettant d'avancer étape par étape selon les priorités du projet. Chaque fonctionnalité a été analysée, développée, testée puis améliorée selon les besoins identifiés.
+
+Les principales étapes de travail sont les suivantes :
+
+\begin{enumerate}
+    \item \textbf{Analyse des besoins :} identification des acteurs, des fonctionnalités et des contraintes du projet ;
+    \item \textbf{Conception :} réalisation des diagrammes UML, conception de la base de données et définition de l'architecture ;
+    \item \textbf{Développement :} mise en place du frontend React, du backend Flask et de la base MySQL ;
+    \item \textbf{Intégration de l'IA :} utilisation de l'API Groq pour la génération, l'analyse et la correction ;
+    \item \textbf{Tests :} vérification des fonctionnalités principales et correction des erreurs ;
+    \item \textbf{Amélioration :} optimisation de l'interface, des parcours utilisateurs et des résultats générés.
+\end{enumerate}
+
+Cette démarche a permis de mieux maîtriser l'avancement du projet. Elle a aussi
+facilité la correction des erreurs rencontrées durant le développement, notamment
+les problèmes liés à la connexion entre le frontend et le backend, à la structure
+de la base de données et à l'intégration des services d'intelligence artificielle.
+
+\subsection{Planification du projet}
+
+La planification du projet a été réalisée à l'aide d'un diagramme de Gantt afin d'organiser les différentes tâches et de suivre l'avancement du travail.
+
+Le projet s'est déroulé sur la période allant du 13 avril 2026 au 15 juin 2026. Les tâches principales ont été réparties en plusieurs phases : analyse, conception, développement, intégration de l'intelligence artificielle, tests et finalisation.
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=0.85\textwidth]{Screenshot 2026-06-23 134730.png}
+\caption{Diagramme de Gantt du projet Learnix AI}
+\end{figure}
+
+\section{Étude de faisabilité du projet}
+
+\subsection{Faisabilité technique}
+
+La faisabilité technique du projet Learnix AI repose sur l'utilisation de
+technologies modernes, accessibles et adaptées au développement d'une plateforme
+web intelligente. Le choix de React pour le frontend permet de réaliser une
+interface dynamique et réactive, tandis que Flask offre une solution légère et
+flexible pour la création des API backend.
+
+La base de données MySQL permet de stocker les informations de manière
+structurée, notamment les utilisateurs, les classes, les modules, les quiz, les
+réponses et les résultats. L'intégration de l'API Groq permet d'ajouter une
+couche d'intelligence artificielle capable de traiter les contenus pédagogiques
+et de générer des réponses adaptées.
+
+Sur le plan technique, le projet est donc réalisable, car chaque composant
+technologique répond à un besoin précis de la plateforme. L'environnement local
+de développement basé sur XAMPP, Node.js et Python permet de tester les
+fonctionnalités avant une éventuelle mise en production.
+
+\subsection{Faisabilité fonctionnelle}
+
+Sur le plan fonctionnel, Learnix AI répond à plusieurs besoins identifiés dans
+le domaine éducatif. Les étudiants ont besoin d'un outil capable de les aider à
+comprendre leurs cours, à s'entraîner et à suivre leur progression. Les
+enseignants ont besoin de gagner du temps dans la création des quiz, la
+correction et le suivi des résultats.
+
+La plateforme répond à ces besoins en proposant des espaces adaptés à chaque
+acteur : administrateur, directeur, enseignant, étudiant et utilisateur invité.
+Cette organisation rend la solution cohérente avec les attentes des utilisateurs.
+
+\subsection{Faisabilité organisationnelle}
+
+Le projet a été organisé selon une démarche progressive. Les premières étapes
+ont été consacrées à l'analyse des besoins et à la conception UML. Ensuite, le
+développement du frontend, du backend et de la base de données a été réalisé
+progressivement.
+
+Cette organisation a permis de suivre l'avancement du projet, de corriger les
+erreurs au fur et à mesure et d'améliorer les fonctionnalités selon les besoins
+identifiés.
+
+\section{Analyse SWOT du projet}
+
+L'analyse SWOT permet d'évaluer les forces, les faiblesses, les opportunités et
+les menaces liées au projet Learnix AI.
+
+\begin{longtable}{|m{3.5cm}|m{10cm}|}
+\caption{Analyse SWOT de Learnix AI}\\
+\hline
+\textbf{Forces} & Plateforme intelligente, intégration de l'IA, génération automatique de quiz, correction automatique, interface multi-rôles. \\
+\hline
+\textbf{Faiblesses} & Dépendance à une API externe, qualité variable selon les documents, prototype encore évolutif. \\
+\hline
+\textbf{Opportunités} & Besoin croissant de solutions éducatives intelligentes, évolution rapide de l'IA, digitalisation de l'enseignement. \\
+\hline
+\textbf{Menaces} & Concurrence des plateformes existantes, contraintes liées à la confidentialité des données, limites des modèles IA. \\
+\hline
+\end{longtable}
+
+Cette analyse montre que Learnix AI possède un potentiel important, notamment
+grâce à l'intégration de l'intelligence artificielle dans le processus
+d'apprentissage. Cependant, certaines limites doivent être prises en compte,
+comme la dépendance à une connexion Internet et la nécessité d'améliorer
+progressivement les recommandations personnalisées.
+
+\section{Conclusion}
+
+Dans ce chapitre, nous avons présenté l'organisme d'accueil Alexsys Solutions, le contexte général du projet, la problématique, les objectifs ainsi que la méthodologie suivie pour la réalisation de Learnix AI.
+
+Le chapitre suivant sera consacré à l'analyse et à la spécification des besoins fonctionnels et non fonctionnels de la plateforme.
+
+% =========================
+% CHAPITRE 2
+% =========================
+
+\chapter{Analyse et Spécification des Besoins}
+
+\section{Introduction}
+
+L'analyse des besoins représente une étape fondamentale dans la réalisation d'un projet informatique. Elle permet de comprendre les attentes des utilisateurs, d'identifier les fonctionnalités à développer et de définir les contraintes du système.
+
+Cette phase permet également d'éviter les erreurs de conception, car elle fixe
+clairement les objectifs du projet avant le passage au développement. Dans le
+cas de Learnix AI, l'analyse des besoins est particulièrement importante, car la
+plateforme comporte plusieurs rôles, plusieurs espaces et plusieurs
+fonctionnalités intelligentes.
+
+\section{Présentation générale de la solution}
+
+Learnix AI est une plateforme web éducative destinée aux étudiants, enseignants, directeurs d'établissement et administrateurs.
+
+Elle utilise l'intelligence artificielle pour analyser les contenus pédagogiques, répondre aux questions, produire des résumés, générer des quiz, corriger les réponses et proposer un apprentissage adapté au niveau de chaque étudiant.
+
+La plateforme est conçue comme un environnement centralisé. Elle ne se limite
+pas à la mise à disposition de ressources pédagogiques, mais propose une
+interaction intelligente entre l'utilisateur et le contenu. L'objectif est de
+rendre l'apprentissage plus actif, plus personnalisé et plus mesurable.
+
+\section{Identification des acteurs}
+
+\subsection{Administrateur}
+
+L'administrateur gère l'ensemble de la plateforme. Il peut valider les établissements, gérer les utilisateurs, affecter les directeurs et superviser le fonctionnement global du système.
+
+Il représente le niveau le plus élevé dans la hiérarchie du système. Son rôle
+est essentiel pour garantir la bonne organisation de la plateforme et la
+cohérence des données. Il peut également intervenir en cas de problème lié aux
+comptes utilisateurs ou aux demandes d'établissements.
+
+\subsection{Directeur}
+
+Le directeur gère son établissement. Il peut créer et organiser les classes, gérer les modules, affecter les enseignants et suivre les demandes de rattachement.
+
+Le directeur agit comme responsable pédagogique au niveau de son établissement.
+Il organise la structure scolaire, valide les rattachements des enseignants et
+des étudiants, et assure la bonne répartition des modules et des classes.
+
+\subsection{Enseignant}
+
+L'enseignant crée les cours, les quiz et les examens. Il peut suivre les résultats des étudiants et utiliser les outils d'intelligence artificielle pour préparer les contenus pédagogiques.
+
+L'enseignant dispose d'un espace qui lui permet de gérer ses contenus
+pédagogiques et d'observer l'évolution de ses étudiants. Grâce à l'IA, il peut
+gagner du temps dans la génération des quiz et la correction des réponses.
+
+\subsection{Étudiant}
+
+L'étudiant utilise la plateforme pour consulter les cours, importer des documents, discuter avec l'assistant IA, générer des quiz, répondre aux évaluations et consulter ses résultats.
+
+L'étudiant est l'utilisateur principal des fonctionnalités intelligentes. Il peut
+travailler à son rythme, poser des questions, s'entraîner et recevoir une
+correction immédiate. Son espace est conçu pour être simple, clair et motivant.
+
+\subsection{Utilisateurs invités}
+
+La plateforme prévoit également des profils invités, tels que l'étudiant invité
+et l'enseignant invité. Ces profils permettent d'accéder à certaines
+fonctionnalités sans être directement rattachés à un établissement ou à une
+classe.
+
+Cette approche permet de rendre la plateforme plus flexible, notamment pour les
+utilisateurs qui souhaitent tester les fonctionnalités avant une intégration
+complète.
+
+\section{Étude de l'existant}
+
+\subsection{Plateformes existantes}
+
+Plusieurs plateformes éducatives sont utilisées aujourd'hui, telles que Moodle, Google Classroom, Microsoft Teams Education ou encore Quizizz.
+
+Ces outils permettent la gestion des cours, la communication entre enseignants et étudiants, le partage de ressources et parfois la création de quiz.
+
+\subsection{Moodle}
+
+Moodle est une plateforme d'apprentissage largement utilisée dans les
+établissements d'enseignement. Elle permet de créer des cours en ligne, de
+déposer des ressources, de gérer des évaluations et de suivre les activités des
+apprenants.
+
+Cependant, Moodle nécessite souvent une configuration avancée et son interface
+peut être complexe pour certains utilisateurs. De plus, l'intégration de
+fonctionnalités d'intelligence artificielle n'est pas toujours native et dépend
+souvent de plugins ou de développements complémentaires.
+
+\subsection{Google Classroom}
+
+Google Classroom est une solution simple et pratique pour la gestion des cours,
+le partage des documents et la communication entre enseignants et étudiants. Son
+principal avantage est son intégration avec les services Google.
+
+Néanmoins, Google Classroom reste limité en matière d'analyse intelligente des
+documents, de génération automatique de quiz personnalisés et de correction
+adaptative basée sur l'IA.
+
+\subsection{Quizizz}
+
+Quizizz est une plateforme orientée vers la création et la réalisation de quiz
+interactifs. Elle est appréciée pour son aspect ludique et sa facilité
+d'utilisation.
+
+Cependant, elle ne propose pas une gestion scolaire complète et ne permet pas
+de transformer automatiquement des documents pédagogiques en parcours
+d'apprentissage personnalisé complet.
+
+\subsection{Limites de l'existant}
+
+Malgré leurs avantages, ces plateformes présentent certaines limites :
+
+\begin{itemize}
+    \item Personnalisation limitée de l'apprentissage ;
+    \item Faible intégration native de l'intelligence artificielle ;
+    \item Génération manuelle des évaluations ;
+    \item Correction souvent réalisée par l'enseignant ;
+    \item Analyse limitée des performances individuelles ;
+    \item Absence d'un profil adaptatif détaillé.
+\end{itemize}
+
+Ces limites montrent qu'il existe un besoin pour une solution combinant gestion
+pédagogique, intelligence artificielle, automatisation et suivi personnalisé.
+
+\subsection{Benchmark}
+
+\begin{table}[H]
+\centering
+\caption{Comparaison entre Learnix AI et les solutions existantes}
+\begin{tabular}{|m{4cm}|c|c|c|c|}
+\hline
+Fonctionnalité & Moodle & Google Classroom & Quizizz & Learnix AI \\
+\hline
+Gestion des cours & Oui & Oui & Non & Oui \\
+\hline
+Création de quiz & Oui & Oui & Oui & Oui \\
+\hline
+Assistant IA pédagogique & Non & Non & Partiel & Oui \\
+\hline
+Analyse PDF & Non & Non & Non & Oui \\
+\hline
+Génération automatique de quiz & Non & Non & Partiel & Oui \\
+\hline
+Correction automatique intelligente & Partiel & Partiel & Oui & Oui \\
+\hline
+Profil adaptatif & Non & Non & Non & Oui \\
+\hline
+Gestion scolaire complète & Oui & Partiel & Non & Oui \\
+\hline
+\end{tabular}
+\end{table}
+
+Cette comparaison montre que Learnix AI se distingue par l'intégration de l'intelligence artificielle dans l'analyse des documents, la génération des évaluations, la correction automatique et le suivi adaptatif des étudiants.
+
+\subsection{Analyse détaillée du benchmark}
+
+L'étude comparative met en évidence que les solutions existantes répondent à
+certains besoins pédagogiques, mais rarement à l'ensemble du parcours
+d'apprentissage. Moodle est puissant pour la gestion de cours, mais demande une
+configuration avancée. Google Classroom est simple à utiliser, mais reste limité
+en matière d'analyse intelligente. Quizizz est efficace pour les quiz, mais ne
+constitue pas une plateforme scolaire complète.
+
+Learnix AI se positionne comme une solution hybride qui regroupe la gestion
+pédagogique, l'assistance intelligente, la génération d'exercices, la correction
+automatique et le suivi adaptatif dans un seul environnement.
+
+\section{Besoins fonctionnels}
+
+\subsection{Gestion des utilisateurs}
+
+Le système doit permettre l'inscription, l'authentification, la gestion des profils, la gestion des rôles et la sécurisation des accès.
+
+Cette fonctionnalité constitue la base du système. Chaque utilisateur doit être
+identifié par un compte personnel. Selon son rôle, il accède à un espace
+différent et à des fonctionnalités spécifiques.
+
+\subsection{Gestion scolaire}
+
+Le système doit permettre la gestion des établissements, des classes, des modules, des enseignants, des étudiants et des emplois du temps.
+
+Cette partie permet d'organiser la structure pédagogique de la plateforme. Elle
+concerne principalement l'administrateur et le directeur.
+
+\subsection{Gestion pédagogique}
+
+Le système doit permettre la création des cours, des quiz, des examens, le suivi des résultats et la consultation des historiques.
+
+Cette fonctionnalité concerne principalement les enseignants et les étudiants.
+Elle permet de centraliser les ressources pédagogiques et les évaluations.
+
+\subsection{Fonctionnalités IA}
+
+Le système doit permettre l'analyse des documents PDF et images, la génération de résumés, la génération de quiz et exercices, la correction automatique et les recommandations personnalisées.
+
+L'IA représente le cœur innovant du projet. Elle transforme un contenu statique
+en un contenu interactif et exploitable. Elle permet aussi d'adapter les réponses
+et les recommandations au niveau de l'étudiant.
+
+\section{Besoins non fonctionnels}
+
+\begin{itemize}
+    \item \textbf{Sécurité :} protéger les données et les accès selon les rôles ;
+    \item \textbf{Performance :} garantir un temps de réponse acceptable ;
+    \item \textbf{Fiabilité :} assurer la disponibilité des fonctionnalités ;
+    \item \textbf{Ergonomie :} proposer une interface simple et intuitive ;
+    \item \textbf{Évolutivité :} permettre l'ajout de nouvelles fonctionnalités ;
+    \item \textbf{Maintenabilité :} faciliter les mises à jour du système.
+\end{itemize}
+
+\section{Scénarios d'utilisation}
+
+\subsection{Scénario d'utilisation de l'étudiant}
+
+L'étudiant commence par se connecter à la plateforme à l'aide de son adresse
+email et de son mot de passe. Une fois authentifié, il accède à son tableau de
+bord personnel. À partir de cet espace, il peut importer un document pédagogique
+au format PDF ou image.
+
+Après l'importation, le système extrait le texte du document et l'envoie au
+module d'intelligence artificielle. L'étudiant peut ensuite demander un résumé,
+générer un quiz ou poser une question à l'assistant pédagogique. Après avoir
+répondu au quiz, il reçoit une correction automatique, un score et des
+recommandations.
+
+\subsection{Scénario d'utilisation de l'enseignant}
+
+L'enseignant se connecte à son espace personnel. Il peut créer des cours,
+préparer des quiz, consulter les étudiants et suivre leurs résultats. Il peut
+également utiliser l'intelligence artificielle pour générer des questions à
+partir d'un contenu pédagogique.
+
+Ce scénario permet à l'enseignant de gagner du temps dans la préparation des
+supports d'évaluation et d'améliorer le suivi des apprenants.
+
+\subsection{Scénario d'utilisation du directeur}
+
+Le directeur accède à un espace dédié à la gestion de son établissement. Il peut
+gérer les classes, les modules, les enseignants et les étudiants. Il peut aussi
+valider les demandes de rattachement afin d'organiser correctement les comptes
+liés à son établissement.
+
+\subsection{Scénario d'utilisation de l'administrateur}
+
+L'administrateur supervise la plateforme. Il peut gérer les utilisateurs,
+valider les établissements, affecter les directeurs et contrôler le bon
+fonctionnement général du système.
+
+\section{Contraintes du projet}
+
+\subsection{Contraintes techniques}
+
+Le projet dépend de plusieurs contraintes techniques, notamment la disponibilité
+de l'API d'intelligence artificielle, la qualité des fichiers importés, la
+connexion entre le frontend et le backend, ainsi que la bonne configuration de
+la base de données MySQL.
+
+\subsection{Contraintes temporelles}
+
+Le projet a été réalisé dans une période limitée, ce qui a nécessité une
+organisation progressive des tâches. Certaines fonctionnalités ont donc été
+priorisées, tandis que d'autres ont été laissées comme perspectives
+d'amélioration.
+
+\subsection{Contraintes de sécurité}
+
+La plateforme manipule des données utilisateurs et des contenus pédagogiques.
+Il est donc nécessaire de sécuriser l'accès aux comptes, de protéger les mots de
+passe, de gérer les rôles et de limiter les accès selon les autorisations.
+
+\section{Règles de gestion}
+
+Les règles de gestion définissent le comportement attendu du système.
+
+\begin{itemize}
+    \item Un utilisateur doit être authentifié pour accéder à son espace.
+    \item Chaque utilisateur possède un rôle spécifique.
+    \item Un étudiant ne peut accéder qu'aux fonctionnalités qui lui sont destinées.
+    \item Un enseignant peut gérer ses cours, quiz et résultats.
+    \item Un directeur peut gérer uniquement son établissement.
+    \item L'administrateur possède une vision globale sur la plateforme.
+    \item Les quiz générés doivent être liés à un contenu pédagogique.
+    \item Les résultats doivent être enregistrés afin de permettre le suivi.
+\end{itemize}
+
+\section{Conclusion}
+
+Ce chapitre a permis d'identifier les principaux acteurs, d'étudier les solutions existantes et de définir les besoins fonctionnels et non fonctionnels de Learnix AI.
+
+% =========================
+% CHAPITRE 3
+% =========================
+
+\chapter{Conception du Système}
+
+\section{Introduction}
+
+La phase de conception permet de représenter l'organisation interne du système avant sa réalisation technique. Elle repose sur plusieurs modèles UML permettant de décrire les acteurs, les interactions, les activités et les entités métiers.
+
+La conception constitue une étape intermédiaire entre l'analyse et le
+développement. Elle permet de transformer les besoins exprimés en modèles
+techniques compréhensibles et exploitables.
+
+\section{Architecture générale}
+
+Learnix AI repose sur une architecture en trois couches principales :
+
+\begin{itemize}
+    \item Une couche frontend développée avec React et Vite ;
+    \item Une couche backend développée avec Python et Flask ;
+    \item Une couche de données basée sur MySQL.
+\end{itemize}
+
+Des services externes sont également intégrés, notamment l'API Groq pour les fonctionnalités d'intelligence artificielle, PyPDF2 pour l'extraction des PDF et Tesseract OCR pour l'extraction de texte à partir des images.
+
+\placeholderfigure{Architecture générale}{Architecture générale de Learnix AI}
+
+\subsection{Couche frontend}
+
+La couche frontend représente la partie visible de l'application. Elle permet à
+l'utilisateur d'interagir avec la plateforme à travers des interfaces graphiques
+modernes. Elle est développée avec React, ce qui permet de créer des composants
+réutilisables, dynamiques et faciles à maintenir.
+
+Le frontend communique avec le backend à travers des requêtes HTTP. Lorsqu'un
+utilisateur se connecte, importe un document ou demande la génération d'un quiz,
+l'interface envoie les données au backend, qui se charge du traitement.
+
+\subsection{Couche backend}
+
+La couche backend contient la logique métier de l'application. Elle est
+développée avec Flask, un micro-framework Python léger et flexible. Le backend
+gère les routes API, la communication avec la base de données, l'authentification,
+la gestion des rôles et l'appel aux services d'intelligence artificielle.
+
+Cette couche joue un rôle central, car elle assure le lien entre l'interface
+utilisateur, la base de données et les services externes.
+
+\subsection{Couche base de données}
+
+La base de données MySQL permet de stocker toutes les informations de la
+plateforme : utilisateurs, rôles, classes, modules, cours, quiz, réponses,
+résultats, historiques et notifications.
+
+L'utilisation d'une base relationnelle permet de structurer les données de
+manière claire et de garantir la cohérence des relations entre les différentes
+entités.
+
+\section{Architecture de l'intelligence artificielle}
+
+L'architecture IA de Learnix AI repose sur l'interaction entre le backend Flask
+et le service Groq. Lorsqu'un utilisateur demande une fonctionnalité intelligente,
+comme la génération d'un quiz ou la correction d'une réponse, le backend prépare
+un prompt structuré et l'envoie au modèle IA.
+
+Le modèle analyse ensuite le contenu reçu et retourne une réponse. Cette réponse
+est traitée par le backend avant d'être affichée dans l'interface utilisateur.
+Cette séparation permet de garder le frontend simple et de centraliser la
+logique intelligente dans le backend.
+
+\subsection{Rôle du backend dans le traitement IA}
+
+Le backend joue un rôle d'intermédiaire entre l'utilisateur et le modèle IA. Il
+prépare les données, nettoie les textes extraits, structure les prompts et
+vérifie les réponses reçues. Cette étape est importante afin d'éviter l'envoi de
+données mal formatées au modèle.
+
+\subsection{Flux de traitement IA}
+
+Le flux de traitement peut être résumé comme suit :
+
+\begin{enumerate}
+    \item L'utilisateur choisit une action IA.
+    \item Le frontend envoie la demande au backend.
+    \item Le backend récupère les données nécessaires.
+    \item Le backend prépare le prompt.
+    \item Le prompt est envoyé au modèle IA.
+    \item Le modèle retourne une réponse.
+    \item Le backend traite et structure cette réponse.
+    \item Le résultat est affiché à l'utilisateur.
+\end{enumerate}
+
+\section{Architecture API REST}
+
+La communication entre le frontend React et le backend Flask repose sur le
+principe des API REST. Chaque fonctionnalité importante de la plateforme est
+associée à une route backend permettant d'envoyer ou de récupérer des données.
+
+Par exemple, la connexion d'un utilisateur, l'importation d'un document, la
+génération d'un quiz ou la consultation des résultats sont des actions qui
+nécessitent une communication entre l'interface et le serveur.
+
+\section{Diagramme de cas d'utilisation}
+
+Le diagramme de cas d'utilisation présente les différentes interactions entre les acteurs du système et les fonctionnalités principales de la plateforme.
+
+\clearpage
+\subsection{Diagramme de cas d'utilisation global}
+
+\placeholderfigure{Diagramme de cas d'utilisation global}{Diagramme de cas d'utilisation global de Learnix AI}
+
+Ce diagramme met en évidence les rôles principaux de la plateforme :
+administrateur, directeur, enseignant et étudiant. Chaque acteur dispose de
+fonctionnalités spécifiques selon ses responsabilités.
+
+L'administrateur peut gérer les comptes, valider les établissements et superviser
+le système. Le directeur peut gérer les classes, les modules, les enseignants et
+les demandes de rattachement. L'enseignant peut créer des cours et des quiz.
+L'étudiant peut utiliser les fonctionnalités d'apprentissage, importer des
+documents, répondre aux quiz et consulter ses résultats.
+
+\clearpage
+\section{Diagramme de classes}
+
+\placeholderfigure{Diagramme de classes}{Diagramme de classes métier de Learnix AI}
+
+Le diagramme de classes présente la structure métier principale de la plateforme.
+Il met en relation les utilisateurs, les établissements, les classes, les modules,
+les cours, les évaluations, les réponses, les résultats et le profil adaptatif
+basé sur l'intelligence artificielle.
+
+Chaque classe correspond à une entité importante du système. Par exemple, la
+classe Utilisateur peut être spécialisée selon les rôles : administrateur,
+directeur, enseignant ou étudiant. Les classes Cours, Quiz, Question et Réponse
+permettent de modéliser la partie pédagogique. Les classes Résultat et Tentative
+permettent de suivre les performances de l'étudiant.
+
+\clearpage
+\section{Diagramme d'activité}
+
+\placeholderfigure{Diagramme d'activité}{Parcours d'apprentissage d'un étudiant}
+
+Le diagramme d'activité décrit le parcours d'un étudiant depuis la connexion
+jusqu'à la consultation des recommandations. Il présente les étapes principales :
+importation du document, analyse par l'IA, génération du résumé, génération du
+quiz, correction automatique et affichage des résultats.
+
+Ce diagramme permet de comprendre le fonctionnement global du processus
+d'apprentissage. Il montre comment l'étudiant interagit avec la plateforme et
+comment le système répond à chaque action.
+
+\clearpage
+\section{Diagramme de séquence}
+
+\placeholderfigure{Diagramme de séquence}{Génération d'un quiz intelligent à partir d'un document}
+
+Ce diagramme illustre l'interaction entre l'étudiant, l'interface React, le
+backend Flask, la base de données MySQL et le service IA Groq lors de la
+génération d'un quiz à partir d'un document pédagogique.
+
+Le scénario commence lorsque l'étudiant importe un document. Le frontend envoie
+le fichier au backend. Celui-ci extrait le texte, prépare un prompt et l'envoie
+à l'API Groq. Le modèle IA génère les questions, puis le backend enregistre le
+quiz dans la base de données et renvoie le résultat à l'interface utilisateur.
+
+\clearpage
+\section{Conception de la base de données}
+
+La base de données MySQL est organisée autour de plusieurs familles d'entités :
+
+\begin{itemize}
+    \item Utilisateurs, rôles et profils ;
+    \item Écoles, classes et modules ;
+    \item Cours, quiz, examens et questions ;
+    \item Tentatives, réponses et résultats ;
+    \item Documents, conversations IA et profils adaptatifs ;
+    \item Notifications et emplois du temps.
+\end{itemize}
+
+\placeholderfigure{Modèle de base de données}{Modèle conceptuel simplifié de la base de données}
+
+\subsection{Importance de la base de données}
+
+La base de données occupe une place centrale dans Learnix AI. Elle permet de
+conserver toutes les informations nécessaires au fonctionnement de la plateforme.
+Elle assure également la traçabilité des actions, le suivi des résultats et
+l'historique des interactions pédagogiques.
+
+Une bonne conception de la base de données permet d'éviter les redondances,
+d'améliorer la performance des requêtes et de garantir la cohérence des données.
+
+\subsection{Principales tables de la base de données}
+
+La base de données peut contenir plusieurs tables principales, notamment les
+utilisateurs, les écoles, les classes, les modules, les cours, les quiz, les
+questions, les réponses, les tentatives, les notifications et les emplois du
+temps. Chaque table répond à un besoin précis du système.
+
+\begin{longtable}{|m{4cm}|m{9cm}|}
+\caption{Description simplifiée des principales tables}\\
+\hline
+\textbf{Table} & \textbf{Description} \\
+\hline
+users & Stocke les informations des utilisateurs et leurs rôles. \\
+\hline
+schools & Stocke les informations relatives aux établissements. \\
+\hline
+classes & Stocke les classes créées par le directeur. \\
+\hline
+modules & Stocke les modules ou matières pédagogiques. \\
+\hline
+courses & Stocke les cours déposés par les enseignants. \\
+\hline
+quizzes & Stocke les quiz créés ou générés par IA. \\
+\hline
+questions & Stocke les questions associées à chaque quiz. \\
+\hline
+answers & Stocke les réponses des étudiants. \\
+\hline
+attempts & Stocke les tentatives et les scores obtenus. \\
+\hline
+notifications & Stocke les notifications envoyées aux utilisateurs. \\
+\hline
+\end{longtable}
+
+\section{Sécurité du système}
+
+La sécurité constitue un aspect important de la conception. Learnix AI repose
+sur plusieurs mécanismes :
+
+\begin{itemize}
+    \item Authentification des utilisateurs ;
+    \item Hachage sécurisé des mots de passe ;
+    \item Gestion des rôles et des autorisations ;
+    \item Utilisation de jetons JWT ;
+    \item Protection des clés API dans les variables d'environnement ;
+    \item Vérification du statut des comptes.
+\end{itemize}
+
+La gestion des rôles permet d'empêcher un utilisateur d'accéder à des
+fonctionnalités qui ne lui sont pas destinées. Par exemple, un étudiant ne doit
+pas pouvoir gérer les établissements ou modifier les comptes des autres
+utilisateurs.
+
+Les clés API doivent être stockées dans des fichiers de configuration sécurisés
+afin d'éviter leur exposition dans le code source. Cette pratique améliore la
+sécurité globale du système.
+
+\section{Conclusion}
+
+Ce chapitre a présenté la conception générale du système Learnix AI à travers
+l'architecture technique, les diagrammes UML, la base de données et les mesures
+de sécurité prévues.
+
+% =========================
+% CHAPITRE 4
+% =========================
+
+\chapter{Réalisation et Mise en Œuvre}
+
+\section{Introduction}
+
+Ce chapitre présente la réalisation technique de la plateforme Learnix AI. Il
+décrit l'environnement de développement, les technologies utilisées ainsi que les
+principales interfaces développées.
+
+La phase de réalisation consiste à transformer les modèles de conception en une
+application fonctionnelle. Elle inclut le développement du frontend, du backend,
+de la base de données et l'intégration des services d'intelligence artificielle.
+
+\section{Environnement de développement}
+
+Le développement de Learnix AI a été réalisé à l'aide de plusieurs outils :
+
+\begin{itemize}
+    \item Visual Studio Code pour l'édition du code ;
+    \item XAMPP pour la gestion locale de MySQL ;
+    \item phpMyAdmin pour l'administration de la base de données ;
+    \item Node.js pour l'environnement frontend ;
+    \item Python pour le backend Flask ;
+    \item Git pour la gestion du code source.
+\end{itemize}
+
+Ces outils ont été choisis pour leur accessibilité, leur flexibilité et leur
+compatibilité avec les technologies utilisées dans le projet.
+
+\section{Technologies utilisées}
+
+\subsection{React}
+
+React est une bibliothèque JavaScript utilisée pour construire des interfaces utilisateur modernes, dynamiques et réactives.
+
+Dans Learnix AI, React permet de développer des composants réutilisables pour
+les différentes interfaces : connexion, inscription, tableaux de bord, chatbot,
+génération de quiz et affichage des résultats.
+
+L'utilisation de React facilite la séparation entre les différentes parties de
+l'interface. Chaque composant peut être développé, testé et amélioré
+indépendamment. Cela rend le projet plus clair et plus maintenable.
+
+\placeholderfigure{Logo React}{Technologie React utilisée pour le frontend}
+
+\subsection{Vite}
+
+Vite est un outil de développement frontend permettant de créer et lancer une
+application React rapidement grâce à un serveur de développement performant.
+
+Il permet un démarrage rapide du projet et un rechargement instantané lors des
+modifications du code. Cette rapidité améliore la productivité pendant le
+développement.
+
+\placeholderfigure{Logo Vite}{Technologie Vite utilisée pour le développement frontend}
+
+\subsection{Flask}
+
+Flask est un micro-framework Python utilisé pour développer le backend et les API REST de la plateforme.
+
+Dans Learnix AI, Flask permet de gérer les routes API, les requêtes HTTP, la
+connexion avec MySQL, l'authentification des utilisateurs et l'intégration avec
+l'API Groq.
+
+Flask a été choisi pour sa simplicité, sa légèreté et sa compatibilité avec les
+bibliothèques Python utilisées pour le traitement des documents et
+l'intelligence artificielle.
+
+\placeholderfigure{Logo Flask}{Technologie Flask utilisée pour le backend}
+
+\subsection{MySQL}
+
+MySQL est le système de gestion de base de données utilisé pour stocker les utilisateurs, les cours, les quiz, les résultats et les informations scolaires.
+
+Le choix de MySQL s'explique par sa fiabilité, sa performance et sa capacité à
+gérer des données relationnelles. Il permet de créer des relations entre les
+utilisateurs, les classes, les modules, les quiz et les résultats.
+
+\placeholderfigure{Logo MySQL}{Base de données MySQL}
+
+\subsection{Groq API et Llama}
+
+Groq API permet d'accéder au modèle Llama utilisé pour les fonctionnalités
+d'intelligence artificielle, notamment la génération de quiz, les résumés,
+l'assistant pédagogique et la correction automatique.
+
+Dans le projet, le backend prépare des prompts adaptés selon la tâche demandée.
+Ces prompts sont envoyés au modèle IA, qui retourne une réponse structurée.
+Cette réponse est ensuite traitée par le backend avant d'être affichée à
+l'utilisateur.
+
+\placeholderfigure{Logo Groq / Llama}{Service IA Groq et modèle Llama}
+
+\subsection{PyPDF2 et Tesseract OCR}
+
+PyPDF2 est utilisé pour extraire le texte des fichiers PDF, tandis que Tesseract
+OCR permet d'extraire le texte à partir des images.
+
+Ces outils sont importants, car ils permettent à la plateforme de transformer un
+document pédagogique en texte exploitable par l'intelligence artificielle.
+
+\placeholderfigure{PyPDF2 et OCR}{Traitement des documents PDF et images}
+
+\section{Pipeline IA}
+
+Le pipeline IA de Learnix AI se déroule en plusieurs étapes :
+
+\begin{enumerate}
+    \item Importation du document par l'utilisateur ;
+    \item Extraction du texte à partir du PDF ou de l'image ;
+    \item Nettoyage du texte extrait ;
+    \item Préparation du prompt selon l'objectif ;
+    \item Envoi du prompt au modèle IA ;
+    \item Récupération de la réponse ;
+    \item Structuration de la réponse ;
+    \item Affichage du résultat à l'utilisateur.
+\end{enumerate}
+
+Ce pipeline permet de transformer un document statique en contenu pédagogique
+interactif. Il représente l'un des éléments les plus importants de la plateforme.
+
+\section{Prompt Engineering}
+
+Le prompt engineering consiste à formuler correctement les instructions envoyées
+au modèle IA afin d'obtenir des réponses pertinentes, structurées et adaptées au
+contexte.
+
+Dans Learnix AI, plusieurs types de prompts sont utilisés :
+
+\begin{itemize}
+    \item Prompt pour résumer un cours ;
+    \item Prompt pour générer un quiz ;
+    \item Prompt pour corriger une réponse ;
+    \item Prompt pour expliquer une notion ;
+    \item Prompt pour proposer des recommandations.
+\end{itemize}
+
+La qualité du prompt influence directement la qualité de la réponse générée.
+Pour cette raison, les prompts ont été progressivement améliorés durant le
+développement.
+
+\subsection{Zero-shot}
+
+Le zero-shot consiste à demander au modèle d'effectuer une tâche sans lui donner
+d'exemple. Cette méthode est simple et rapide, mais elle peut produire des
+résultats moins contrôlés.
+
+\subsection{One-shot}
+
+Le one-shot consiste à fournir un seul exemple au modèle avant de lui demander
+de réaliser une tâche similaire. Cela permet d'orienter le modèle vers le format
+attendu.
+
+\subsection{Few-shot}
+
+Le few-shot consiste à fournir plusieurs exemples au modèle. Cette méthode
+améliore généralement la qualité et la cohérence des réponses, surtout lorsque
+le format attendu est précis.
+
+\section{Exemples de prompts utilisés}
+
+\subsection{Prompt de génération de quiz}
+
+Pour générer un quiz, le système utilise un prompt qui demande au modèle de créer
+des questions à partir du contenu extrait du document. Le prompt précise le
+nombre de questions, le niveau de difficulté et le format attendu.
+
+\begin{quote}
+À partir du contenu suivant, génère un quiz pédagogique adapté au niveau de
+l'étudiant. Les questions doivent être claires, variées et liées directement au
+cours fourni.
+\end{quote}
+
+\subsection{Prompt de correction automatique}
+
+Pour corriger une réponse, le système compare la réponse de l'étudiant avec la
+réponse attendue. Le prompt demande au modèle de fournir une évaluation, une
+note et une explication claire.
+
+\begin{quote}
+Corrige la réponse de l'étudiant en expliquant les erreurs éventuelles et en
+donnant un feedback pédagogique.
+\end{quote}
+
+\subsection{Prompt d'assistance pédagogique}
+
+L'assistant IA utilise un prompt orienté explication. Son objectif est d'aider
+l'étudiant à comprendre une notion de manière simple.
+
+\begin{quote}
+Explique cette notion à un étudiant de manière claire, progressive et adaptée à
+son niveau.
+\end{quote}
+
+\section{Structure du projet}
+
+Le projet est organisé en deux parties principales :
+
+\begin{itemize}
+    \item \textbf{Frontend :} interface utilisateur développée avec React ;
+    \item \textbf{Backend :} logique métier et API REST développées avec Flask.
+\end{itemize}
+
+La base de données MySQL assure le stockage des informations, tandis que les
+services IA sont appelés à travers le backend.
+
+\placeholderfigure{Structure du projet}{Structure générale du projet Learnix AI}
+
+\section{Interfaces réalisées}
+
+\clearpage
+\subsection{Page de connexion}
+
+\placeholderfigure{Screenshot Login}{Interface de connexion de Learnix AI}
+
+Cette interface permet aux utilisateurs de s'authentifier en saisissant leur adresse email et leur mot de passe. Après validation, l'utilisateur est redirigé vers l'espace correspondant à son rôle.
+
+La page de connexion constitue la première interaction entre l'utilisateur et la
+plateforme. Elle doit donc être claire, simple et rassurante. Son design a été
+pensé pour mettre en avant l'identité de Learnix AI et faciliter l'accès aux
+différents espaces.
+
+\clearpage
+\subsection{Page d'inscription}
+
+\placeholderfigure{Screenshot Register}{Interface d'inscription}
+
+Cette page permet la création de comptes selon le rôle choisi. Elle constitue la première étape d'accès à la plateforme.
+
+Lors de l'inscription, certaines informations sont nécessaires afin d'identifier
+l'utilisateur et de lui attribuer un rôle. Selon le rôle choisi, l'utilisateur
+peut être redirigé vers un parcours spécifique.
+
+\clearpage
+\subsection{Tableau de bord administrateur}
+
+\placeholderfigure{Screenshot Dashboard Admin}{Tableau de bord administrateur}
+
+L'administrateur peut gérer les utilisateurs, valider les établissements et superviser les informations principales de la plateforme.
+
+Ce tableau de bord offre une vision globale sur l'activité du système. Il permet
+de contrôler les demandes, de gérer les comptes et d'assurer le bon
+fonctionnement de la plateforme.
+
+\clearpage
+\subsection{Tableau de bord directeur}
+
+\placeholderfigure{Screenshot Dashboard Directeur}{Tableau de bord directeur}
+
+Le directeur dispose d'un espace dédié à la gestion de son établissement, des classes, des modules, des enseignants et des étudiants.
+
+Cet espace permet au directeur d'organiser la structure pédagogique de son
+établissement. Il peut suivre les demandes de rattachement, gérer les modules et
+affecter les enseignants aux classes.
+
+\clearpage
+\subsection{Tableau de bord enseignant}
+
+\placeholderfigure{Screenshot Dashboard Enseignant}{Tableau de bord enseignant}
+
+L'enseignant peut créer des cours, gérer les quiz, consulter les étudiants et suivre les résultats.
+
+Le tableau de bord enseignant facilite la gestion pédagogique quotidienne. Il
+permet de centraliser les ressources, de créer des évaluations et de consulter
+les performances des étudiants.
+
+\clearpage
+\subsection{Tableau de bord étudiant}
+
+\placeholderfigure{Screenshot Dashboard Étudiant}{Tableau de bord étudiant}
+
+L'étudiant peut accéder aux ressources pédagogiques, consulter ses résultats, utiliser l'assistant IA et suivre sa progression.
+
+Cet espace est orienté vers l'apprentissage. Il permet à l'étudiant de travailler
+sur ses cours, de générer des quiz, de poser des questions à l'assistant IA et
+de suivre son évolution.
+
+\clearpage
+\subsection{Importation d'un document}
+
+\placeholderfigure{Screenshot Upload PDF}{Interface d'importation PDF ou image}
+
+Cette interface permet à l'étudiant d'importer un document pédagogique au format PDF ou image afin que le système puisse l'analyser.
+
+Après l'importation, le backend extrait le texte du fichier. Ce texte est ensuite
+envoyé au modèle IA pour produire un résumé, un quiz ou une explication.
+
+\clearpage
+\subsection{Assistant IA}
+
+\placeholderfigure{Screenshot Chatbot IA}{Assistant pédagogique IA}
+
+L'assistant IA permet à l'étudiant de poser des questions, demander des explications et obtenir une aide pédagogique personnalisée.
+
+Cet assistant joue le rôle d'un accompagnateur pédagogique. Il peut reformuler
+une notion, expliquer un concept difficile ou aider l'étudiant à comprendre une
+partie du cours.
+
+\clearpage
+\subsection{Génération automatique de quiz}
+
+\placeholderfigure{Screenshot Génération Quiz}{Génération automatique de quiz}
+
+Après analyse du document, la plateforme peut générer un quiz adapté au contenu du cours et au niveau choisi par l'utilisateur.
+
+L'utilisateur peut choisir le nombre de questions et le niveau de difficulté.
+Le système génère ensuite des questions cohérentes avec le contenu importé.
+
+\clearpage
+\subsection{Correction automatique}
+
+\placeholderfigure{Screenshot Correction}{Correction automatique des réponses}
+
+La correction automatique permet d'évaluer les réponses de l'étudiant et de fournir un feedback détaillé.
+
+La correction ne se limite pas à indiquer si une réponse est juste ou fausse.
+Elle peut aussi expliquer l'erreur et proposer une amélioration.
+
+\clearpage
+\subsection{Résultats et recommandations}
+
+\placeholderfigure{Screenshot Résultats}{Résultats et recommandations personnalisées}
+
+L'étudiant peut consulter son score, ses corrections, son historique et les recommandations proposées par la plateforme.
+
+Ces résultats permettent à l'étudiant de suivre sa progression et d'identifier
+les notions à retravailler.
+
+\clearpage
+\subsection{Gestion des cours}
+
+L'interface de gestion des cours permet à l'enseignant d'ajouter, modifier et
+consulter les supports pédagogiques. Cette fonctionnalité facilite
+l'organisation des ressources et permet de centraliser les contenus dans la
+plateforme.
+
+\placeholderfigure{Screenshot Gestion des cours}{Interface de gestion des cours}
+
+\clearpage
+\subsection{Gestion des modules}
+
+L'interface de gestion des modules permet d'organiser les matières ou unités
+d'enseignement. Chaque module peut être associé à une classe, à un enseignant et
+à des contenus pédagogiques.
+
+\placeholderfigure{Screenshot Gestion des modules}{Interface de gestion des modules}
+
+\clearpage
+\subsection{Gestion des classes}
+
+L'interface de gestion des classes permet au directeur de créer et organiser les
+groupes d'étudiants. Elle permet également d'associer les étudiants aux classes
+et de faciliter la gestion pédagogique.
+
+\placeholderfigure{Screenshot Gestion des classes}{Interface de gestion des classes}
+
+\clearpage
+\subsection{Journal d'audit}
+
+Le journal d'audit permet de suivre certaines actions réalisées dans la
+plateforme. Il peut contenir des informations comme la date, l'utilisateur,
+l'action effectuée et le module concerné. Cette fonctionnalité améliore la
+traçabilité et la sécurité du système.
+
+\placeholderfigure{Screenshot Journal d'audit}{Interface du journal d'audit}
+
+\clearpage
+\subsection{Rapports et statistiques}
+
+L'interface des rapports et statistiques permet de visualiser des indicateurs
+liés à l'utilisation de la plateforme. Elle peut afficher le nombre
+d'utilisateurs, les quiz réalisés, les résultats obtenus et l'activité générale.
+
+\placeholderfigure{Screenshot Rapports et statistiques}{Interface des rapports et statistiques}
+
+\section{Conclusion}
+
+Ce chapitre a présenté les technologies utilisées ainsi que les principales interfaces développées dans Learnix AI. Ces éléments montrent la concrétisation des besoins identifiés durant la phase d'analyse.
+
+% =========================
+% CHAPITRE 5
+% =========================
+
+\chapter{Tests, Résultats et Perspectives}
+
+\section{Introduction}
+
+Les tests permettent de vérifier le bon fonctionnement de l'application et de s'assurer que les fonctionnalités développées répondent aux besoins définis.
+
+Dans le cadre de Learnix AI, les tests ont porté sur les fonctionnalités
+principales : authentification, importation des documents, génération des quiz,
+correction automatique, gestion des rôles et affichage des résultats.
+
+\section{Tests fonctionnels}
+
+\begin{longtable}{|m{4cm}|m{5cm}|m{4cm}|}
+\caption{Tableau des tests fonctionnels}\\
+\hline
+Fonctionnalité testée & Résultat attendu & État \\
+\hline
+Authentification & Connexion selon le rôle & Réussi \\
+\hline
+Importation PDF & Extraction du contenu & Réussi \\
+\hline
+Assistant IA & Réponse pédagogique & Réussi \\
+\hline
+Génération de quiz & Création automatique de questions & Réussi \\
+\hline
+Correction automatique & Score et feedback & Réussi \\
+\hline
+Gestion des classes & Création et modification & En amélioration \\
+\hline
+Gestion de l'emploi du temps & Organisation des séances & En amélioration \\
+\hline
+\end{longtable}
+
+\section{Tests d'intégration}
+
+Les tests d'intégration ont permis de vérifier la communication entre les
+différentes parties du système. Ces tests concernent principalement :
+
+\begin{itemize}
+    \item La communication entre React et Flask ;
+    \item La communication entre Flask et MySQL ;
+    \item La communication entre Flask et l'API Groq ;
+    \item Le traitement complet d'un document importé ;
+    \item L'affichage des résultats générés par l'IA.
+\end{itemize}
+
+Ces tests sont importants, car une application web moderne repose sur plusieurs
+composants qui doivent fonctionner ensemble de manière cohérente.
+
+\section{Tests unitaires}
+
+Les tests unitaires ont pour objectif de vérifier le fonctionnement isolé de
+certaines parties du système. Ils concernent par exemple la validation des
+formulaires, l'extraction du texte, la génération des prompts et la connexion à
+la base de données.
+
+\begin{longtable}{|m{4cm}|m{5cm}|m{4cm}|}
+\caption{Tableau des tests unitaires}\\
+\hline
+\textbf{Élément testé} & \textbf{Objectif} & \textbf{Résultat} \\
+\hline
+Formulaire de connexion & Vérifier les champs obligatoires & Réussi \\
+\hline
+Importation PDF & Vérifier l'acceptation du fichier & Réussi \\
+\hline
+Extraction texte & Vérifier la récupération du contenu & Réussi \\
+\hline
+Prompt IA & Vérifier la structure de la demande & Réussi \\
+\hline
+Connexion MySQL & Vérifier l'accès à la base & Réussi \\
+\hline
+\end{longtable}
+
+\section{Analyse des résultats des tests}
+
+Les tests réalisés montrent que les fonctionnalités principales de Learnix AI
+sont opérationnelles. L'authentification permet de rediriger chaque utilisateur
+vers l'espace correspondant à son rôle. L'importation des documents permet
+d'extraire un contenu exploitable par l'intelligence artificielle.
+
+La génération des quiz et la correction automatique fonctionnent correctement
+dans les cas simples et moyens. Toutefois, la qualité des résultats dépend
+fortement de la qualité du document importé et de la clarté du contenu source.
+
+\section{Résultats obtenus}
+
+Les principaux résultats obtenus sont :
+
+\begin{itemize}
+    \item Mise en place d'une architecture web basée sur React, Flask et MySQL ;
+    \item Développement d'une authentification multi-rôles ;
+    \item Intégration d'un assistant pédagogique IA ;
+    \item Analyse de documents PDF et images ;
+    \item Génération automatique de quiz ;
+    \item Correction automatique des réponses ;
+    \item Suivi des résultats et recommandations personnalisées.
+\end{itemize}
+
+Ces résultats montrent que les objectifs principaux du projet ont été atteints.
+La plateforme permet de gérer un parcours pédagogique complet, depuis
+l'importation du document jusqu'à la correction automatique.
+
+\section{Difficultés rencontrées}
+
+Durant la réalisation du projet, plusieurs difficultés ont été rencontrées :
+
+\begin{itemize}
+    \item Gestion de la connexion entre React et Flask ;
+    \item Organisation de la base de données MySQL ;
+    \item Extraction correcte du contenu des documents PDF ;
+    \item Qualité variable des réponses générées par l'IA ;
+    \item Gestion des rôles et des autorisations ;
+    \item Correction des erreurs liées à l'environnement local.
+\end{itemize}
+
+Ces difficultés ont permis de mieux comprendre les contraintes techniques d'une
+application complète. Elles ont également renforcé l'importance des tests
+réguliers et de l'amélioration progressive.
+
+\section{Solutions apportées}
+
+Pour résoudre ces difficultés, plusieurs solutions ont été mises en place :
+
+\begin{itemize}
+    \item Utilisation d'API REST claires entre frontend et backend ;
+    \item Structuration progressive de la base de données ;
+    \item Utilisation de PyPDF2 et Tesseract OCR pour l'extraction ;
+    \item Amélioration des prompts envoyés au modèle IA ;
+    \item Mise en place de contrôles d'accès selon les rôles ;
+    \item Tests réguliers des fonctionnalités principales.
+\end{itemize}
+
+\section{Limites actuelles}
+
+La version actuelle de Learnix AI présente encore certaines limites :
+
+\begin{itemize}
+    \item Dépendance à l'API Groq et à la connexion Internet ;
+    \item Qualité variable selon le document analysé ;
+    \item Recommandations adaptatives encore simples ;
+    \item Génération d'emploi du temps encore perfectible ;
+    \item Application encore au stade de prototype évolutif.
+\end{itemize}
+
+Ces limites sont normales dans le cadre d'un projet de fin d'études. Elles
+ouvrent la voie à des améliorations futures.
+
+\section{Perspectives}
+
+Plusieurs améliorations peuvent être envisagées :
+
+\begin{itemize}
+    \item Développement d'une application mobile ;
+    \item Notifications en temps réel ;
+    \item Amélioration de la communication entre utilisateurs ;
+    \item Recommandations IA plus avancées ;
+    \item Tableaux de bord analytiques ;
+    \item Déploiement cloud ;
+    \item Intégration avec les systèmes existants des établissements.
+\end{itemize}
+
+\section{Bilan personnel}
+
+La réalisation de ce projet a représenté une expérience enrichissante sur les
+plans technique, méthodologique et personnel. Elle m'a permis de consolider mes
+compétences en développement web, en base de données, en conception UML et en
+intégration d'intelligence artificielle.
+
+Ce projet m'a également permis de mieux comprendre les difficultés liées à la
+réalisation d'une application complète, notamment la gestion des erreurs, la
+connexion entre les différentes couches et l'amélioration progressive de
+l'interface utilisateur.
+
+\section{Conclusion}
+
+Ce chapitre a présenté les tests réalisés, les résultats obtenus, les difficultés rencontrées ainsi que les perspectives d'évolution de Learnix AI.
+
+% =========================
+% CONCLUSION GENERALE
+% =========================
+
+\chapter*{Conclusion Générale}
+\addcontentsline{toc}{chapter}{Conclusion Générale}
+
+Le projet Learnix AI a permis de concevoir et développer une plateforme
+éducative intelligente combinant gestion pédagogique, intelligence artificielle,
+évaluation automatisée et apprentissage assisté.
+
+À travers ce projet, nous avons mis en œuvre plusieurs compétences acquises
+durant notre formation, notamment le développement web, la conception UML, la
+gestion de base de données, l'intégration d'API et l'utilisation de modèles
+d'intelligence artificielle.
+
+Learnix AI propose une solution moderne permettant d'accompagner les étudiants,
+de faciliter le travail des enseignants et de centraliser la gestion pédagogique
+des établissements.
+
+Même si la plateforme reste au stade de prototype évolutif, elle constitue une
+base solide pour de futures améliorations, notamment l'ajout d'une application
+mobile, de notifications en temps réel, d'analyses pédagogiques plus détaillées et d'un déploiement
+cloud.
+
+Enfin, Learnix AI ne remplace pas l'enseignant ; elle lui fournit des outils
+intelligents pour mieux accompagner chaque étudiant dans son parcours
+d'apprentissage.
+
+Ce projet m'a également permis de renforcer mes compétences techniques et
+méthodologiques. Il m'a offert l'occasion de travailler sur une problématique
+actuelle, liée à l'éducation numérique et à l'intelligence artificielle, tout en
+mettant en pratique les connaissances acquises durant ma formation universitaire.
+
+
+% =========================
+% ANNEXES
+% =========================
+
+\appendix
+\chapter{Captures de code importantes}
+
+Ce chapitre présente des extraits courts et représentatifs du code source de
+Learnix AI. Les blocs suivants ne reprennent pas les fichiers complets ; ils
+mettent en évidence les parties essentielles de l'implémentation technique.
+
+\section{Authentication (Login)}
+Cet extrait montre le traitement de la connexion côté backend : récupération des
+identifiants, vérification du mot de passe, normalisation du rôle et génération
+du jeton d'accès.
+
+\begin{lstlisting}[style=learnixcode,language=Python,caption={Route Flask de connexion utilisateur},label={lst:authentication-login}]
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.get_json(silent=True) or {}
+    email = data.get("email")
+    password = data.get("password")
+
+    if not email or not password:
+        return jsonify({
+            "success": False,
+            "message": "Email and password are required"
+        })
+
+    user = find_user_by_email(email)
+    if not user:
+        return jsonify({
+            "success": False,
+            "message": "Invalid email or password"
+        })
+
+    if password_matches(user.get("password"), password):
+        if str(user.get("status") or "active").lower() == "disabled":
+            return jsonify({
+                "success": False,
+                "message": "Account is disabled"
+            }), 403
+
+        role = normalize_role(user.get("role") or user.get("level"))
+        token_user = {
+            "id": user.get("id"),
+            "name": user.get("name"),
+            "email": user.get("email"),
+            "level": user.get("level", "Student"),
+            "role": role,
+        }
+        return jsonify({
+            "success": True,
+            "user": token_user,
+            "token": create_access_token(token_user),
+        })
+
+    return jsonify({"success": False, "message": "Invalid email or password"})
+\end{lstlisting}
+
+\section{Registration}
+Cet extrait illustre la création d'un compte : validation minimale des champs,
+contrôle de l'unicité de l'email, hachage du mot de passe et insertion en base de
+données.
+
+\begin{lstlisting}[style=learnixcode,language=Python,caption={Route Flask d'inscription utilisateur},label={lst:registration}]
+@app.route("/register", methods=["POST"])
+def register():
+    data = request.get_json(silent=True) or {}
+    name = data.get("name")
+    email = data.get("email")
+    password = data.get("password")
+    level = data.get("level", "Student")
+    role = normalize_role(data.get("role") or level)
+
+    if not name or not email or not password:
+        return jsonify({
+            "success": False,
+            "message": "All fields are required"
+        })
+
+    if find_user_by_email(email):
+        return jsonify({
+            "success": False,
+            "message": "Email already exists"
+        })
+
+    hashed_password = generate_password_hash(password)
+    db = get_db()
+    cursor = db.cursor()
+    ensure_users_security_columns(cursor)
+    cursor.execute(
+        """
+        INSERT INTO users(name, email, password, level, role)
+        VALUES(%s, %s, %s, %s, %s)
+        """,
+        (name, email, hashed_password, level, role),
+    )
+    db.commit()
+    user_id = cursor.lastrowid
+    cursor.close()
+    db.close()
+
+    user = {
+        "id": user_id,
+        "name": name,
+        "email": email,
+        "level": level,
+        "role": role,
+    }
+    return jsonify({
+        "success": True,
+        "user": user,
+        "token": create_access_token(user)
+    })
+\end{lstlisting}
+
+\section{React Routing}
+Cet extrait présente la configuration principale des routes React. Les chemins
+sont associés aux pages de connexion, aux tableaux de bord et aux espaces
+protégés selon le rôle de l'utilisateur.
+
+\begin{lstlisting}[style=learnixcode,language=JavaScript,caption={Configuration des routes React},label={lst:react-routing}]
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        <Route
+          path="/student-dashboard"
+          element={
+            <ProtectedRoute>
+              <StudentDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/teacher-dashboard"
+          element={
+            <ProtectedRoute>
+              <TeacherDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/assessment"
+          element={
+            <ProtectedRoute>
+              <Exercises />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/chatbot"
+          element={
+            <ProtectedRoute>
+              <Chatbot />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/platform"
+          element={
+            <ProtectedRoute>
+              <PlatformManagement />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+\end{lstlisting}
+
+\section{Flask API}
+Cet extrait montre la structure d'une route API Flask utilisée par l'assistant.
+Elle vérifie le message, la disponibilité de l'IA et oriente la requête vers la
+génération d'une évaluation ou vers une réponse pédagogique.
+
+\begin{lstlisting}[style=learnixcode,language=Python,caption={Route API Flask de l'assistant IA},label={lst:flask-api}]
+@app.route("/chatbot", methods=["POST"])
+def chatbot():
+    data = request.get_json(silent=True) or {}
+    message = str(data.get("message") or "").strip()
+    language = data.get("language", "fr")
+    context = str(data.get("context") or "").strip()
+    user_id = data.get("userId")
+
+    if not message:
+        return jsonify({"success": False, "message": "Message is required"}), 400
+
+    if not is_educational_message(message, context):
+        return jsonify({
+            "success": True,
+            "answer": localized_message("non_educational", language)
+        })
+
+    if not groq_available():
+        return jsonify({
+            "success": True,
+            "answer": localized_message("ai_unavailable", language)
+        }), 200
+
+    if wants_assessment(message):
+        assessment_type = requested_assessment_type(message) or "quiz"
+        generated = generate_prompt_quiz(
+            message,
+            context,
+            language,
+            data.get("difficulty") or "Medium",
+            data.get("numQuestions") or 5,
+            user_id,
+            assessment_type
+        )
+        return jsonify({
+            "success": True,
+            "responseType": "assessment",
+            "quiz": generated
+        })
+\end{lstlisting}
+
+\section{Database Connection (MySQL)}
+Cet extrait présente la fonction centrale de connexion à MySQL. Les paramètres
+sont lus depuis les variables d'environnement afin de séparer la configuration du
+code source.
+
+\begin{lstlisting}[style=learnixcode,language=Python,caption={Connexion MySQL centralisée},label={lst:mysql-connection}]
+import os
+import mysql.connector
+
+def get_db():
+    return mysql.connector.connect(
+        host=os.getenv("MYSQL_HOST", "127.0.0.1"),
+        port=int(os.getenv("MYSQL_PORT", "3306")),
+        user=os.getenv("MYSQL_USER", "root"),
+        password=os.getenv("MYSQL_PASSWORD", ""),
+        database=os.getenv("MYSQL_DATABASE", "ai_learning_platform"),
+    )
+\end{lstlisting}
+
+\section{AI Integration (Groq API)}
+Cet extrait montre l'intégration avec Groq API. Le client centralise les appels
+au modèle et permet de gérer les clés configurées.
+
+\begin{lstlisting}[style=learnixcode,language=Python,caption={Client Groq pour les appels IA},label={lst:groq-integration}]
+class GroqKeyPool:
+    """Rotate Groq API keys when a key is rate-limited or no longer valid."""
+
+    def create_chat_completion(self, **kwargs):
+        if not self._keys:
+            raise RuntimeError("No Groq API key is configured")
+
+        requested_model = kwargs.get("model")
+        models = list(dict.fromkeys([requested_model, *_configured_fallback_models()]))
+
+        for model in models:
+            for index in self._ordered_indexes():
+                completion = Groq(api_key=self._keys[index]).chat.completions.create(
+                    **{**kwargs, "model": model}
+                )
+                self._activate(index)
+                return completion
+
+groq_key_pool = GroqKeyPool()
+
+def groq_available():
+    return groq_key_pool.available
+
+def groq_chat_completion(**kwargs):
+    return groq_key_pool.create_chat_completion(**kwargs)
+\end{lstlisting}
+
+\section{PDF Processing (PyPDF2)}
+Cet extrait montre l'extraction du texte depuis un document PDF. Le contenu
+extrait est ensuite utilisé comme contexte pour le résumé, le chatbot ou la
+génération de quiz.
+
+\begin{lstlisting}[style=learnixcode,language=Python,caption={Extraction du texte d'un PDF avec PyPDF2},label={lst:pdf-processing}]
+from PyPDF2 import PdfReader
+
+def extract_pdf_text(file_storage):
+    reader = PdfReader(file_storage)
+    text = ""
+
+    for page in reader.pages:
+        extracted = page.extract_text()
+        if extracted:
+            text += extracted + "\n"
+
+    return text.strip()
+\end{lstlisting}
+
+\section{OCR Processing (Tesseract)}
+Cet extrait montre la branche OCR utilisée lors de l'importation d'une image. Le
+texte détecté par Tesseract est réutilisé par les fonctionnalités IA.
+
+\begin{lstlisting}[style=learnixcode,language=Python,caption={Traitement OCR des images avec Tesseract},label={lst:ocr-processing}]
+if content_type.startswith("image/") or filename.endswith(
+    (".png", ".jpg", ".jpeg", ".webp")
+):
+    if Image is None or pytesseract is None:
+        return jsonify({
+            "success": False,
+            "message": localized_message("image_unavailable", language)
+        }), 200
+
+    try:
+        image = Image.open(file.stream)
+        context = pytesseract.image_to_string(image).strip()
+    except Exception:
+        return jsonify({
+            "success": False,
+            "message": localized_message("image_unavailable", language)
+        }), 200
+
+    if token_user:
+        persist_ai_document(token_user.get("id"), filename, context)
+
+    summary = summarize_context(context, language)
+    return jsonify({"success": True, "context": context[:9000], "summary": summary})
+\end{lstlisting}
+
+\section{Quiz Generation}
+Cet extrait présente la construction du prompt de génération de quiz. Il impose
+le format JSON, la difficulté, le nombre de questions et l'utilisation du contenu
+de cours comme contexte.
+
+\begin{lstlisting}[style=learnixcode,language=Python,caption={Préparation du prompt de génération de quiz},label={lst:quiz-generation}]
+def generate_prompt_quiz(
+    message,
+    context,
+    language,
+    difficulty,
+    num_questions,
+    user_id=None,
+    assessment_type="quiz",
+):
+    output_language = language_name(language)
+    source_context = context[:5000] if context else student_module_context(user_id, message)[:3000]
+
+    prompt = f"""
+Create a personalized educational {assessment_type} from the student's request.
+Student request: {message}
+
+<SOURCE_CONTEXT>
+{source_context or 'No stored course text is available.'}
+</SOURCE_CONTEXT>
+
+Requirements:
+- Output language: {output_language}.
+- Difficulty: {difficulty}.
+- Produce exactly {num_questions} open-ended questions.
+- Return only JSON with keys summary, keyConcepts, importantNotes, exercises.
+- Each exercise has string keys question, instructions, answer.
+"""
+    completion = groq_chat_completion(
+        model=GROQ_MODEL,
+        temperature=0.7,
+        max_tokens=1800,
+        messages=[
+            {"role": "system", "content": "Return one valid JSON object only."},
+            {"role": "user", "content": prompt},
+        ],
+    )
+    return parse_generation_response(completion.choices[0].message.content)
+\end{lstlisting}
+
+\section{Automatic Correction}
+Cet extrait montre le calcul du score et la construction du détail de correction.
+Lorsque l'évaluation sémantique est disponible, elle complète la comparaison
+classique des réponses.
+
+\begin{lstlisting}[style=learnixcode,language=Python,caption={Correction automatique et calcul du score},label={lst:automatic-correction}]
+def correct_quiz_payload(data):
+    exercises = data.get("exercises", [])
+    answers = data.get("answers", [])
+    language = data.get("language", "fr")
+    semantic_results = semantic_quiz_details(exercises, answers, language)
+
+    details = []
+    for index, exercise in enumerate(exercises):
+        student_answer = answers[index] if index < len(answers) else ""
+        correct_answer = exercise.get("answer", "")
+        semantic = semantic_results[index] if semantic_results else None
+        is_correct = (
+            bool(semantic.get("isCorrect"))
+            if semantic
+            else answer_is_correct(student_answer, correct_answer)
+        )
+        details.append({
+            "question": exercise.get("question", ""),
+            "studentAnswer": student_answer,
+            "correctAnswer": correct_answer,
+            "isCorrect": is_correct,
+            "explanation": (
+                str(semantic.get("explanation") or "")
+                if semantic
+                else build_explanation(
+                    exercise.get("question", ""),
+                    student_answer,
+                    correct_answer,
+                    is_correct,
+                    language,
+                )
+            ),
+        })
+
+    score = len([item for item in details if item["isCorrect"]])
+    total_questions = len(details)
+    percentage = round((score / total_questions) * 100, 2) if total_questions else 0
+    return {
+        "score": score,
+        "totalQuestions": total_questions,
+        "percentage": percentage,
+        "details": details,
+    }
+\end{lstlisting}
+
+\section{AI Chat Assistant}
+Cet extrait frontend montre comment l'assistant prépare le message, envoie la
+requête au backend et affiche la réponse ou le quiz généré.
+
+\begin{lstlisting}[style=learnixcode,language=JavaScript,caption={Envoi d'un message vers l'assistant IA},label={lst:ai-chat-assistant}]
+const response = await apiFetch("/chatbot", {
+  method: "POST",
+  body: JSON.stringify({
+    message,
+    language,
+    context: nextContext,
+    userId: user.id || null,
+    generateTitle: messages.length <= 1,
+  }),
+});
+
+const data = await readApiJson(response, t.chatError);
+const aiMessage = {
+  role: "ai",
+  text: data.success ? data.answer : data.message || t.chatError,
+  quiz: data.success && data.responseType === "assessment" ? data.quiz : null,
+  difficultyRequest: data.success && data.responseType === "difficulty_required"
+    ? data.assessmentRequest
+    : null,
+};
+\end{lstlisting}
+
+\section{Main Database Models}
+Cet extrait montre les principales tables persistantes. Elles structurent les
+utilisateurs, les établissements, les classes, les modules, les cours et les
+résultats pédagogiques.
+
+\begin{lstlisting}[style=learnixcode,language=SQL,caption={Tables principales de la base Learnix AI},label={lst:main-database-models}]
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role VARCHAR(50) DEFAULT 'student',
+  status VARCHAR(30) DEFAULT 'active',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS schools (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  director_user_id INT,
+  status ENUM('pending','approved','rejected') DEFAULT 'pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS classes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  school_id INT,
+  name VARCHAR(255) NOT NULL,
+  level_name VARCHAR(120) NOT NULL,
+  academic_year VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS modules (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  level_name VARCHAR(120),
+  weekly_hours DECIMAL(4,2) DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS courses (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  module_id INT,
+  teacher_user_id INT,
+  title VARCHAR(255) NOT NULL,
+  content LONGTEXT
+);
+
+CREATE TABLE IF NOT EXISTS quiz_results (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NULL,
+  category VARCHAR(100) NULL,
+  difficulty VARCHAR(50) NULL,
+  total_questions INT NOT NULL,
+  score INT NOT NULL,
+  percentage DECIMAL(5,2) NOT NULL,
+  feedback TEXT NULL,
+  details LONGTEXT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+\end{lstlisting}
+
+% =========================
+% BIBLIOGRAPHIE
+% =========================
+
+\clearpage
+\addcontentsline{toc}{chapter}{Bibliographie}
+
+\begin{thebibliography}{9}
+
+\bibitem{react}
+React Documentation, \url{https://react.dev}
+
+\bibitem{flask}
+Flask Documentation, \url{https://flask.palletsprojects.com}
+
+\bibitem{mysql}
+MySQL Documentation, \url{https://dev.mysql.com/doc}
+
+\bibitem{vite}
+Vite Documentation, \url{https://vitejs.dev}
+
+\bibitem{groq}
+Groq Documentation, \url{https://console.groq.com/docs}
+
+\bibitem{tesseract}
+Tesseract OCR Documentation, \url{https://tesseract-ocr.github.io}
+
+\end{thebibliography}
+
+\end{document}

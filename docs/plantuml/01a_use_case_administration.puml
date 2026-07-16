@@ -1,0 +1,36 @@
+@startuml
+title Diagramme de cas d'utilisation - Administration
+
+top to bottom direction
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam actorStyle stickman
+
+actor Administrateur as Admin
+actor Directeur as Director
+
+rectangle "Learnix AI - Administration" {
+  usecase "Gerer les utilisateurs" as UCUsers
+  usecase "Valider les etablissements" as UCSchools
+  usecase "Affecter un directeur" as UCDirector
+
+  usecase "Gerer l'etablissement" as UCManageSchool
+  usecase "Gerer les classes" as UCClasses
+  usecase "Gerer les modules" as UCModules
+  usecase "Affecter les enseignants" as UCTeachers
+  usecase "Gerer l'emploi du temps" as UCSchedule
+  usecase "Valider les demandes\nde rattachement" as UCRequests
+}
+
+Admin --> UCUsers
+Admin --> UCSchools
+Admin --> UCDirector
+
+Director --> UCManageSchool
+Director --> UCClasses
+Director --> UCModules
+Director --> UCTeachers
+Director --> UCSchedule
+Director --> UCRequests
+@enduml

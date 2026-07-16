@@ -1,0 +1,67 @@
+@startuml
+title Diagramme de sequence - Generation d'un quiz intelligent a partir d'un document
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam sequenceMessageAlign center
+
+actor Etudiant as Student
+boundary "Interface React/Vite" as React
+control "Backend Flask" as Flask
+participant "Service IA Groq\n(Llama 3)" as Groq
+database "Base MySQL" as MySQL
+
+Student -> React : Selectionner un document et\nles parametres du quiz
+React -> Flask : Envoyer la demande de generation
+activate Flask
+Flask -> Flask : Verifier le jeton JWT\ns'il est fourni
+Flask -> Flask : Verifier le document
+
+alt Document PDF
+  Flask -> Flask : Extraire le texte avec PyPDF2
+else Document image
+  Flask -> Flask : Extraire le texte par OCR\navec Tesseract
+end
+
+alt Document invalide ou inexploitable
+  Flask --> React : Signaler l'echec de l'extraction
+  React --> Student : Afficher le message d'erreur
+else Contenu exploitable
+  Flask -> MySQL : Consulter le contexte pedagogique
+  MySQL --> Flask : Retourner le profil et les modules
+  Flask -> MySQL : Enregistrer le document analyse
+  MySQL --> Flask : Confirmer l'enregistrement
+
+  Flask -> Groq : Envoyer le contenu au modele Llama
+  activate Groq
+  alt Service IA indisponible
+    Groq --> Flask : Signaler l'indisponibilite
+    deactivate Groq
+    Flask --> React : Informer que la generation est indisponible
+    React --> Student : Afficher le message d'indisponibilite
+  else Reponse produite
+    Groq --> Flask : Retourner le resume et les questions
+    deactivate Groq
+    Flask -> Flask : Verifier la structure et\nla coherence de la reponse
+    alt Reponse IA invalide
+      Flask --> React : Signaler une reponse inutilisable
+      React --> Student : Proposer de relancer la generation
+    else Quiz genere avec succes
+      Flask --> React : Retourner le quiz et son resume
+      React --> Student : Afficher le quiz genere
+
+      opt Apres realisation du quiz
+        Student -> React : Soumettre les reponses
+        React -> Flask : Envoyer les reponses pour correction
+        Flask -> Groq : Demander la correction semantique
+        Groq --> Flask : Retourner la correction et le feedback
+        Flask -> MySQL : Enregistrer l'historique du quiz
+        MySQL --> Flask : Confirmer l'enregistrement
+        Flask --> React : Retourner le resultat
+        React --> Student : Afficher le score et la correction
+      end
+    end
+  end
+end
+deactivate Flask
+@enduml

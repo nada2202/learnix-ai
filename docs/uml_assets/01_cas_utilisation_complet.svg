@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3508" height="2480" viewBox="0 0 3508 2480">
+<rect width="100%" height="100%" fill="white"/>
+<defs><style>text{font-family:Arial,Helvetica,sans-serif;fill:black}.b{font-weight:700}</style></defs>
+<text x="1754.0" y="82.6" font-size="42" text-anchor="middle" class="b">Diagramme de cas d&#x27;utilisation complet - Learnix AI</text>
+<rect x="420" y="150" width="2660" height="2180" fill="white" stroke="black" stroke-width="3"/>
+<text x="1750" y="209.3" font-size="31" text-anchor="middle" class="b">Plateforme Learnix AI</text>
+<rect x="520" y="250" width="900" height="320" fill="white" stroke="black" stroke-width="2"/>
+<text x="970.0" y="292.1" font-size="27" text-anchor="middle" class="b">Administration</text>
+<ellipse cx="685.0" cy="370.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="685" y="362.4" font-size="23" text-anchor="middle">Valider demande</text>
+<text x="685" y="391.4" font-size="23" text-anchor="middle">école</text>
+<ellipse cx="960.0" cy="370.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="960" y="376.9" font-size="23" text-anchor="middle">Affecter école</text>
+<ellipse cx="1235.0" cy="370.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="1235" y="376.9" font-size="23" text-anchor="middle">Gérer écoles</text>
+<ellipse cx="685.0" cy="495.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="685" y="501.9" font-size="23" text-anchor="middle">Gérer utilisateurs</text>
+<ellipse cx="960.0" cy="495.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="960" y="487.4" font-size="23" text-anchor="middle">Statistiques</text>
+<text x="960" y="516.4" font-size="23" text-anchor="middle">globales</text>
+<rect x="520" y="650" width="1020" height="320" fill="white" stroke="black" stroke-width="2"/>
+<text x="1030.0" y="692.1" font-size="27" text-anchor="middle" class="b">Direction</text>
+<ellipse cx="685.0" cy="770.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="685" y="776.9" font-size="23" text-anchor="middle">Gérer son école</text>
+<ellipse cx="960.0" cy="770.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="960" y="776.9" font-size="23" text-anchor="middle">Gérer classes</text>
+<ellipse cx="1235.0" cy="770.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="1235" y="776.9" font-size="23" text-anchor="middle">Gérer modules</text>
+<ellipse cx="685.0" cy="895.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="685" y="901.9" font-size="23" text-anchor="middle">Valider enseignant</text>
+<ellipse cx="960.0" cy="895.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="960" y="901.9" font-size="23" text-anchor="middle">Gérer étudiants</text>
+<ellipse cx="1235.0" cy="895.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="1235" y="901.9" font-size="23" text-anchor="middle">Emploi du temps</text>
+<rect x="520" y="1050" width="1020" height="320" fill="white" stroke="black" stroke-width="2"/>
+<text x="1030.0" y="1092.1" font-size="27" text-anchor="middle" class="b">Enseignement</text>
+<ellipse cx="685.0" cy="1170.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="685" y="1176.9" font-size="23" text-anchor="middle">Créer cours</text>
+<ellipse cx="960.0" cy="1170.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="960" y="1176.9" font-size="23" text-anchor="middle">Importer PDF</text>
+<ellipse cx="1235.0" cy="1170.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="1235" y="1176.9" font-size="23" text-anchor="middle">Générer quiz</text>
+<ellipse cx="685.0" cy="1295.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="685" y="1301.9" font-size="23" text-anchor="middle">Générer examens</text>
+<ellipse cx="960.0" cy="1295.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="960" y="1287.4" font-size="23" text-anchor="middle">Corriger</text>
+<text x="960" y="1316.4" font-size="23" text-anchor="middle">automatiquement</text>
+<ellipse cx="1235.0" cy="1295.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="1235" y="1301.9" font-size="23" text-anchor="middle">Consulter résultats</text>
+<rect x="520" y="1450" width="1020" height="320" fill="white" stroke="black" stroke-width="2"/>
+<text x="1030.0" y="1492.1" font-size="27" text-anchor="middle" class="b">Apprentissage élève</text>
+<ellipse cx="685.0" cy="1570.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="685" y="1576.9" font-size="23" text-anchor="middle">Rejoindre classe</text>
+<ellipse cx="960.0" cy="1570.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="960" y="1576.9" font-size="23" text-anchor="middle">Consulter cours</text>
+<ellipse cx="1235.0" cy="1570.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="1235" y="1576.9" font-size="23" text-anchor="middle">Répondre quiz</text>
+<ellipse cx="685.0" cy="1695.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="685" y="1701.9" font-size="23" text-anchor="middle">Passer examens</text>
+<ellipse cx="960.0" cy="1695.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="960" y="1701.9" font-size="23" text-anchor="middle">Progression</text>
+<ellipse cx="1235.0" cy="1695.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="1235" y="1687.4" font-size="23" text-anchor="middle">Recommandations</text>
+<text x="1235" y="1716.4" font-size="23" text-anchor="middle">IA</text>
+<rect x="1900" y="850" width="820" height="320" fill="white" stroke="black" stroke-width="2"/>
+<text x="2310.0" y="892.1" font-size="27" text-anchor="middle" class="b">Mode élève invité</text>
+<ellipse cx="2065.0" cy="970.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="2065" y="976.9" font-size="23" text-anchor="middle">Assistant IA</text>
+<ellipse cx="2340.0" cy="970.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="2340" y="976.9" font-size="23" text-anchor="middle">Tester exercices</text>
+<ellipse cx="2065.0" cy="1095.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="2065" y="1101.9" font-size="23" text-anchor="middle">Tester quiz</text>
+<ellipse cx="2340.0" cy="1095.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="2340" y="1101.9" font-size="23" text-anchor="middle">Démonstration</text>
+<rect x="1900" y="1450" width="820" height="320" fill="white" stroke="black" stroke-width="2"/>
+<text x="2310.0" y="1492.1" font-size="27" text-anchor="middle" class="b">Moteur IA</text>
+<ellipse cx="2065.0" cy="1570.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="2065" y="1576.9" font-size="23" text-anchor="middle">Analyser PDF</text>
+<ellipse cx="2340.0" cy="1570.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="2340" y="1576.9" font-size="23" text-anchor="middle">Extraire contenu</text>
+<ellipse cx="2065.0" cy="1695.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="2065" y="1701.9" font-size="23" text-anchor="middle">Détecter niveau</text>
+<ellipse cx="2340.0" cy="1695.0" rx="130.0" ry="52.0" fill="white" stroke="black" stroke-width="2"/>
+<text x="2340" y="1687.4" font-size="23" text-anchor="middle">Personnaliser</text>
+<text x="2340" y="1716.4" font-size="23" text-anchor="middle">contenu</text>
+<ellipse cx="170.0" cy="360.0" rx="20.0" ry="20.0" fill="white" stroke="black" stroke-width="2"/>
+<line x1="170" y1="380" x2="170" y2="452" stroke="black" stroke-width="2"/>
+<line x1="128" y1="410" x2="212" y2="410" stroke="black" stroke-width="2"/>
+<line x1="170" y1="452" x2="132" y2="510" stroke="black" stroke-width="2"/>
+<line x1="170" y1="452" x2="208" y2="510" stroke="black" stroke-width="2"/>
+<text x="170" y="559.5" font-size="25" text-anchor="middle">Administrateur</text>
+<ellipse cx="170.0" cy="760.0" rx="20.0" ry="20.0" fill="white" stroke="black" stroke-width="2"/>
+<line x1="170" y1="780" x2="170" y2="852" stroke="black" stroke-width="2"/>
+<line x1="128" y1="810" x2="212" y2="810" stroke="black" stroke-width="2"/>
+<line x1="170" y1="852" x2="132" y2="910" stroke="black" stroke-width="2"/>
+<line x1="170" y1="852" x2="208" y2="910" stroke="black" stroke-width="2"/>
+<text x="170" y="959.5" font-size="25" text-anchor="middle">Directeur</text>
+<ellipse cx="170.0" cy="1160.0" rx="20.0" ry="20.0" fill="white" stroke="black" stroke-width="2"/>
+<line x1="170" y1="1180" x2="170" y2="1252" stroke="black" stroke-width="2"/>
+<line x1="128" y1="1210" x2="212" y2="1210" stroke="black" stroke-width="2"/>
+<line x1="170" y1="1252" x2="132" y2="1310" stroke="black" stroke-width="2"/>
+<line x1="170" y1="1252" x2="208" y2="1310" stroke="black" stroke-width="2"/>
+<text x="170" y="1359.5" font-size="25" text-anchor="middle">Enseignant</text>
+<ellipse cx="170.0" cy="1560.0" rx="20.0" ry="20.0" fill="white" stroke="black" stroke-width="2"/>
+<line x1="170" y1="1580" x2="170" y2="1652" stroke="black" stroke-width="2"/>
+<line x1="128" y1="1610" x2="212" y2="1610" stroke="black" stroke-width="2"/>
+<line x1="170" y1="1652" x2="132" y2="1710" stroke="black" stroke-width="2"/>
+<line x1="170" y1="1652" x2="208" y2="1710" stroke="black" stroke-width="2"/>
+<text x="170" y="1759.5" font-size="25" text-anchor="middle">Élève</text>
+<ellipse cx="3300.0" cy="1070.0" rx="20.0" ry="20.0" fill="white" stroke="black" stroke-width="2"/>
+<line x1="3300" y1="1090" x2="3300" y2="1162" stroke="black" stroke-width="2"/>
+<line x1="3258" y1="1120" x2="3342" y2="1120" stroke="black" stroke-width="2"/>
+<line x1="3300" y1="1162" x2="3262" y2="1220" stroke="black" stroke-width="2"/>
+<line x1="3300" y1="1162" x2="3338" y2="1220" stroke="black" stroke-width="2"/>
+<text x="3300" y="1269.5" font-size="25" text-anchor="middle">Élève invité</text>
+<ellipse cx="3300.0" cy="1710.0" rx="20.0" ry="20.0" fill="white" stroke="black" stroke-width="2"/>
+<line x1="3300" y1="1730" x2="3300" y2="1802" stroke="black" stroke-width="2"/>
+<line x1="3258" y1="1760" x2="3342" y2="1760" stroke="black" stroke-width="2"/>
+<line x1="3300" y1="1802" x2="3262" y2="1860" stroke="black" stroke-width="2"/>
+<line x1="3300" y1="1802" x2="3338" y2="1860" stroke="black" stroke-width="2"/>
+<text x="3300" y="1909.5" font-size="25" text-anchor="middle">Système IA</text>
+<line x1="300" y1="430" x2="520" y2="410" stroke="black" stroke-width="2"/>
+<line x1="300" y1="830" x2="520" y2="810" stroke="black" stroke-width="2"/>
+<line x1="300" y1="1230" x2="520" y2="1210" stroke="black" stroke-width="2"/>
+<line x1="300" y1="1630" x2="520" y2="1610" stroke="black" stroke-width="2"/>
+<line x1="3180" y1="1140" x2="2720" y2="1010" stroke="black" stroke-width="2"/>
+<line x1="3180" y1="1780" x2="2720" y2="1610" stroke="black" stroke-width="2"/>
+<line x1="1540" y1="1210" x2="1900" y2="1610" stroke="black" stroke-width="2" stroke-dasharray="12 9"/>
+<text x="1720" y="1396.6" font-size="22" text-anchor="middle">&lt;&lt;include&gt;&gt;</text>
+</svg>

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3508" height="2480" viewBox="0 0 3508 2480">
+<rect width="100%" height="100%" fill="white"/>
+<defs><style>text{font-family:Arial,Helvetica,sans-serif;fill:black}.b{font-weight:700}</style></defs>
+<text x="1754.0" y="82.6" font-size="42" text-anchor="middle" class="b">Diagramme d&#x27;architecture - Learnix AI</text>
+<rect x="250" y="250" width="3000" height="300" fill="white" stroke="black" stroke-width="2"/>
+<text x="1750.0" y="299.0" font-size="30" text-anchor="middle" class="b">Client React / Vite</text>
+<rect x="330" y="355" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="545" y="422.2" font-size="24" text-anchor="middle">Pages rôles</text>
+<rect x="890" y="355" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="1105" y="422.2" font-size="24" text-anchor="middle">Dashboards</text>
+<rect x="1450" y="355" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="1665" y="422.2" font-size="24" text-anchor="middle">Services API</text>
+<rect x="2010" y="355" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="2225" y="422.2" font-size="24" text-anchor="middle">Protection routes</text>
+<rect x="250" y="650" width="3000" height="420" fill="white" stroke="black" stroke-width="2"/>
+<text x="1750.0" y="699.0" font-size="30" text-anchor="middle" class="b">API Flask</text>
+<rect x="330" y="755" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="545" y="822.2" font-size="24" text-anchor="middle">app.py routes legacy</text>
+<rect x="890" y="755" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="1105" y="822.2" font-size="24" text-anchor="middle">schools_bp</text>
+<rect x="1450" y="755" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="1665" y="822.2" font-size="24" text-anchor="middle">platform_bp</text>
+<rect x="2010" y="755" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="2225" y="822.2" font-size="24" text-anchor="middle">schedule_bp</text>
+<rect x="2570" y="755" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="2785" y="822.2" font-size="24" text-anchor="middle">ai_bp</text>
+<rect x="3130" y="755" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="3345" y="822.2" font-size="24" text-anchor="middle">security JWT</text>
+<rect x="250" y="1180" width="3000" height="360" fill="white" stroke="black" stroke-width="2"/>
+<text x="1750.0" y="1229.0" font-size="30" text-anchor="middle" class="b">Services métier</text>
+<rect x="330" y="1285" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="545" y="1352.2" font-size="24" text-anchor="middle">Gestion écoles</text>
+<rect x="890" y="1285" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="1105" y="1352.2" font-size="24" text-anchor="middle">Gestion utilisateurs</text>
+<rect x="1450" y="1285" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="1665" y="1352.2" font-size="24" text-anchor="middle">Planning</text>
+<rect x="2010" y="1285" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="2225" y="1352.2" font-size="24" text-anchor="middle">Évaluations</text>
+<rect x="2570" y="1285" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="2785" y="1352.2" font-size="24" text-anchor="middle">Profils IA</text>
+<rect x="250" y="1650" width="3000" height="360" fill="white" stroke="black" stroke-width="2"/>
+<text x="1750.0" y="1699.0" font-size="30" text-anchor="middle" class="b">Données et IA</text>
+<rect x="330" y="1755" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="545" y="1822.2" font-size="24" text-anchor="middle">MySQL</text>
+<rect x="890" y="1755" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="1105" y="1822.2" font-size="24" text-anchor="middle">Fichiers PDF</text>
+<rect x="1450" y="1755" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="1665" y="1822.2" font-size="24" text-anchor="middle">Groq IA</text>
+<rect x="2010" y="1755" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="2225" y="1822.2" font-size="24" text-anchor="middle">Historique quiz</text>
+<rect x="2570" y="1755" width="430" height="120" fill="white" stroke="black" stroke-width="2"/>
+<text x="2785" y="1822.2" font-size="24" text-anchor="middle">Audit logs</text>
+<line x1="1750" y1="550" x2="1750" y2="650" stroke="black" stroke-width="3"/>
+<polygon points="1750,650 1742,634 1757,634" fill="black" stroke="black" stroke-width="1"/>
+<line x1="1750" y1="1070" x2="1750" y2="1170" stroke="black" stroke-width="3"/>
+<polygon points="1750,1170 1742,1154 1757,1154" fill="black" stroke="black" stroke-width="1"/>
+<line x1="1750" y1="1540" x2="1750" y2="1640" stroke="black" stroke-width="3"/>
+<polygon points="1750,1640 1742,1624 1757,1624" fill="black" stroke="black" stroke-width="1"/>
+<text x="3200" y="927.2" font-size="24" text-anchor="middle" class="b">REST JSON</text>
+<text x="3200" y="1842.2" font-size="24" text-anchor="middle" class="b">SQL + fichiers + IA</text>
+<text x="3200" y="1872.2" font-size="24" text-anchor="middle" class="b">externe</text>
+</svg>

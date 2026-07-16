@@ -1,0 +1,3204 @@
+:root {
+  --lx-blue: #2684e8;
+  --lx-blue-soft: #eaf4ff;
+  --lx-green: #20bf8b;
+  --lx-purple: #8a63db;
+  --lx-yellow: #f2b827;
+  --lx-red: #ef5b78;
+  --lx-canvas: #f8fafc;
+  --lx-border: #e6ebf1;
+  --lx-text: #101828;
+  --lx-muted: #667085;
+  --lx-shadow: 0 1px 3px rgba(16, 24, 40, 0.04);
+}
+
+body:has(.learnix-app-page) {
+  background: var(--lx-canvas);
+}
+
+.learnix-app-page {
+  display: grid;
+  grid-template-columns: 276px minmax(0, 1fr);
+  gap: 0;
+  min-height: 100vh;
+  padding: 0;
+  overflow: visible;
+  background: var(--lx-canvas);
+  color: var(--lx-text);
+}
+
+.learnix-app-page .learnix-ambient {
+  display: none;
+}
+
+.learnix-app-page .learnix-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 20;
+  width: 276px;
+  height: 100vh;
+  gap: 0;
+  padding: 0 14px 14px;
+  overflow-y: auto;
+  border: 0;
+  border-right: 1px solid var(--lx-border);
+  border-radius: 0;
+  background: #fff;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.learnix-app-page .learnix-brand {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  min-height: 76px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.learnix-app-page .learnix-brand .learnix-logo {
+  width: 40px;
+  height: 44px;
+  flex: 0 0 40px;
+}
+
+.learnix-app-page .learnix-brand h2 {
+  margin: 0;
+  color: #0d1728;
+  font-family: var(--learnix-font-body);
+  font-size: 1.42rem;
+  font-weight: 800;
+}
+
+.learnix-app-page .learnix-brand h2 span {
+  color: #2699d6;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+.learnix-app-page .learnix-nav {
+  display: grid;
+  gap: 4px;
+  padding-top: 18px;
+}
+
+.learnix-app-page .learnix-nav button,
+.learnix-app-page .learnix-sidebar-logout {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  min-height: 47px;
+  padding: 0 13px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  box-shadow: none;
+  color: #344054;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-align: left;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.learnix-app-page .learnix-nav button b {
+  font-weight: 500;
+}
+
+.learnix-app-page .learnix-nav button:hover,
+.learnix-app-page .learnix-sidebar-logout:hover,
+.learnix-app-page .learnix-nav button.active {
+  transform: none;
+  border: 0;
+  background: var(--lx-blue-soft);
+  color: var(--lx-blue);
+}
+
+.learnix-app-page .learnix-nav button.active b,
+.learnix-app-page .learnix-nav button.active span {
+  color: var(--lx-blue);
+  font-weight: 600;
+}
+
+.learnix-app-page .learnix-sidebar-extra {
+  gap: 7px;
+  margin-top: auto;
+  padding-top: 22px;
+}
+
+.learnix-app-page .learnix-profile-card {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid var(--lx-border);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--lx-shadow);
+}
+
+.learnix-app-page .learnix-profile-main {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  gap: 10px;
+  text-align: left;
+}
+
+.learnix-app-page .learnix-profile-main > span,
+.learnix-app-page .learnix-top-profile > span {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #075d8d;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.learnix-app-page .learnix-profile-main div {
+  display: grid;
+  min-width: 0;
+}
+
+.learnix-app-page .learnix-profile-main strong,
+.learnix-app-page .learnix-top-profile strong {
+  overflow: hidden;
+  color: #182230;
+  font-size: 0.79rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.learnix-app-page .learnix-profile-main small,
+.learnix-app-page .learnix-top-profile small {
+  color: var(--lx-muted);
+  font-size: 0.68rem;
+}
+
+.learnix-app-page .learnix-sidebar-logout {
+  min-height: 40px;
+  color: #667085;
+}
+
+.learnix-app-page .learnix-workspace {
+  grid-column: 2;
+  min-width: 0;
+}
+
+.learnix-app-page .learnix-main-panel {
+  min-height: 100vh;
+  padding: 0 32px 36px;
+  border: 0;
+  border-radius: 0;
+  background: var(--lx-canvas);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.learnix-app-page .learnix-dashboard-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  display: grid;
+  grid-template-columns: minmax(320px, 652px) auto;
+  justify-content: space-between;
+  min-height: 76px;
+  margin: 0 -32px;
+  padding: 0 24px 0 28px;
+  border-bottom: 1px solid var(--lx-border);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+}
+
+.learnix-app-page .learnix-search-box {
+  min-height: 42px;
+  padding: 0 15px;
+  border: 1px solid var(--lx-border);
+  border-radius: 9px;
+  background: #f9fafb;
+  box-shadow: inset 0 1px 2px rgba(16, 24, 40, 0.02);
+}
+
+.learnix-app-page .learnix-search-box input {
+  color: #344054;
+  font-size: 0.84rem;
+}
+
+.learnix-app-page .learnix-top-controls {
+  gap: 10px;
+}
+
+.learnix-app-page .learnix-notification-button,
+.learnix-app-page .theme-toggle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  box-shadow: none;
+  color: #344054;
+}
+
+.learnix-app-page .learnix-globe {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  color: #344054;
+}
+
+.learnix-app-page .learnix-language-control select {
+  min-width: 106px;
+  min-height: 40px;
+  padding: 0 28px 0 12px;
+  border: 1px solid var(--lx-border);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: none;
+  color: #344054;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.learnix-app-page .learnix-top-profile {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding-left: 8px;
+}
+
+.learnix-app-page .learnix-top-profile > div {
+  display: grid;
+  max-width: 132px;
+  text-align: right;
+}
+
+.learnix-app-page .learnix-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 112px;
+  margin: 0;
+  padding: 22px 0 18px;
+}
+
+.learnix-app-page .learnix-page-header h1 {
+  margin: 0 0 6px;
+  color: var(--lx-text);
+  font-family: var(--learnix-font-body);
+  font-size: 1.55rem;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.learnix-app-page .learnix-page-header p {
+  max-width: 760px;
+  color: var(--lx-muted);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.learnix-app-page .learnix-page-header time {
+  display: inline-flex;
+  gap: 9px;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid var(--lx-border);
+  border-radius: 8px;
+  background: #fff;
+  color: #344054;
+  box-shadow: var(--lx-shadow);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.learnix-app-page .platform-tabs {
+  gap: 4px;
+  margin: -4px 0 18px;
+  padding-bottom: 2px;
+  overflow-x: auto;
+}
+
+.learnix-app-page .platform-tabs button,
+.learnix-app-page .teacher-page-links button,
+.learnix-app-page .teacher-quick-actions button {
+  padding: 8px 12px;
+  border: 1px solid var(--lx-border);
+  border-radius: 7px;
+  background: #fff;
+  color: #475467;
+  box-shadow: none;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.learnix-app-page .platform-tabs button.active {
+  border-color: #b8d9fb;
+  background: var(--lx-blue-soft);
+  color: var(--lx-blue);
+}
+
+.learnix-app-page.role-school_director .platform-tabs,
+.learnix-app-page.role-general_admin .platform-tabs {
+  display: none !important;
+}
+
+.learnix-app-page .reference-stat-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.learnix-app-page .reference-panel,
+.learnix-app-page .dash-card,
+.learnix-app-page .teacher-card,
+.learnix-app-page .platform-panel,
+.learnix-app-page .ui-card,
+.learnix-app-page .learnix-chat-shell,
+.learnix-app-page .learnix-composer,
+.learnix-app-page .history-item,
+.learnix-app-page .quiz-result-card,
+.learnix-app-page .settings-card,
+.learnix-app-page .message-conversation-card,
+.learnix-app-page .message-thread-list,
+.learnix-app-page .message-teacher-picker {
+  border: 1px solid var(--lx-border);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: var(--lx-shadow);
+  backdrop-filter: none;
+}
+
+.learnix-app-page .platform-panel input,
+.learnix-app-page .platform-panel select,
+.learnix-app-page .platform-panel textarea,
+.learnix-app-page .settings-card input,
+.learnix-app-page .settings-card select,
+.learnix-app-page .teacher-quiz-form input,
+.learnix-app-page .teacher-quiz-form select,
+.learnix-app-page .availability-form input,
+.learnix-app-page .availability-form select,
+.learnix-app-page .message-compose-form input,
+.learnix-app-page .message-compose-form textarea,
+.learnix-app-page .learnix-composer textarea {
+  border: 1px solid #dce3ea;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: none;
+  color: #344054;
+}
+
+.learnix-app-page .platform-panel button:not(.secondary-action),
+.learnix-app-page .primary-action,
+.learnix-app-page .ui-button-primary,
+.learnix-app-page .learnix-send-button,
+.learnix-app-page .settings-action {
+  border-radius: 7px;
+  background: var(--lx-blue);
+  color: #fff;
+  box-shadow: none;
+}
+
+.learnix-app-page .platform-row,
+.learnix-app-page .ui-table-row,
+.learnix-app-page .teacher-table-row,
+.learnix-app-page .history-item,
+.learnix-app-page .message-teacher-card {
+  border-color: var(--lx-border);
+  border-radius: 7px;
+  background: #fff;
+}
+
+.learnix-app-page .ui-table-head {
+  background: #f8fafc;
+}
+
+@media (max-width: 1280px) {
+  .learnix-app-page {
+    grid-template-columns: 236px minmax(0, 1fr);
+  }
+
+  .learnix-app-page .learnix-sidebar {
+    width: 236px;
+  }
+
+  .learnix-app-page .reference-stat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .learnix-app-page .learnix-top-profile > div,
+  .learnix-app-page .learnix-globe {
+    display: none;
+  }
+}
+
+@media (max-width: 960px) {
+  .learnix-app-page {
+    display: block;
+  }
+
+  .learnix-app-page .learnix-sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 0 14px 12px;
+    border-right: 0;
+    border-bottom: 1px solid var(--lx-border);
+  }
+
+  .learnix-app-page .learnix-brand {
+    min-height: 66px;
+  }
+
+  .learnix-app-page .learnix-nav {
+    display: flex;
+    gap: 6px;
+    padding-top: 4px;
+    overflow-x: auto;
+  }
+
+  .learnix-app-page .learnix-nav button {
+    width: auto;
+    min-width: max-content;
+  }
+
+  .learnix-app-page .learnix-sidebar-extra {
+    display: none;
+  }
+
+  .learnix-app-page .learnix-main-panel {
+    min-height: auto;
+    padding: 0 18px 28px;
+  }
+
+  .learnix-app-page .learnix-dashboard-topbar {
+    margin: 0 -18px;
+    padding: 0 18px;
+  }
+
+  .learnix-app-page .reference-analytics-grid,
+  .learnix-app-page .reference-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Navigation alignment, interactive analytics, controls, and theme contrast. */
+.learnix-app-page .learnix-nav button,
+.learnix-app-page .learnix-sidebar-logout {
+  grid-template-columns: 34px minmax(0, 1fr) auto !important;
+  gap: 10px !important;
+  align-items: center !important;
+  padding: 0 10px !important;
+}
+
+.learnix-app-page .learnix-nav button > span:first-child,
+.learnix-app-page .learnix-sidebar-logout > span:first-child {
+  display: grid !important;
+  place-items: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  background: #edf3ff !important;
+  color: #2678ed !important;
+  line-height: 0 !important;
+}
+
+.learnix-app-page .learnix-nav button svg,
+.learnix-app-page .learnix-sidebar-logout svg {
+  display: block !important;
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+.learnix-app-page .learnix-nav button b {
+  display: block !important;
+  align-self: center !important;
+  min-width: 0 !important;
+  line-height: 1.25 !important;
+}
+
+.learnix-app-page .learnix-nav button.active > span:first-child {
+  background: #dcecff !important;
+}
+
+.learnix-app-page .learnix-page-header {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 24px !important;
+  align-items: start !important;
+  height: 126px !important;
+  min-height: 126px !important;
+  padding: 30px 0 22px !important;
+}
+
+.learnix-app-page .learnix-page-header time {
+  align-self: start !important;
+  justify-self: end !important;
+  min-width: 154px !important;
+  min-height: 44px !important;
+  margin: 4px 0 0 !important;
+  padding: 0 15px !important;
+  border: 1px solid #dfe6ee !important;
+  border-radius: 9px !important;
+  background: #fff !important;
+  color: #344054 !important;
+  box-shadow: 0 2px 6px rgba(16, 24, 40, 0.05) !important;
+  font-size: 0.76rem !important;
+  font-weight: 700 !important;
+}
+
+.learnix-app-page .learnix-page-header time svg {
+  width: 18px !important;
+  height: 18px !important;
+  color: #475467 !important;
+}
+
+.reference-chart-stage {
+  position: relative;
+}
+
+.reference-chart-tooltip {
+  position: absolute;
+  z-index: 5;
+  display: grid;
+  gap: 2px;
+  min-width: 112px;
+  padding: 8px 10px;
+  border: 1px solid #d9e3ed;
+  border-radius: 7px;
+  background: #101828;
+  color: #fff;
+  box-shadow: 0 10px 26px rgba(16, 24, 40, 0.22);
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 10px));
+}
+
+.reference-chart-tooltip strong {
+  font-size: 0.68rem;
+}
+
+.reference-chart-tooltip span {
+  color: #d0d5dd;
+  font-size: 0.58rem;
+}
+
+.reference-activity-chart circle {
+  outline: none;
+  transition: r 120ms ease, filter 120ms ease;
+}
+
+.reference-activity-chart circle:hover,
+.reference-activity-chart circle:focus {
+  r: 2.2;
+  filter: drop-shadow(0 2px 3px rgba(16, 24, 40, 0.25));
+}
+
+.reference-donut {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  -webkit-mask: none;
+  mask: none;
+  cursor: pointer;
+  transition: transform 160ms ease, filter 160ms ease;
+}
+
+.reference-donut::after {
+  position: absolute;
+  inset: 27%;
+  border-radius: 50%;
+  background: #fff;
+  content: "";
+}
+
+.reference-donut:hover,
+.reference-donut:focus-visible {
+  transform: scale(1.035);
+  filter: drop-shadow(0 8px 16px rgba(16, 24, 40, 0.12));
+}
+
+.reference-donut > span {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  text-align: center;
+}
+
+.reference-donut > span strong {
+  color: #101828;
+  font-size: 1.35rem;
+}
+
+.reference-donut > span small {
+  color: #667085;
+  font-size: 0.58rem;
+}
+
+.reference-donut-legend {
+  gap: 10px;
+}
+
+.reference-donut-legend button {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 7px;
+  align-items: center;
+  width: 100%;
+  min-height: 36px;
+  padding: 0 9px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: #475467;
+  font-size: 0.7rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.reference-donut-legend button::before {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  content: "";
+}
+
+.reference-donut-legend button b {
+  color: #182230;
+}
+
+.reference-donut-legend button:hover,
+.reference-donut-legend button.active {
+  border-color: #dce7f2;
+  background: #f8fafc;
+}
+
+.reference-bars > button {
+  position: relative;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  width: 54px;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.reference-bars > button > span {
+  width: 31px;
+  min-height: 18px;
+  border-radius: 5px 5px 0 0;
+  background: var(--lx-blue);
+  transition: width 140ms ease, filter 140ms ease, transform 140ms ease;
+  transform-origin: bottom;
+}
+
+.reference-bars > button:nth-child(2) > span { background: #3479d6; }
+.reference-bars > button:nth-child(3) > span { background: #168bb1; }
+.reference-bars > button:nth-child(4) > span { background: var(--lx-green); }
+
+.reference-bars > button:hover > span,
+.reference-bars > button:focus > span,
+.reference-bars > button.active > span {
+  width: 38px;
+  filter: saturate(1.2) drop-shadow(0 5px 8px rgba(38, 132, 232, 0.2));
+  transform: scaleY(1.02);
+}
+
+.reference-bars > button b {
+  position: absolute;
+  top: -19px;
+  color: #344054;
+  font-size: 0.68rem;
+}
+
+.reference-bars > button small {
+  position: absolute;
+  top: calc(100% + 7px);
+  width: 76px;
+  color: #667085;
+  font-size: 0.58rem;
+  text-align: center;
+}
+
+.learnix-app-page input:not([type="checkbox"]):not([type="radio"]),
+.learnix-app-page textarea,
+.learnix-app-page select {
+  border: 1px solid #cfd8e3 !important;
+  background-color: #fff !important;
+  color: #182230 !important;
+  box-shadow: inset 0 1px 2px rgba(16, 24, 40, 0.025) !important;
+  opacity: 1 !important;
+}
+
+.learnix-app-page input::placeholder,
+.learnix-app-page textarea::placeholder {
+  color: #98a2b3 !important;
+  opacity: 1 !important;
+}
+
+.learnix-app-page input[readonly],
+.learnix-app-page input:disabled,
+.learnix-app-page textarea:disabled,
+.learnix-app-page select:disabled {
+  border-color: #d8e0e8 !important;
+  background-color: #f2f4f7 !important;
+  color: #475467 !important;
+  -webkit-text-fill-color: #475467 !important;
+}
+
+.learnix-app-page select {
+  appearance: none !important;
+  padding-right: 38px !important;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #667085 50%),
+    linear-gradient(135deg, #667085 50%, transparent 50%) !important;
+  background-position:
+    calc(100% - 17px) 50%,
+    calc(100% - 12px) 50% !important;
+  background-size: 5px 5px, 5px 5px !important;
+  background-repeat: no-repeat !important;
+}
+
+.learnix-app-page select option {
+  background: #fff !important;
+  color: #182230 !important;
+  font-size: 0.82rem;
+}
+
+.learnix-app-page input:focus,
+.learnix-app-page textarea:focus,
+.learnix-app-page select:focus {
+  border-color: #5aa3ed !important;
+  box-shadow: 0 0 0 3px rgba(38, 132, 232, 0.13) !important;
+  outline: 0 !important;
+}
+
+.learnix-app-page label > span,
+.learnix-app-page .platform-panel label > span {
+  color: #344054 !important;
+}
+
+:root[data-theme="dark"] {
+  --lx-canvas: #0b1220;
+  --lx-border: #2b3a4f;
+  --lx-text: #f8fafc;
+  --lx-muted: #a8b3c3;
+  --lx-blue-soft: #16345a;
+  --lx-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
+}
+
+:root[data-theme="dark"] body:has(.learnix-app-page),
+:root[data-theme="dark"] .learnix-app-page,
+:root[data-theme="dark"] .learnix-app-page .learnix-main-panel {
+  background: #0b1220 !important;
+  color: #f8fafc !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page .learnix-sidebar,
+:root[data-theme="dark"] .learnix-app-page .learnix-dashboard-topbar,
+:root[data-theme="dark"] .learnix-app-page .reference-panel,
+:root[data-theme="dark"] .learnix-app-page .reference-stat-card,
+:root[data-theme="dark"] .learnix-app-page .dash-card,
+:root[data-theme="dark"] .learnix-app-page .teacher-card,
+:root[data-theme="dark"] .learnix-app-page .platform-panel,
+:root[data-theme="dark"] .learnix-app-page .ui-card,
+:root[data-theme="dark"] .learnix-app-page .settings-card,
+:root[data-theme="dark"] .messages-workspace,
+:root[data-theme="dark"] .message-inbox,
+:root[data-theme="dark"] .message-conversation,
+:root[data-theme="dark"] .messages-workspace .message-compose-form {
+  border-color: #2b3a4f !important;
+  background: #111b2b !important;
+  color: #f8fafc !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page h1,
+:root[data-theme="dark"] .learnix-app-page h2,
+:root[data-theme="dark"] .learnix-app-page h3,
+:root[data-theme="dark"] .learnix-app-page strong,
+:root[data-theme="dark"] .learnix-app-page .reference-stat-card strong,
+:root[data-theme="dark"] .learnix-app-page .reference-panel h2,
+:root[data-theme="dark"] .message-conversation-head h3 {
+  color: #f8fafc !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page p,
+:root[data-theme="dark"] .learnix-app-page small,
+:root[data-theme="dark"] .learnix-app-page .learnix-page-header p,
+:root[data-theme="dark"] .learnix-app-page .reference-metric-context {
+  color: #a8b3c3 !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page .learnix-brand h2 {
+  color: #f8fafc !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page .learnix-nav button,
+:root[data-theme="dark"] .learnix-app-page .learnix-sidebar-logout {
+  color: #d4dbe5 !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page .learnix-nav button > span:first-child,
+:root[data-theme="dark"] .learnix-app-page .learnix-sidebar-logout > span:first-child {
+  background: #172a46 !important;
+  color: #70b5ff !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page .learnix-nav button.active,
+:root[data-theme="dark"] .learnix-app-page .learnix-nav button:hover {
+  background: #16345a !important;
+  color: #8ac4ff !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page .learnix-page-header time,
+:root[data-theme="dark"] .settings-nav,
+:root[data-theme="dark"] .learnix-app-page .settings-profile-row,
+:root[data-theme="dark"] .reference-donut-legend button:hover,
+:root[data-theme="dark"] .reference-donut-legend button.active {
+  border-color: #33445b !important;
+  background: #162235 !important;
+  color: #e5eaf0 !important;
+}
+
+:root[data-theme="dark"] .reference-donut::after {
+  background: #111b2b;
+}
+
+:root[data-theme="dark"] .reference-donut > span strong,
+:root[data-theme="dark"] .reference-donut-legend button b,
+:root[data-theme="dark"] .reference-bars > button b {
+  color: #f8fafc !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page input:not([type="checkbox"]):not([type="radio"]),
+:root[data-theme="dark"] .learnix-app-page textarea,
+:root[data-theme="dark"] .learnix-app-page select,
+:root[data-theme="dark"] .message-search {
+  border-color: #3a4a60 !important;
+  background-color: #172235 !important;
+  color: #f1f5f9 !important;
+  -webkit-text-fill-color: #f1f5f9 !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page input::placeholder,
+:root[data-theme="dark"] .learnix-app-page textarea::placeholder {
+  color: #7f8da1 !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page input[readonly],
+:root[data-theme="dark"] .learnix-app-page input:disabled,
+:root[data-theme="dark"] .learnix-app-page textarea:disabled,
+:root[data-theme="dark"] .learnix-app-page select:disabled {
+  border-color: #34445a !important;
+  background-color: #101a29 !important;
+  color: #aeb9c8 !important;
+  -webkit-text-fill-color: #aeb9c8 !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page select {
+  background-image:
+    linear-gradient(45deg, transparent 50%, #b8c4d4 50%),
+    linear-gradient(135deg, #b8c4d4 50%, transparent 50%) !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page select option {
+  background: #172235 !important;
+  color: #f1f5f9 !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page label > span,
+:root[data-theme="dark"] .learnix-app-page .platform-panel label > span,
+:root[data-theme="dark"] .settings-nav button,
+:root[data-theme="dark"] .reference-donut-legend button {
+  color: #c6d0dc !important;
+}
+
+:root[data-theme="dark"] .messages-workspace .message-conversation-history {
+  background: #0e1726 !important;
+}
+
+:root[data-theme="dark"] .messages-workspace .message-bubble {
+  border-color: #35455b !important;
+  background: #172235 !important;
+  color: #eef2f7 !important;
+}
+
+@media (max-width: 680px) {
+  .learnix-app-page .learnix-page-header {
+    grid-template-columns: 1fr !important;
+    min-height: 100px !important;
+  }
+}
+
+/* Shared shell cleanup and role-wide dashboard system. */
+.learnix-app-page .learnix-sidebar-extra {
+  display: block !important;
+  margin-top: auto !important;
+  padding-top: 16px !important;
+}
+
+.learnix-app-page .learnix-sidebar-logout {
+  width: 100% !important;
+}
+
+.learnix-app-page .learnix-top-controls {
+  display: flex !important;
+  gap: 9px !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+}
+
+.learnix-app-page .learnix-notification-button,
+.learnix-app-page .theme-toggle {
+  display: inline-grid !important;
+  place-items: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  border: 1px solid #d9e4ee !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  color: #344054 !important;
+  box-shadow: none !important;
+  line-height: 0 !important;
+}
+
+.learnix-app-page .learnix-notification-button > svg,
+.learnix-app-page .theme-toggle > svg {
+  display: block !important;
+  width: 20px !important;
+  height: 20px !important;
+  margin: 0 !important;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.8 !important;
+  transform: none !important;
+}
+
+.learnix-app-page .learnix-notification-button:hover,
+.learnix-app-page .theme-toggle:hover {
+  border-color: #9bc9f6 !important;
+  background: #f5f9ff !important;
+  color: var(--lx-blue) !important;
+}
+
+.learnix-app-page .learnix-language-control {
+  display: block !important;
+  min-width: 142px !important;
+  height: 44px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.learnix-app-page .learnix-language-control > span {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+}
+
+.learnix-app-page .learnix-language-control select {
+  display: block !important;
+  width: 100% !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 38px 0 14px !important;
+  border: 1px solid #d9e4ee !important;
+  border-radius: 10px !important;
+  background-color: #fff !important;
+  box-shadow: none !important;
+  color: #182230 !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+}
+
+.learnix-app-page .learnix-top-profile {
+  min-height: 44px !important;
+  padding: 4px 7px 4px 12px !important;
+  border: 1px solid #d9e4ee !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+}
+
+.student-dashboard-page .dashboard-kpi-grid,
+.teacher-dashboard-page .teacher-overview-grid,
+.role-general_admin .platform-stat-grid,
+.role-guest_teacher .platform-stat-grid,
+.role-guest_student .platform-stat-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  margin-bottom: 20px !important;
+}
+
+.student-dashboard-page .stat-card,
+.teacher-dashboard-page .teacher-metric-card,
+.role-general_admin .ui-stat-card,
+.role-guest_teacher .ui-stat-card,
+.role-guest_student .ui-stat-card {
+  position: relative !important;
+  display: grid !important;
+  align-content: center !important;
+  min-height: 126px !important;
+  padding: 18px 18px 18px 72px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--lx-border) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: var(--lx-shadow) !important;
+}
+
+.student-dashboard-page .stat-card::before,
+.teacher-dashboard-page .teacher-metric-card::before,
+.role-general_admin .ui-stat-card::before,
+.role-guest_teacher .ui-stat-card::before,
+.role-guest_student .ui-stat-card::before {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #eaf4ff;
+  color: var(--lx-blue);
+  content: "";
+}
+
+.student-dashboard-page .stat-card:nth-child(2)::before,
+.teacher-dashboard-page .teacher-metric-card:nth-child(2)::before { background: #e4f8f1; }
+.student-dashboard-page .stat-card:nth-child(3)::before,
+.teacher-dashboard-page .teacher-metric-card:nth-child(3)::before { background: #f0eafd; }
+.student-dashboard-page .stat-card:nth-child(4)::before,
+.teacher-dashboard-page .teacher-metric-card:nth-child(4)::before { background: #fff5da; }
+
+.student-dashboard-page .stat-card h3,
+.teacher-dashboard-page .teacher-metric-card strong,
+.role-general_admin .ui-stat-card strong,
+.role-guest_teacher .ui-stat-card strong,
+.role-guest_student .ui-stat-card strong {
+  margin: 0 0 6px !important;
+  color: #101828 !important;
+  font-size: 1.75rem !important;
+  line-height: 1 !important;
+}
+
+.student-dashboard-page .stat-card p,
+.teacher-dashboard-page .teacher-metric-card p,
+.role-general_admin .ui-stat-card > span,
+.role-guest_teacher .ui-stat-card > span,
+.role-guest_student .ui-stat-card > span {
+  margin: 0 !important;
+  color: #667085 !important;
+  font-size: 0.72rem !important;
+}
+
+.student-dashboard-page .student-action-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  margin-bottom: 24px !important;
+}
+
+.student-dashboard-page .student-action-grid .dash-card {
+  min-height: 142px !important;
+  padding: 20px !important;
+  border: 1px solid var(--lx-border) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: var(--lx-shadow) !important;
+  text-align: left !important;
+}
+
+.student-dashboard-page button.dash-action {
+  cursor: pointer !important;
+  transition: border-color 150ms ease, transform 150ms ease, box-shadow 150ms ease !important;
+}
+
+.student-dashboard-page button.dash-action:hover {
+  transform: translateY(-2px) !important;
+  border-color: #9bc9f6 !important;
+  box-shadow: 0 8px 22px rgba(38, 132, 232, 0.1) !important;
+}
+
+.student-dashboard-page .quiz-list-section,
+.teacher-dashboard-page .teacher-dashboard-grid {
+  margin-top: 0 !important;
+}
+
+.student-insight-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.student-insight-grid > .dash-card {
+  min-width: 0;
+  padding: 20px !important;
+  border: 1px solid var(--lx-border) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: var(--lx-shadow) !important;
+}
+
+.student-panel-heading {
+  display: flex;
+  gap: 12px;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.student-panel-heading h3 {
+  margin: 0 0 4px !important;
+  color: #182230 !important;
+  font-size: 0.9rem !important;
+}
+
+.student-panel-heading p {
+  margin: 0 !important;
+  color: #667085 !important;
+  font-size: 0.68rem !important;
+}
+
+.student-panel-heading > strong {
+  color: var(--lx-blue);
+  font-size: 1.25rem;
+}
+
+.student-score-bars {
+  display: flex;
+  gap: 15px;
+  align-items: end;
+  height: 174px;
+  padding: 24px 8px 0;
+  border-bottom: 1px solid var(--lx-border);
+}
+
+.student-score-bars > button {
+  position: relative;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  width: 48px;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.student-score-bars button > span {
+  width: 28px;
+  min-height: 6px;
+  border-radius: 5px 5px 0 0;
+  background: var(--lx-blue);
+  transition: width 150ms ease, filter 150ms ease;
+}
+
+.student-score-bars button:hover > span,
+.student-score-bars button:focus > span {
+  width: 36px;
+  filter: drop-shadow(0 6px 9px rgba(38, 132, 232, 0.2));
+}
+
+.student-score-bars button small {
+  position: absolute;
+  top: calc(100% + 7px);
+  width: 66px;
+  overflow: hidden;
+  color: #667085;
+  font-size: 0.56rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.student-module-list {
+  display: grid;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.student-module-list button {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: center;
+  min-height: 50px;
+  padding: 7px 9px;
+  border: 1px solid var(--lx-border);
+  border-radius: 7px;
+  background: #f9fafb;
+  text-align: left;
+}
+
+.student-module-list i {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #eaf4ff;
+  color: var(--lx-blue);
+  font-size: 0.62rem;
+  font-style: normal;
+  font-weight: 750;
+}
+
+.student-module-list span {
+  display: grid;
+  min-width: 0;
+}
+
+.student-module-list strong {
+  overflow: hidden;
+  color: #344054;
+  font-size: 0.7rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.student-module-list small {
+  color: #667085;
+  font-size: 0.58rem;
+}
+
+.student-dashboard-page .section-heading {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 14px !important;
+}
+
+.student-dashboard-page .quiz-result-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.student-dashboard-page .quiz-result-card {
+  padding: 18px !important;
+  border-radius: 10px !important;
+}
+
+.student-dashboard-page .quiz-card-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+}
+
+.student-dashboard-page .quiz-card-actions button,
+.student-dashboard-page .secondary-action {
+  min-height: 34px !important;
+  padding: 0 11px !important;
+  border: 1px solid #d5e2ef !important;
+  border-radius: 7px !important;
+  background: #fff !important;
+  color: #344054 !important;
+  box-shadow: none !important;
+  font-size: 0.68rem !important;
+  font-weight: 650 !important;
+}
+
+.teacher-dashboard-page .teacher-dashboard-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+}
+
+.teacher-dashboard-page .teacher-card {
+  min-width: 0 !important;
+  padding: 20px !important;
+  border: 1px solid var(--lx-border) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: var(--lx-shadow) !important;
+}
+
+.teacher-dashboard-page .teacher-profile-panel,
+.teacher-dashboard-page .teacher-results-panel,
+.teacher-dashboard-page .teacher-messages-panel {
+  grid-column: 1 / -1 !important;
+}
+
+.teacher-dashboard-page .teacher-card-head {
+  display: flex !important;
+  gap: 12px !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 16px !important;
+}
+
+.teacher-dashboard-page .teacher-card-head .badge,
+.teacher-dashboard-page .teacher-card > .badge {
+  display: none !important;
+}
+
+.teacher-dashboard-page .teacher-quiz-form {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+.teacher-dashboard-page .teacher-quiz-form > button {
+  align-self: end !important;
+  min-height: 42px !important;
+}
+
+.teacher-dashboard-page .teacher-table {
+  display: grid !important;
+  gap: 7px !important;
+  margin-top: 16px !important;
+  overflow-x: auto !important;
+}
+
+.teacher-dashboard-page .teacher-table-row {
+  min-width: 680px !important;
+  padding: 11px 12px !important;
+  border: 1px solid var(--lx-border) !important;
+  border-radius: 7px !important;
+  background: #f9fafb !important;
+  color: #344054 !important;
+  font-size: 0.68rem !important;
+}
+
+.teacher-dashboard-page .teacher-analytics-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.teacher-dashboard-page .teacher-analytics-grid > div {
+  padding: 15px !important;
+  border: 1px solid var(--lx-border) !important;
+  border-radius: 8px !important;
+  background: #f9fafb !important;
+}
+
+.role-general_admin .platform-overview,
+.role-guest_teacher .platform-overview,
+.role-guest_student .platform-overview {
+  display: grid !important;
+  gap: 18px !important;
+}
+
+.admin-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.admin-overview-panel {
+  min-width: 0;
+}
+
+.admin-overview-wide {
+  grid-column: 1 / -1;
+}
+
+.admin-panel-heading {
+  display: flex;
+  gap: 12px;
+  align-items: start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.admin-panel-heading h2 {
+  margin: 0 0 4px !important;
+}
+
+.admin-panel-heading p {
+  margin: 0 !important;
+  font-size: 0.7rem !important;
+}
+
+.admin-panel-heading button,
+.admin-overview-list button {
+  border: 1px solid #d8e4ef;
+  border-radius: 7px;
+  background: #fff;
+  color: #344054;
+}
+
+.admin-panel-heading button {
+  min-height: 34px;
+  padding: 0 11px;
+  font-size: 0.66rem;
+  font-weight: 650;
+}
+
+.admin-overview-list {
+  display: grid;
+  gap: 7px;
+}
+
+.admin-overview-list > button {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 58px;
+  padding: 9px 11px;
+  text-align: left;
+}
+
+.admin-overview-list button span {
+  display: grid;
+  min-width: 0;
+}
+
+.admin-overview-list strong,
+.admin-activity-grid strong {
+  overflow: hidden;
+  color: #344054;
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-overview-list small,
+.admin-activity-grid small {
+  color: #667085;
+  font-size: 0.62rem;
+}
+
+.admin-overview-list button > b {
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: #fff5da;
+  color: #a66f00;
+  font-size: 0.58rem;
+}
+
+.admin-activity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.admin-activity-grid > div {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 9px;
+  align-items: center;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--lx-border);
+  border-radius: 8px;
+  background: #f9fafb;
+}
+
+.admin-activity-grid i {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #eaf4ff;
+  color: var(--lx-blue);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.admin-activity-grid span {
+  display: grid;
+  min-width: 0;
+}
+
+.role-general_admin .platform-stat-grid,
+.role-guest_teacher .platform-stat-grid,
+.role-guest_student .platform-stat-grid {
+  margin-bottom: 0 !important;
+}
+
+.role-general_admin .platform-grid,
+.role-guest_teacher .platform-grid,
+.role-guest_student .platform-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+}
+
+:root[data-theme="dark"] .learnix-app-page .learnix-notification-button,
+:root[data-theme="dark"] .learnix-app-page .theme-toggle,
+:root[data-theme="dark"] .learnix-app-page .learnix-language-control select,
+:root[data-theme="dark"] .learnix-app-page .learnix-top-profile,
+:root[data-theme="dark"] .student-dashboard-page .stat-card,
+:root[data-theme="dark"] .student-dashboard-page .student-action-grid .dash-card,
+:root[data-theme="dark"] .teacher-dashboard-page .teacher-metric-card,
+:root[data-theme="dark"] .teacher-dashboard-page .teacher-card,
+:root[data-theme="dark"] .role-general_admin .ui-stat-card,
+:root[data-theme="dark"] .role-guest_teacher .ui-stat-card,
+:root[data-theme="dark"] .role-guest_student .ui-stat-card {
+  border-color: #33445b !important;
+  background: #111b2b !important;
+  color: #f8fafc !important;
+}
+
+:root[data-theme="dark"] .student-dashboard-page .stat-card h3,
+:root[data-theme="dark"] .teacher-dashboard-page .teacher-metric-card strong,
+:root[data-theme="dark"] .role-general_admin .ui-stat-card strong,
+:root[data-theme="dark"] .role-guest_teacher .ui-stat-card strong,
+:root[data-theme="dark"] .role-guest_student .ui-stat-card strong {
+  color: #f8fafc !important;
+}
+
+:root[data-theme="dark"] .teacher-dashboard-page .teacher-table-row,
+:root[data-theme="dark"] .teacher-dashboard-page .teacher-analytics-grid > div,
+:root[data-theme="dark"] .admin-overview-list button,
+:root[data-theme="dark"] .admin-panel-heading button,
+:root[data-theme="dark"] .admin-activity-grid > div {
+  border-color: #33445b !important;
+  background: #162235 !important;
+  color: #d8e0ea !important;
+}
+
+:root[data-theme="dark"] .student-insight-grid > .dash-card,
+:root[data-theme="dark"] .student-module-list button {
+  border-color: #33445b !important;
+  background: #111b2b !important;
+}
+
+@media (max-width: 1100px) {
+  .student-dashboard-page .dashboard-kpi-grid,
+  .teacher-dashboard-page .teacher-overview-grid,
+  .role-general_admin .platform-stat-grid,
+  .role-guest_teacher .platform-stat-grid,
+  .role-guest_student .platform-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .learnix-app-page .learnix-top-profile {
+    display: none !important;
+  }
+
+  .learnix-app-page .learnix-language-control {
+    min-width: 118px !important;
+  }
+
+  .student-dashboard-page .student-action-grid,
+  .student-insight-grid,
+  .student-dashboard-page .quiz-result-grid,
+  .teacher-dashboard-page .teacher-dashboard-grid,
+  .teacher-dashboard-page .teacher-quiz-form,
+  .role-general_admin .platform-grid,
+  .role-guest_teacher .platform-grid,
+  .role-guest_student .platform-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-overview-grid,
+  .admin-activity-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* 2026 management-suite reference screens */
+@media (min-width: 1181px) {
+  .learnix-app-page {
+    grid-template-columns: 230px minmax(0, 1fr) !important;
+  }
+
+  .learnix-app-page .learnix-sidebar {
+    width: 230px !important;
+    padding: 0 12px 12px !important;
+  }
+
+  .learnix-app-page .learnix-workspace {
+    grid-column: 2 !important;
+  }
+}
+
+.learnix-app-page .learnix-brand {
+  min-height: 64px !important;
+}
+
+.learnix-app-page .learnix-brand .learnix-logo {
+  width: 34px !important;
+  height: 38px !important;
+  flex-basis: 34px !important;
+}
+
+.learnix-app-page .learnix-brand h2 {
+  font-size: 1.18rem !important;
+}
+
+.learnix-app-page .learnix-nav {
+  gap: 2px !important;
+  padding-top: 9px !important;
+}
+
+.learnix-app-page .learnix-nav button,
+.learnix-app-page .learnix-sidebar-logout {
+  grid-template-columns: 28px minmax(0, 1fr) auto !important;
+  min-height: 40px !important;
+  padding: 0 9px !important;
+  border-radius: 7px !important;
+  font-size: 0.75rem !important;
+}
+
+.learnix-app-page .learnix-nav button > span:first-child,
+.learnix-app-page .learnix-sidebar-logout > span:first-child {
+  width: 28px !important;
+  height: 28px !important;
+  background: transparent !important;
+}
+
+.learnix-app-page .learnix-nav button svg,
+.learnix-app-page .learnix-sidebar-logout svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+.learnix-app-page .learnix-dashboard-topbar {
+  min-height: 64px !important;
+  height: 64px !important;
+  padding: 0 22px !important;
+}
+
+.learnix-app-page .learnix-search-box {
+  max-width: 520px !important;
+  min-height: 38px !important;
+}
+
+.learnix-app-page .learnix-notification-button,
+.learnix-app-page .theme-toggle,
+.learnix-app-page .learnix-language-control,
+.learnix-app-page .learnix-language-control select,
+.learnix-app-page .learnix-top-profile {
+  height: 38px !important;
+  min-height: 38px !important;
+}
+
+.learnix-app-page .learnix-notification-button,
+.learnix-app-page .theme-toggle {
+  width: 38px !important;
+  min-width: 38px !important;
+}
+
+.learnix-app-page .learnix-page-header {
+  height: auto !important;
+  min-height: 92px !important;
+  padding: 20px 0 14px !important;
+}
+
+.learnix-app-page .learnix-page-header h1 {
+  font-size: 1.35rem !important;
+}
+
+.learnix-app-page .learnix-page-header p {
+  font-size: 0.72rem !important;
+}
+
+.platform-page:not(.platform-view-overview) .learnix-page-header time {
+  display: none !important;
+}
+
+.reference-stepper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 14px;
+  overflow: hidden;
+  border: 1px solid var(--lx-border);
+  border-radius: 9px;
+  background: #fff;
+}
+
+.reference-stepper span {
+  position: relative;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  color: #98a2b3;
+  font-size: 0.68rem;
+  font-weight: 650;
+}
+
+.reference-stepper span:not(:last-child)::after {
+  position: absolute;
+  right: 0;
+  width: 1px;
+  height: 20px;
+  background: var(--lx-border);
+  content: "";
+}
+
+.reference-stepper b {
+  display: grid;
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  background: #eef2f6;
+  color: #667085;
+  font-size: 0.62rem;
+}
+
+.reference-stepper .active {
+  color: var(--lx-blue);
+}
+
+.reference-stepper .active b {
+  background: var(--lx-blue);
+  color: #fff;
+}
+
+.reference-school-grid {
+  grid-template-columns: minmax(0, 1.65fr) minmax(260px, 0.8fr) !important;
+}
+
+.reference-school-form,
+.reference-school-preview {
+  padding: 18px !important;
+}
+
+.reference-school-form .platform-form-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.reference-file-drop {
+  display: grid;
+  place-items: center;
+  min-height: 130px;
+  padding: 16px;
+  border: 1px dashed #71aef0;
+  border-radius: 8px;
+  background: #f8fbff;
+  color: var(--lx-blue);
+  text-align: center;
+}
+
+.reference-file-drop small {
+  color: #667085;
+  font-size: 0.58rem;
+}
+
+.reference-file-drop textarea {
+  width: min(380px, 100%) !important;
+  min-height: 42px !important;
+  margin-top: 8px;
+}
+
+.reference-form-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+.reference-form-actions button {
+  min-width: 84px;
+}
+
+.reference-school-preview {
+  text-align: center;
+}
+
+.reference-school-mark {
+  display: grid;
+  place-items: center;
+  width: 100px;
+  height: 100px;
+  margin: 15px auto 10px;
+  border-radius: 12px;
+  background: #f1f4fa;
+  color: #8091b0;
+}
+
+.reference-school-mark svg {
+  width: 54px;
+  height: 54px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+.reference-school-mark img {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.reference-school-preview h3 {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.reference-school-preview > p {
+  font-size: 0.64rem;
+}
+
+.reference-school-preview dl {
+  display: grid;
+  gap: 9px;
+  margin-top: 18px;
+  text-align: left;
+}
+
+.reference-school-preview dl > div {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 8px;
+  color: #667085;
+  font-size: 0.66rem;
+}
+
+.reference-school-preview dd {
+  margin: 0;
+  color: #344054;
+}
+
+.reference-existing-schools {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--lx-border);
+}
+
+.reference-existing-schools .platform-row {
+  padding: 9px !important;
+  text-align: left;
+}
+
+.reference-data-page,
+.reference-management-page,
+.reference-schedule-page {
+  display: grid;
+  gap: 14px;
+}
+
+.reference-mini-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.reference-mini-stats .ui-stat-card {
+  position: relative;
+  min-height: 92px;
+  padding: 16px 15px 13px 62px !important;
+  border: 1px solid var(--lx-border) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: var(--lx-shadow) !important;
+}
+
+.reference-mini-stats .ui-stat-card::before {
+  position: absolute;
+  top: 18px;
+  left: 15px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #eaf4ff;
+  content: "";
+}
+
+.reference-mini-stats .ui-stat-card strong {
+  color: #101828 !important;
+  font-size: 1.45rem !important;
+}
+
+.reference-mini-stats .ui-stat-card > span,
+.reference-mini-stats .ui-stat-card small {
+  color: #667085;
+  font-size: 0.62rem;
+}
+
+.request-management-panel {
+  padding: 14px !important;
+}
+
+.request-management-panel > h2 {
+  display: none;
+}
+
+.request-card-grid {
+  display: grid !important;
+  gap: 0 !important;
+  overflow-x: auto;
+}
+
+.request-card {
+  display: grid !important;
+  grid-template-columns: 1fr 0.8fr 1fr auto;
+  gap: 12px;
+  align-items: center;
+  min-width: 720px;
+  padding: 10px 8px !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--lx-border) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+.request-card h3,
+.request-card p,
+.request-card blockquote {
+  margin: 0 !important;
+  font-size: 0.66rem !important;
+}
+
+.request-card blockquote {
+  overflow: hidden;
+  color: #667085;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.request-card-actions {
+  display: flex !important;
+  gap: 4px !important;
+}
+
+.request-card-actions button {
+  min-width: auto !important;
+  min-height: 30px !important;
+  padding: 0 8px !important;
+  font-size: 0.58rem !important;
+}
+
+.reference-assignment-stats {
+  margin-bottom: 14px;
+}
+
+.reference-assignment-workspace {
+  display: grid;
+  grid-template-columns: 270px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.reference-teacher-list {
+  padding: 14px !important;
+}
+
+.reference-teacher-list > input {
+  width: 100%;
+  min-height: 36px;
+  margin: 10px 0;
+}
+
+.reference-teacher-list > div {
+  display: grid;
+  gap: 4px;
+}
+
+.reference-teacher-list button {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  min-height: 48px;
+  padding: 6px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  text-align: left;
+}
+
+.reference-teacher-list button:hover,
+.reference-teacher-list button.active {
+  border-color: #cfe2f8;
+  background: #eef6ff;
+}
+
+.reference-teacher-list i {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #0e438e;
+  color: #fff;
+  font-size: 0.58rem;
+  font-style: normal;
+}
+
+.reference-teacher-list span {
+  display: grid;
+  min-width: 0;
+}
+
+.reference-teacher-list strong,
+.reference-teacher-list small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reference-teacher-list strong {
+  color: #344054;
+  font-size: 0.67rem;
+}
+
+.reference-teacher-list small {
+  color: #667085;
+  font-size: 0.56rem;
+}
+
+.reference-assignment-form {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.reference-assignment-form h2,
+.reference-assignment-form p,
+.reference-assignment-form > button {
+  grid-column: 1 / -1;
+}
+
+.platform-view-assignments .platform-wide-panel {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.7fr) minmax(0, 1.6fr);
+  gap: 12px;
+  align-items: end;
+}
+
+.platform-view-assignments .platform-wide-panel h2,
+.platform-view-assignments .platform-wide-panel p {
+  grid-column: 1 / -1;
+}
+
+.platform-view-assignments .platform-wide-panel > label {
+  min-width: 0;
+}
+
+.reference-management-grid {
+  grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.7fr) !important;
+}
+
+.platform-view-classes .reference-management-grid > .platform-panel:last-child .platform-table,
+.platform-view-modules .reference-management-grid > .platform-panel:last-child .platform-table {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.platform-view-classes .platform-row,
+.platform-view-modules .platform-row {
+  display: grid !important;
+  align-content: space-between;
+  min-height: 150px;
+  margin: 0 !important;
+  padding: 15px !important;
+  border-radius: 9px !important;
+}
+
+.platform-view-classes .platform-row strong,
+.platform-view-modules .platform-row strong {
+  font-size: 0.9rem;
+}
+
+.platform-row-actions {
+  display: flex;
+  gap: 5px;
+  justify-content: flex-start;
+}
+
+.platform-row-actions button {
+  min-height: 30px !important;
+  padding: 0 8px !important;
+  font-size: 0.58rem !important;
+}
+
+.reference-schedule-grid {
+  grid-template-columns: 250px minmax(0, 1fr) !important;
+}
+
+.reference-timetable {
+  overflow: auto;
+  border: 1px solid var(--lx-border);
+  border-radius: 8px;
+}
+
+.reference-time-head,
+.reference-time-row {
+  display: grid;
+  grid-template-columns: 86px repeat(5, minmax(90px, 1fr));
+  min-width: 620px;
+}
+
+.reference-time-head {
+  background: #176ee8;
+  color: #fff;
+}
+
+.reference-time-head b,
+.reference-time-row > strong,
+.reference-time-row > span {
+  display: grid;
+  place-items: center;
+  min-height: 42px;
+  padding: 6px;
+  border-right: 1px solid rgba(255,255,255,0.18);
+  font-size: 0.61rem;
+  text-align: center;
+}
+
+.reference-time-row {
+  border-top: 1px solid var(--lx-border);
+}
+
+.reference-time-row > span {
+  border-right-color: var(--lx-border);
+  background: #f8fafc;
+  color: #344054;
+}
+
+.reference-time-row .tone-1 { background: #def8e9; }
+.reference-time-row .tone-2 { background: #f8ebf5; }
+.reference-time-row .tone-3 { background: #e9f0ff; }
+.reference-time-row .tone-4 { background: #fff5dd; }
+
+.reference-timetable-empty {
+  padding: 60px 20px;
+  color: #98a2b3;
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+.platform-view-reports .ui-table-row,
+.platform-view-users .ui-table-row,
+.platform-view-audit .ui-table-row {
+  grid-template-columns: repeat(3, minmax(140px, 1fr)) !important;
+  min-height: 46px;
+  border: 0 !important;
+  border-bottom: 1px solid var(--lx-border) !important;
+  border-radius: 0 !important;
+}
+
+.reference-ai-page {
+  padding: 16px !important;
+}
+
+.reference-ai-page > h2 {
+  display: none;
+}
+
+.reference-ai-page .ai-profile-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.reference-ai-page .ai-profile-grid > div {
+  min-height: 110px;
+  padding: 16px !important;
+  border: 1px solid var(--lx-border) !important;
+  border-radius: 9px !important;
+  background: #fff !important;
+}
+
+.reference-ai-page .ai-profile-grid > div:nth-child(2) {
+  grid-row: span 2;
+  min-height: 230px;
+}
+
+.reference-ai-page .ai-profile-grid > div strong {
+  color: #182230;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.settings-page .learnix-page-header,
+.messages-page .learnix-page-header {
+  min-height: 84px !important;
+}
+
+.student-dashboard-page .reference-mini-stats .stat-card,
+.teacher-dashboard-page .reference-mini-stats .teacher-metric-card {
+  min-height: 92px !important;
+  padding: 15px 14px 13px 58px !important;
+}
+
+.student-dashboard-page .reference-mini-stats .stat-card::before,
+.teacher-dashboard-page .reference-mini-stats .teacher-metric-card::before {
+  top: 18px;
+  left: 14px;
+  width: 32px;
+  height: 32px;
+}
+
+.student-dashboard-page .reference-mini-stats .stat-card h3,
+.teacher-dashboard-page .reference-mini-stats .teacher-metric-card strong {
+  font-size: 1.4rem !important;
+}
+
+.reference-role-actions {
+  margin-bottom: 14px !important;
+}
+
+.reference-role-actions .dash-card {
+  min-height: 112px !important;
+  padding: 16px !important;
+}
+
+.student-insight-grid {
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.student-insight-grid > .dash-card {
+  padding: 16px !important;
+}
+
+.student-score-bars {
+  height: 135px;
+}
+
+.student-dashboard-page .quiz-list-section {
+  padding: 16px;
+  border: 1px solid var(--lx-border);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: var(--lx-shadow);
+}
+
+.teacher-dashboard-page .teacher-overview-grid {
+  margin-bottom: 14px !important;
+}
+
+.teacher-dashboard-page .teacher-dashboard-grid {
+  gap: 12px !important;
+}
+
+.teacher-dashboard-page .teacher-card {
+  padding: 16px !important;
+}
+
+.teacher-dashboard-page .teacher-profile-panel {
+  min-height: 92px;
+}
+
+.teacher-dashboard-page .teacher-profile-hero {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.teacher-dashboard-page .teacher-avatar {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+}
+
+.teacher-dashboard-page.teacher-section-courses .teacher-resources-panel,
+.teacher-dashboard-page.teacher-section-quizzes .teacher-quiz-panel,
+.teacher-dashboard-page.teacher-section-students .teacher-students-panel,
+.teacher-dashboard-page.teacher-section-students .teacher-results-panel,
+.teacher-dashboard-page.teacher-section-availability .teacher-availability-panel {
+  grid-column: 1 / -1 !important;
+}
+
+.messages-workspace {
+  height: calc(100vh - 180px);
+}
+
+.settings-nav {
+  margin-bottom: 12px;
+}
+
+:root[data-theme="dark"] .student-dashboard-page .quiz-list-section {
+  border-color: #33445b;
+  background: #111b2b;
+}
+
+:root[data-theme="dark"] .reference-stepper,
+:root[data-theme="dark"] .reference-mini-stats .ui-stat-card,
+:root[data-theme="dark"] .reference-ai-page .ai-profile-grid > div,
+:root[data-theme="dark"] .reference-school-preview,
+:root[data-theme="dark"] .reference-school-form {
+  border-color: #33445b !important;
+  background: #111b2b !important;
+}
+
+@media (max-width: 900px) {
+  .reference-mini-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .reference-school-grid,
+  .reference-management-grid,
+  .reference-schedule-grid,
+  .reference-assignment-workspace,
+  .platform-view-assignments .platform-wide-panel {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .reference-mini-stats,
+  .reference-school-form .platform-form-grid,
+  .platform-view-classes .reference-management-grid > .platform-panel:last-child .platform-table,
+  .platform-view-modules .reference-management-grid > .platform-panel:last-child .platform-table,
+  .reference-ai-page .ai-profile-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .reference-stepper span {
+    font-size: 0;
+  }
+
+  .reference-stepper b {
+    font-size: 0.62rem;
+  }
+}
+
+/* Final component cleanup: these rules intentionally retire legacy page styles. */
+.learnix-app-page .learnix-brand {
+  flex-wrap: nowrap !important;
+  gap: 10px !important;
+}
+
+.learnix-app-page .learnix-brand .learnix-logo {
+  width: 43px !important;
+  height: 48px !important;
+  flex: 0 0 43px !important;
+}
+
+.learnix-app-page .learnix-brand h2 {
+  display: inline-flex !important;
+  gap: 5px !important;
+  align-items: baseline !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  font-size: 1.34rem !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+.learnix-app-page .learnix-brand h2 span {
+  display: inline !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  color: #159bc2 !important;
+  font-size: inherit !important;
+}
+
+.teacher-page-links,
+.teacher-quick-actions {
+  display: none !important;
+}
+
+.reference-stat-card {
+  appearance: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.reference-stat-card:hover,
+.reference-stat-card.is-selected {
+  transform: translateY(-2px);
+  border-color: #9bc9f6 !important;
+  box-shadow: 0 8px 22px rgba(38, 132, 232, 0.12) !important;
+}
+
+.reference-stat-card > b {
+  display: none !important;
+}
+
+.reference-real-growth {
+  position: absolute;
+  right: 14px;
+  bottom: 15px;
+  color: var(--lx-green);
+  font-size: 0.66rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.reference-stat-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.reference-metric-context {
+  margin: 9px 2px -10px;
+  color: var(--lx-muted);
+  font-size: 0.7rem;
+}
+
+.reference-activity-chart circle {
+  vector-effect: non-scaling-stroke;
+  stroke: #fff;
+  stroke-width: 1;
+  cursor: help;
+}
+
+.reference-activity-chart .student-point { fill: var(--lx-blue); }
+.reference-activity-chart .teacher-point { fill: var(--lx-green); }
+
+.messages-page .learnix-page-header,
+.settings-page + * {
+  flex-shrink: 0;
+}
+
+.messages-workspace {
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr);
+  height: calc(100vh - 222px);
+  min-height: 520px;
+  overflow: hidden;
+  border: 1px solid var(--lx-border);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: var(--lx-shadow);
+}
+
+.message-inbox {
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr);
+  min-width: 0;
+  padding: 18px 14px 12px;
+  border-right: 1px solid var(--lx-border);
+  background: #fff;
+}
+
+.message-inbox-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 14px;
+}
+
+.message-inbox-head h2 {
+  margin: 0 !important;
+  color: var(--lx-text) !important;
+  font-size: 1rem !important;
+}
+
+.message-inbox-head span {
+  color: var(--lx-muted);
+  font-size: 0.68rem;
+}
+
+.message-inbox-head > b {
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: var(--lx-blue-soft);
+  color: var(--lx-blue);
+  font-size: 0.62rem;
+}
+
+.message-search {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 11px;
+  border: 1px solid var(--lx-border);
+  border-radius: 8px;
+  background: #f9fafb;
+}
+
+.message-search svg,
+.message-conversation-head button svg,
+.message-compose-form button svg,
+.message-list-empty svg,
+.message-empty-conversation > svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.message-search input {
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--lx-text);
+  font-size: 0.76rem;
+}
+
+.message-filter-row {
+  display: flex;
+  gap: 5px;
+  padding: 10px 2px;
+}
+
+.message-filter-row button {
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--lx-muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.message-filter-row button.active {
+  border-color: #cfe4fa;
+  background: var(--lx-blue-soft);
+  color: var(--lx-blue);
+}
+
+.messages-workspace .message-contact-list {
+  display: grid !important;
+  align-content: start !important;
+  gap: 5px !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  overflow-y: auto !important;
+}
+
+.messages-workspace .message-teacher-card {
+  display: grid !important;
+  grid-template-columns: 40px minmax(0, 1fr) auto !important;
+  gap: 10px !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-height: 70px !important;
+  padding: 10px !important;
+  border: 1px solid transparent !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--lx-text) !important;
+  text-align: left !important;
+}
+
+.messages-workspace .message-teacher-card:hover,
+.messages-workspace .message-teacher-card.active {
+  border-color: #cfe4fa !important;
+  background: var(--lx-blue-soft) !important;
+  transform: none !important;
+}
+
+.messages-workspace .message-avatar {
+  display: grid !important;
+  place-items: center !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #2aaee7, #6674f4) !important;
+  color: #fff !important;
+  font-size: 0.7rem !important;
+  font-weight: 800 !important;
+}
+
+.messages-workspace .message-teacher-info {
+  display: grid !important;
+  min-width: 0 !important;
+  gap: 2px !important;
+}
+
+.messages-workspace .message-teacher-info strong,
+.messages-workspace .message-teacher-info small,
+.messages-workspace .message-teacher-info em {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.messages-workspace .message-teacher-info strong {
+  color: #344054 !important;
+  font-size: 0.76rem !important;
+}
+
+.messages-workspace .message-teacher-info small,
+.messages-workspace .message-teacher-info em {
+  color: var(--lx-muted) !important;
+  font-size: 0.62rem !important;
+  font-style: normal !important;
+}
+
+.message-list-empty,
+.message-empty-conversation {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  min-height: 180px;
+  color: #98a2b3;
+  text-align: center;
+}
+
+.message-list-empty p,
+.message-empty-conversation p {
+  max-width: 300px;
+  margin: 0 !important;
+  color: var(--lx-muted) !important;
+  font-size: 0.72rem !important;
+}
+
+.message-empty-conversation strong {
+  color: #344054;
+  font-size: 0.86rem;
+}
+
+.message-conversation {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-width: 0;
+  min-height: 0;
+  background: #fff;
+}
+
+.messages-workspace .message-conversation-head {
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, 1fr) 36px !important;
+  gap: 12px !important;
+  align-items: center !important;
+  min-height: 76px !important;
+  padding: 13px 18px !important;
+  border-bottom: 1px solid var(--lx-border) !important;
+}
+
+.message-conversation-head h3 {
+  margin: 0 !important;
+  color: var(--lx-text) !important;
+  font-size: 0.92rem !important;
+}
+
+.message-conversation-head p {
+  margin: 2px 0 !important;
+  color: var(--lx-muted) !important;
+  font-size: 0.68rem !important;
+}
+
+.message-conversation-head small {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  color: #079669 !important;
+  font-size: 0.62rem;
+  font-weight: 600;
+}
+
+.message-conversation-head small i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #12b76a;
+}
+
+.message-conversation-head > button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--lx-border);
+  border-radius: 7px;
+  background: #fff;
+  color: #667085;
+}
+
+.messages-workspace .message-conversation-history {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  min-height: 0 !important;
+  padding: 20px !important;
+  overflow-y: auto !important;
+  background: #fbfcfe !important;
+}
+
+.messages-workspace .message-row {
+  display: flex !important;
+  justify-content: flex-start !important;
+}
+
+.messages-workspace .message-row.own {
+  justify-content: flex-end !important;
+}
+
+.messages-workspace .message-bubble {
+  max-width: min(620px, 72%) !important;
+  padding: 10px 13px !important;
+  border: 1px solid var(--lx-border) !important;
+  border-radius: 5px 14px 14px 14px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  color: #344054 !important;
+}
+
+.messages-workspace .message-row.own .message-bubble {
+  border-color: var(--lx-blue) !important;
+  border-radius: 14px 14px 5px 14px !important;
+  background: var(--lx-blue) !important;
+  color: #fff !important;
+}
+
+.messages-workspace .message-bubble p {
+  margin: 0 !important;
+  color: inherit !important;
+  font-size: 0.78rem !important;
+  line-height: 1.5 !important;
+}
+
+.messages-workspace .message-bubble small {
+  display: block !important;
+  margin-top: 5px !important;
+  color: inherit !important;
+  font-size: 0.58rem !important;
+  opacity: 0.72 !important;
+}
+
+.messages-workspace .message-compose-form {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 10px !important;
+  align-items: end !important;
+  padding: 14px 16px !important;
+  border-top: 1px solid var(--lx-border) !important;
+  background: #fff !important;
+}
+
+.messages-workspace .message-compose-form textarea {
+  width: 100% !important;
+  min-height: 46px !important;
+  max-height: 110px !important;
+  padding: 12px 14px !important;
+  border: 1px solid #dce3ea !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #344054 !important;
+  box-shadow: none !important;
+  resize: vertical !important;
+}
+
+.messages-workspace .message-compose-form button {
+  display: inline-flex !important;
+  gap: 8px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 112px !important;
+  min-height: 46px !important;
+  padding: 0 16px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: var(--lx-blue) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+.messages-workspace .message-compose-form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.settings-nav {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 4px;
+  border: 1px solid var(--lx-border);
+  border-radius: 9px;
+  background: #fff;
+  width: fit-content;
+}
+
+.settings-nav button {
+  min-height: 34px;
+  padding: 0 13px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--lx-muted);
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+
+.settings-nav button.active {
+  background: var(--lx-blue-soft);
+  color: var(--lx-blue);
+}
+
+.learnix-app-page .settings-page {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+}
+
+.learnix-app-page .settings-profile-card,
+.learnix-app-page .settings-security-card {
+  grid-column: 1 / -1 !important;
+}
+
+.learnix-app-page .settings-card {
+  min-height: 0 !important;
+  padding: 20px !important;
+  border: 1px solid var(--lx-border) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: var(--lx-shadow) !important;
+}
+
+.learnix-app-page .settings-card-head {
+  display: grid !important;
+  gap: 5px !important;
+  margin-bottom: 18px !important;
+}
+
+.learnix-app-page .settings-card-head .badge {
+  display: none !important;
+}
+
+.learnix-app-page .settings-card-head h3 {
+  margin: 0 !important;
+  color: var(--lx-text) !important;
+  font-size: 0.95rem !important;
+}
+
+.learnix-app-page .settings-card-head p {
+  margin: 0 !important;
+  color: var(--lx-muted) !important;
+  font-size: 0.72rem !important;
+}
+
+.learnix-app-page .settings-profile-row {
+  display: flex !important;
+  gap: 12px !important;
+  align-items: center !important;
+  margin-bottom: 18px !important;
+  padding: 14px !important;
+  border: 1px solid var(--lx-border) !important;
+  border-radius: 8px !important;
+  background: #f9fafb !important;
+}
+
+.learnix-app-page .settings-form-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 13px !important;
+}
+
+.learnix-app-page .settings-form-grid label {
+  display: grid !important;
+  gap: 6px !important;
+}
+
+.learnix-app-page .settings-form-grid label > span {
+  color: #475467 !important;
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+}
+
+.learnix-app-page .settings-form-grid input,
+.learnix-app-page .settings-form-grid textarea,
+.learnix-app-page .settings-card select {
+  width: 100% !important;
+  min-height: 42px !important;
+  padding: 9px 11px !important;
+  border: 1px solid #dce3ea !important;
+  border-radius: 7px !important;
+  background: #fff !important;
+  color: #344054 !important;
+  box-shadow: none !important;
+}
+
+.learnix-app-page .settings-segmented {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 6px !important;
+  padding: 4px !important;
+  border: 1px solid var(--lx-border) !important;
+  border-radius: 8px !important;
+  background: #f9fafb !important;
+}
+
+.learnix-app-page .settings-segmented button {
+  min-height: 38px !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  color: var(--lx-muted) !important;
+  box-shadow: none !important;
+}
+
+.learnix-app-page .settings-segmented button.active {
+  background: #fff !important;
+  color: var(--lx-blue) !important;
+  box-shadow: var(--lx-shadow) !important;
+}
+
+@media (max-width: 900px) {
+  .messages-workspace {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .messages-workspace {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 0;
+  }
+
+  .message-inbox {
+    max-height: 330px;
+    border-right: 0;
+    border-bottom: 1px solid var(--lx-border);
+  }
+
+  .message-conversation {
+    min-height: 520px;
+  }
+
+  .learnix-app-page .settings-page,
+  .learnix-app-page .settings-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .settings-nav {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .settings-nav button {
+    min-width: max-content;
+  }
+}
+
+@media (max-width: 680px) {
+  .learnix-app-page .learnix-dashboard-topbar {
+    grid-template-columns: 1fr auto;
+    min-height: 66px;
+  }
+
+  .learnix-app-page .learnix-language-control,
+  .learnix-app-page .learnix-top-profile,
+  .learnix-app-page .learnix-globe {
+    display: none;
+  }
+
+  .learnix-app-page .learnix-page-header {
+    min-height: 100px;
+  }
+
+  .learnix-app-page .learnix-page-header time {
+    display: none;
+  }
+
+  .learnix-app-page .reference-stat-grid,
+  .learnix-app-page .stats-grid,
+  .learnix-app-page .teacher-overview-grid,
+  .learnix-app-page .platform-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .learnix-app-page .dashboard-cards,
+  .learnix-app-page .platform-grid,
+  .learnix-app-page .teacher-dashboard-grid,
+  .learnix-app-page .settings-page,
+  .learnix-app-page .messages-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Legacy theme compatibility: older rules use important declarations. */
+.learnix-app-page {
+  grid-template-columns: 276px minmax(0, 1fr) !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  background: var(--lx-canvas) !important;
+}
+
+.learnix-app-page .learnix-sidebar {
+  position: fixed !important;
+  inset: 0 auto 0 0 !important;
+  width: 276px !important;
+  height: 100vh !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  gap: 0 !important;
+  padding: 0 14px 14px !important;
+  overflow-y: auto !important;
+  border: 0 !important;
+  border-right: 1px solid var(--lx-border) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.learnix-app-page .learnix-nav button,
+.learnix-app-page .learnix-sidebar-logout {
+  grid-template-columns: 24px minmax(0, 1fr) auto !important;
+  gap: 10px !important;
+  min-height: 47px !important;
+  padding: 0 13px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #344054 !important;
+  font-size: 0.88rem !important;
+  white-space: nowrap !important;
+}
+
+.learnix-app-page .learnix-nav button.active,
+.learnix-app-page .learnix-nav button:hover {
+  background: var(--lx-blue-soft) !important;
+  color: var(--lx-blue) !important;
+}
+
+.learnix-app-page .learnix-sidebar-extra {
+  display: grid !important;
+  gap: 7px !important;
+  margin-top: auto !important;
+}
+
+.learnix-app-page .learnix-workspace {
+  grid-column: 2 !important;
+  min-width: 0 !important;
+}
+
+.learnix-app-page .learnix-main-panel {
+  min-height: 100vh !important;
+  padding: 0 32px 36px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: var(--lx-canvas) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.learnix-app-page .learnix-dashboard-topbar {
+  min-height: 76px !important;
+  margin: 0 -32px !important;
+  padding: 0 24px 0 28px !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--lx-border) !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: none !important;
+}
+
+.learnix-app-page .learnix-page-header {
+  min-height: 112px !important;
+  margin: 0 !important;
+  padding: 22px 0 18px !important;
+}
+
+.learnix-app-page .learnix-page-header h1 {
+  margin: 0 0 6px !important;
+  font-size: 1.55rem !important;
+  line-height: 1.25 !important;
+}
+
+.learnix-app-page .platform-tabs {
+  gap: 4px !important;
+  margin: -4px 0 18px !important;
+}
+
+.learnix-app-page .reference-panel,
+.learnix-app-page .reference-stat-card,
+.learnix-app-page .dash-card,
+.learnix-app-page .teacher-card,
+.learnix-app-page .platform-panel,
+.learnix-app-page .ui-card {
+  border: 1px solid var(--lx-border) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: var(--lx-shadow) !important;
+  backdrop-filter: none !important;
+}
+
+@media (max-width: 1280px) and (min-width: 961px) {
+  .learnix-app-page {
+    grid-template-columns: 236px minmax(0, 1fr) !important;
+  }
+
+  .learnix-app-page .learnix-sidebar {
+    width: 236px !important;
+  }
+
+  .learnix-app-page .reference-stat-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 960px) {
+  .learnix-app-page {
+    display: block !important;
+    padding: 0 !important;
+  }
+
+  .learnix-app-page .learnix-sidebar {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    padding: 0 14px 12px !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--lx-border) !important;
+  }
+
+  .learnix-app-page .learnix-sidebar-extra {
+    display: none !important;
+  }
+
+  .learnix-app-page .learnix-nav {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 6px !important;
+    padding-top: 4px !important;
+    overflow-x: auto !important;
+  }
+
+  .learnix-app-page .learnix-nav button {
+    width: auto !important;
+    min-width: max-content !important;
+  }
+
+  .learnix-app-page .learnix-workspace {
+    display: block !important;
+  }
+
+  .learnix-app-page .learnix-main-panel {
+    padding: 0 18px 28px !important;
+  }
+
+  .learnix-app-page .learnix-dashboard-topbar {
+    margin: 0 -18px !important;
+    padding: 0 18px !important;
+  }
+}

@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
 import { useTheme } from "../context/ThemeContext";
+import { apiFetch, clearAuthSession, updateStoredUser } from "../services/api";
+import { getStoredUser, navItemsForRole, normalizeRole, panelLabelForRole } from "../services/roles";
+import learnixLogoReference from "../assets/learnix-logo-reference.png";
+import Avatar from "./Avatar";
 
 function LearnixLayout({
   title,
@@ -13,33 +17,103 @@ function LearnixLayout({
   profileUser,
   searchPlaceholder,
   notificationCount = 0,
+  streakActivityDates = [],
   fallbackInitial = "S",
   fallbackName,
-  logoutPath = "/student-login",
-  hidePremiumCard = false,
+  logoutPath = "/login",
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { language, setLanguage, t, dir } = useLanguage();
+  const { language, setLanguage, supportedLanguages, t, dir } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const [premiumOpen, setPremiumOpen] = useState(false);
-  const teacherUser = JSON.parse(localStorage.getItem("teacherUser") || "{}");
-  const studentUser = JSON.parse(localStorage.getItem("studentUser") || "{}");
-  const isTeacherSession = Boolean(teacherUser.email) && !studentUser.email;
-  const user = profileUser || (isTeacherSession ? teacherUser : studentUser);
-  const resolvedLogoutPath = logoutPath === "/student-login" && isTeacherSession
-    ? "/teacher-login"
-    : logoutPath;
-  const isTeacherLayout = isTeacherSession || resolvedLogoutPath === "/teacher-login";
-  const showPremiumCard = !hidePremiumCard && !isTeacherLayout;
+  const [sessionUser, setSessionUser] = useState(getStoredUser());
+  const user = profileUser
+    ? {
+      ...sessionUser,
+      ...profileUser,
+      avatar_url: profileUser.avatar_url ?? profileUser.avatarUrl ?? sessionUser.avatar_url ?? sessionUser.avatarUrl,
+    }
+    : sessionUser;
+  const role = normalizeRole(user.role || user.level);
+  const roleLabel = panelLabel || panelLabelForRole(role, t);
+  const resolvedLogoutPath = logoutPath;
+  const navItems = customNavItems || navItemsForRole(role, t);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const streakInfo = null;
+  const resolvedSearchPlaceholder = searchPlaceholder || t.searchPlaceholder || "Rechercher des cours, quiz, élèves...";
+
+  const searchMatches = searchQuery.trim()
+    ? navItems.filter((item) => item.label.toLowerCase().includes(searchQuery.trim().toLowerCase())).slice(0, 6)
+    : [];
 
   const logout = () => {
-    if (resolvedLogoutPath === "/teacher-login") {
-      localStorage.removeItem("teacherUser");
-    } else {
-      localStorage.removeItem("studentUser");
-    }
+    clearAuthSession();
     navigate(resolvedLogoutPath);
+  };
+
+  const refreshNotifications = useCallback(async () => {
+    try {
+      const response = await apiFetch("/api/notifications");
+      const data = await response.json();
+      if (data.success) {
+        setNotifications(data.notifications || []);
+        setUnreadNotifications(data.unreadCount || 0);
+      }
+    } catch {
+      // The rest of the workspace remains usable if notifications are unavailable.
+    }
+  }, []);
+
+  const refreshProfile = useCallback(async () => {
+    try {
+      const response = await apiFetch("/api/me");
+      const data = await response.json();
+      if (data.success && data.user) {
+        setSessionUser(data.user);
+        updateStoredUser(data.user);
+      }
+    } catch {
+      // Keep the last known profile while offline.
+    }
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setTimeout(refreshNotifications, 0);
+    const profileTimer = window.setTimeout(refreshProfile, 0);
+    const interval = window.setInterval(refreshNotifications, 6000);
+    window.addEventListener("learnix:data-updated", refreshNotifications);
+    window.addEventListener("learnix:data-updated", refreshProfile);
+    return () => {
+      window.clearTimeout(timer);
+      window.clearTimeout(profileTimer);
+      window.clearInterval(interval);
+      window.removeEventListener("learnix:data-updated", refreshNotifications);
+      window.removeEventListener("learnix:data-updated", refreshProfile);
+    };
+  }, [refreshNotifications, refreshProfile]);
+
+  const openNotification = async (item) => {
+    if (!item.readAt) await apiFetch(`/api/notifications/${item.id}/read`, { method: "PATCH" });
+    setNotificationsOpen(false);
+    await refreshNotifications();
+    if (item.actionPath) navigate(item.actionPath);
+  };
+
+  const readAllNotifications = async () => {
+    await apiFetch("/api/notifications/read-all", { method: "PATCH" });
+    await refreshNotifications();
+  };
+
+  const toggleNotifications = async () => {
+    const opening = !notificationsOpen;
+    setNotificationsOpen(opening);
+    if (opening && unreadNotifications > 0) {
+      await apiFetch("/api/notifications/read-all", { method: "PATCH" });
+      await refreshNotifications();
+    }
   };
 
   useEffect(() => {
@@ -55,134 +129,155 @@ function LearnixLayout({
     });
   }, [location.hash, location.pathname]);
 
-  const navItems = customNavItems || (isTeacherSession
-    ? [
-      { label: t.dashboard, path: "/teacher-dashboard", icon: "dashboard" },
-      { label: "Courses", path: "/teacher-dashboard#courses", icon: "resources" },
-      { label: t.quizManagement, path: "/teacher-dashboard#quizzes", icon: "exercises" },
-      { label: t.studentResults, path: "/teacher-dashboard#students", icon: "history" },
-      { label: "Messages", path: "/messages", icon: "messages" },
-      { label: t.settings, path: "/settings", icon: "settings" },
-    ]
-    : [
-      { label: t.dashboard, path: "/student-dashboard", icon: "dashboard" },
-      { label: t.exercises, path: "/exercises", icon: "exercises" },
-      { label: t.chatbot, path: "/chatbot", icon: "chat" },
-      { label: t.history, path: "/history", icon: "history" },
-      { label: "Messages", path: "/messages", icon: "messages" },
-      { label: t.settings, path: "/settings", icon: "settings" },
-    ]);
   const isActiveNavItem = (path) => {
     const [pathname, hash = ""] = path.split("#");
     const itemHash = hash ? `#${hash}` : "";
+    return itemHash
+      ? location.pathname === pathname && location.hash === itemHash
+      : location.pathname === pathname && !location.hash;
+  };
 
-    if (itemHash) {
-      return location.pathname === pathname && location.hash === itemHash;
+  const submitGlobalSearch = (event) => {
+    event.preventDefault();
+    if (searchMatches[0]) {
+      navigate(searchMatches[0].path);
+      setSearchQuery("");
     }
-
-    return location.pathname === pathname && !location.hash;
   };
 
   return (
-    <div className={`learnix-app-page ${className}`} dir={dir}>
+    <div className={`learnix-app-page role-${role} ${className}`} dir={dir}>
+      <div className="learnix-ambient learnix-ambient-left" aria-hidden="true" />
+      <div className="learnix-ambient learnix-ambient-right" aria-hidden="true" />
+
       <aside className="learnix-sidebar">
         <div className="learnix-brand">
           <BookAiLogo />
-          <div>
-            <h2>Learnix AI</h2>
-            <p>{panelLabel || (isTeacherSession ? t.teacherPanel : t.studentPanel)}</p>
-          </div>
+          <h2>Learnix <span>AI</span></h2>
         </div>
 
         <nav className="learnix-nav">
-          {navItems.map((item) => {
-            const showMessagesBadge = item.icon === "messages" && notificationCount > 0;
+          {navItems.map((item, index) => {
+            const itemNotificationCount = item.icon === "messages"
+              ? notificationCount
+              : item.path.includes("#requests")
+                ? notifications.filter((notice) => !notice.readAt && notice.type === "approval").length
+                : item.path.includes("#assignments")
+                  ? notifications.filter((notice) => !notice.readAt && notice.type === "assignment").length
+                  : 0;
+
+            const showGroup = item.group && navItems[index - 1]?.group !== item.group;
 
             return (
-              <button
-                className={isActiveNavItem(item.path) ? "active" : ""}
-                key={item.path}
-                onClick={() => navigate(item.path)}
-                type="button"
-              >
-                <span aria-hidden="true">{navIcon(item.icon)}</span>
-                <b>{item.label}</b>
-                {showMessagesBadge && <strong className="learnix-nav-badge">{notificationCount}</strong>}
-              </button>
+              <Fragment key={`${item.path}-${item.label}`}>
+                {showGroup && <span className="learnix-nav-group">{item.group}</span>}
+                <button
+                  className={item.highlight !== false && isActiveNavItem(item.path) ? "active" : ""}
+                  onClick={() => navigate(item.path)}
+                  type="button"
+                >
+                  <span aria-hidden="true">{navIcon(item.icon)}</span>
+                  <b>{item.label}</b>
+                  {itemNotificationCount > 0 && <strong className="learnix-nav-badge">{itemNotificationCount}</strong>}
+                </button>
+              </Fragment>
             );
           })}
         </nav>
 
-        <button className="learnix-sidebar-logout" onClick={logout} type="button">
-          <span aria-hidden="true">{navIcon("logout")}</span>
-          {t.logout}
-        </button>
-
         <div className="learnix-sidebar-extra">
-          {showPremiumCard && (
-            <div className="learnix-premium-card">
-              <DiamondIcon />
-              <h3>{t.premiumTitle}</h3>
-              <p>{t.premiumSubtitle}</p>
-              <button type="button" onClick={() => setPremiumOpen(true)}>
-                {t.upgradePremium}
-              </button>
-            </div>
-          )}
-
-          <div className="learnix-profile-card">
-            <div className="learnix-profile-main">
-              <span>{(user.name || fallbackInitial).charAt(0).toUpperCase()}</span>
-              <div>
-                <small>{t.profile}</small>
-                <strong>{user.name || user.email || fallbackName || t.studentFallback}</strong>
+          {streakInfo && (
+            <aside className="learnix-streak-card" aria-label="Série d'apprentissage">
+              <p>Continue ta série !</p>
+              <strong>7 <span>jours consécutifs</span></strong>
+              <div aria-hidden="true">
+                {["L", "M", "M", "J", "V", "S", "D"].map((day, index) => (
+                  <span className={index < 5 ? "done" : ""} key={`${day}-${index}`}>
+                    <b>{day}</b>
+                    <i />
+                  </span>
+                ))}
               </div>
-            </div>
-          </div>
+            </aside>
+          )}
+          <button className="learnix-sidebar-logout" onClick={logout} type="button">
+            <span aria-hidden="true">{navIcon("logout")}</span>
+            {t.logout}
+          </button>
         </div>
       </aside>
 
       <main className="learnix-workspace">
         <section className="learnix-main-panel">
           <div className="learnix-dashboard-topbar" aria-label={t.displayControls}>
-            <label className="learnix-search-box">
-              <span aria-hidden="true">⌕</span>
-              <input
-                type="search"
-                placeholder={searchPlaceholder || "Search courses, quizzes, students..."}
-              />
-            </label>
+            <form className="learnix-search-box" onSubmit={submitGlobalSearch}>
+              <span aria-hidden="true">{navIcon("search")}</span>
+              <input type="search" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder={resolvedSearchPlaceholder} />
+              {searchMatches.length > 0 && <div className="learnix-search-results">{searchMatches.map((item) => <button type="button" key={item.path} onClick={() => { navigate(item.path); setSearchQuery(""); }}><span>{navIcon(item.icon)}</span><b>{item.label}</b></button>)}</div>}
+            </form>
 
             <div className="learnix-top-controls">
-              <button className="learnix-notification-button" type="button" aria-label="Notifications">
-                <span aria-hidden="true">!</span>
-                {notificationCount > 0 && <strong>{notificationCount}</strong>}
+              <button className="learnix-notification-button" type="button" aria-label={t.notifications} onClick={toggleNotifications}>
+                {navIcon("notification")}
+                {unreadNotifications > 0 && <strong>{unreadNotifications}</strong>}
               </button>
-              <label>
+              {notificationsOpen && (
+                <div className="learnix-notification-popover">
+                  <div className="notification-popover-head"><b>{t.notifications}</b><button type="button" onClick={readAllNotifications}>Tout lire</button></div>
+                  <div className="notification-list">
+                    {notifications.map((item) => (
+                      <button className={item.readAt ? "" : "unread"} type="button" key={item.id} onClick={() => openNotification(item)}>
+                        <span>{item.title}</span><p>{item.body}</p><small>{new Date(item.createdAt).toLocaleString()}</small>
+                      </button>
+                    ))}
+                    {!notifications.length && <p className="notification-empty">Aucune notification.</p>}
+                  </div>
+                </div>
+              )}
+              <label className="learnix-language-control">
                 <span>{t.language}</span>
                 <select value={language} onChange={(event) => setLanguage(event.target.value)}>
-                  <option value="en">{t.english}</option>
-                  <option value="fr">{t.french}</option>
-                  <option value="ar">{t.arabic}</option>
+                  {supportedLanguages.map((item) => (
+                    <option key={item.value} value={item.value}>
+                      {t[item.labelKey]}
+                    </option>
+                  ))}
                 </select>
               </label>
-              <button className="theme-toggle" onClick={toggleTheme} type="button">
-                {theme === "dark" ? t.lightMode : t.darkMode}
+              <button className="theme-toggle" onClick={toggleTheme} type="button" aria-label={theme === "dark" ? t.lightMode : t.darkMode}>
+                {navIcon(theme === "dark" ? "sun" : "moon")}
               </button>
+              <div className="learnix-top-profile">
+                <div>
+                  <strong>{user.name || fallbackName || t.studentFallback}</strong>
+                  <small>{roleLabel}</small>
+                </div>
+                <Avatar user={user} name={user.name || fallbackInitial} size={42} clickable />
+              </div>
             </div>
           </div>
+
           {(title || subtitle) && (
             <header className="learnix-page-header">
-              <span className="learnix-kicker">{t.workspaceKicker}</span>
-              {title && <h1>{title}</h1>}
-              {subtitle && <p>{subtitle}</p>}
+              <div>
+                {title && <h1>{title}</h1>}
+                {subtitle && <p>{subtitle}</p>}
+              </div>
+              <time dateTime={new Date().toISOString().slice(0, 10)}>
+                {navIcon("calendar")}
+                {new Intl.DateTimeFormat(language === "ar" ? "ar-MA" : language === "en" ? "en-GB" : "fr-FR", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                }).format(new Date())}
+              </time>
             </header>
           )}
+
           {children}
         </section>
       </main>
 
-      {showPremiumCard && premiumOpen && <PremiumModal onClose={() => setPremiumOpen(false)} />}
     </div>
   );
 }
@@ -190,133 +285,46 @@ function LearnixLayout({
 export function BookAiLogo() {
   return (
     <span className="learnix-logo" aria-hidden="true">
-      <svg viewBox="0 0 48 48">
-        <path d="M10 12.5c5.2-2.2 9.8-1.7 14 1.4 4.2-3.1 8.8-3.6 14-1.4v23.2c-5.2-2.2-9.8-1.7-14 1.4-4.2-3.1-8.8-3.6-14-1.4z" />
-        <path d="M24 13.9v23.2" />
-        <path d="M15 18.3c2.2-.4 4.1 0 5.7 1.1M15 24c2.2-.4 4.1 0 5.7 1.1" />
-        <path d="M29 19.5h5M31.5 17v5M29.7 27.8l1.3-2.8 1.3 2.8 2.9.4-2.1 2.1.5 2.9-2.6-1.4-2.6 1.4.5-2.9-2.1-2.1z" />
-      </svg>
+      <img alt="" src={learnixLogoReference} />
     </span>
-  );
-}
-
-function DiamondIcon() {
-  return (
-    <span className="premium-diamond" aria-hidden="true">
-      <svg viewBox="0 0 24 24">
-        <path d="M7 3h10l4 5-9 13L3 8z" />
-        <path d="M3 8h18M8 8l4 13 4-13M7 3l1 5M17 3l-1 5" />
-      </svg>
-    </span>
-  );
-}
-
-export function PremiumModal({ onClose }) {
-  const { t } = useLanguage();
-  const [demoActivated, setDemoActivated] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState("monthly");
-
-  return (
-    <div className="premium-modal-backdrop" role="presentation" onClick={onClose}>
-      <section
-        className="premium-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="premium-modal-title"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <button className="premium-modal-close" type="button" onClick={onClose} aria-label={t.close}>
-          X
-        </button>
-        {demoActivated ? (
-          <div className="premium-demo-message" id="premium-modal-title">
-            {t.premiumDemoActivated}
-          </div>
-        ) : (
-          <>
-            <div className="premium-modal-hero">
-              <DiamondIcon />
-              <span>{t.premiumTitle}</span>
-              <h2 id="premium-modal-title">{t.premiumModalTitle}</h2>
-              <p>{t.premiumModalBody}</p>
-            </div>
-
-            <div className="premium-pricing-grid" role="group" aria-label={t.premiumPricing}>
-              <button
-                className={selectedPlan === "monthly" ? "active" : ""}
-                type="button"
-                onClick={() => setSelectedPlan("monthly")}
-              >
-                <span>{t.monthly}</span>
-                <strong>$9.99</strong>
-              </button>
-              <button
-                className={selectedPlan === "yearly" ? "active" : ""}
-                type="button"
-                onClick={() => setSelectedPlan("yearly")}
-              >
-                <span>{t.yearly}</span>
-                <strong>$79.99</strong>
-              </button>
-            </div>
-
-            <form
-              className="premium-payment-form"
-              onSubmit={(event) => {
-                event.preventDefault();
-                setDemoActivated(true);
-              }}
-            >
-              <label>
-                <span>{t.cardholderName}</span>
-                <input autoComplete="cc-name" placeholder={t.cardholderName} />
-              </label>
-              <label>
-                <span>{t.cardNumber}</span>
-                <input
-                  autoComplete="cc-number"
-                  inputMode="numeric"
-                  placeholder="0000 0000 0000 0000"
-                />
-              </label>
-              <div className="premium-payment-row">
-                <label>
-                  <span>{t.expiryDate}</span>
-                  <input autoComplete="cc-exp" placeholder="MM/YY" />
-                </label>
-                <label>
-                  <span>{t.cvv}</span>
-                  <input autoComplete="cc-csc" inputMode="numeric" placeholder="123" />
-                </label>
-              </div>
-              <div className="premium-modal-actions">
-                <button className="premium-secondary-button" type="button" onClick={onClose}>
-                  {t.maybeLater}
-                </button>
-                <button className="premium-primary-button" type="submit">
-                  {t.pay}
-                </button>
-              </div>
-            </form>
-          </>
-        )}
-      </section>
-    </div>
   );
 }
 
 function navIcon(type) {
   const icons = {
-    dashboard: "⌂",
-    exercises: "◫",
-    chat: "✦",
-    history: "◷",
-    settings: "⚙",
-    logout: "↗",
-    resources: "PDF",
-    messages: "@",
+    dashboard: <path d="M4 19.5 12 5l8 14.5H4Z" />,
+    users: <><circle cx="9" cy="8" r="3" /><path d="M3 20a6 6 0 0 1 12 0M17 8a2.5 2.5 0 1 1 0 5M16 15a5 5 0 0 1 5 5" /></>,
+    buildings: <><path d="M4 21V7l8-4v18M12 9h8v12M7 9h2M7 13h2M7 17h2M15 13h2M15 17h2M2 21h20" /></>,
+    classes: <><rect x="4" y="5" width="16" height="15" rx="2" /><path d="M8 3v4M16 3v4M4 10h16M8 14h3M13 14h3" /></>,
+    modules: <><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4Z" /><path d="M8 4v13a3 3 0 0 0-3 3M11 9h5M11 13h5" /></>,
+    teachers: <><path d="m3 9 9-5 9 5-9 5-9-5Z" /><path d="M7 12v4c2.5 2 7.5 2 10 0v-4M21 9v6" /></>,
+    students: <><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.5" /><path d="M3 20a6 6 0 0 1 12 0M14 15a5 5 0 0 1 7 4.5" /></>,
+    assignments: <><path d="M4 6h7M4 12h7M4 18h7M15 5h5v5h-5zM15 14h5v5h-5z" /><path d="m16 8 1 1 2-3M16 17l1 1 2-3" /></>,
+    schedule: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4M17 3v4M3 10h18M8 14h3M13 14h3M8 18h3" /></>,
+    requests: <><path d="M12 3v12M8 7l4-4 4 4" /><path d="M5 13v7h14v-7" /></>,
+    reports: <><path d="M6 3h9l3 3v15H6zM15 3v4h4M9 12h6M9 16h6" /></>,
+    audit: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2M5 5l2 2" /></>,
+    exercises: <path d="M5 5h14v14H5zM8 8h8M8 12h8M8 16h4" />,
+    chat: <path d="m12 3 2.4 6.2L21 12l-6.6 2.8L12 21l-2.4-6.2L3 12l6.6-2.8L12 3Z" />,
+    history: <path d="M4 12a8 8 0 1 0 2.4-5.7M4 5v5h5M12 8v5l3 2" />,
+    settings: <path d="M12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7ZM19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1a7.6 7.6 0 0 0-1.8-1L12.4 3h-4l-.4 3.1a7.6 7.6 0 0 0-1.8 1l-2.4-1-2 3.4 2 1.5a7 7 0 0 0 0 2l-2 1.5 2 3.4 2.4-1a7.6 7.6 0 0 0 1.8 1l.4 3.1h4l.4-3.1a7.6 7.6 0 0 0 1.8-1l2.4 1 2-3.4-2-1.5c.1-.3.1-.7.1-1Z" />,
+    logout: <path d="M14 5h5v14h-5M9 8l-4 4 4 4M5 12h10" />,
+    resources: <path d="M6 3h8l4 4v14H6zM14 3v5h4M8.5 15h7M8.5 18h5" />,
+    messages: <path d="M5 6h14v10H8l-3 3V6Z" />,
+    school: <path d="m3 9 9-5 9 5-9 5-9-5ZM6 12v4c2 2 10 2 12 0v-4" />,
+    search: <path d="M10.5 5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11ZM15 15l4 4" />,
+    notification: <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />,
+    globe: <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0c2.2-2.4 3.3-5.4 3.3-9S14.2 5.4 12 3m0 18c-2.2-2.4-3.3-5.4-3.3-9S9.8 5.4 12 3M3.5 9h17M3.5 15h17" />,
+    moon: <path d="M20 15.2A8 8 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z" />,
+    sun: <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />,
+    calendar: <path d="M5 4h14v16H5zM8 2v4M16 2v4M5 9h14M9 13h2M13 13h2M9 16h2" />,
   };
-  return icons[type] || "•";
+
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      {icons[type] || <circle cx="12" cy="12" r="3" />}
+    </svg>
+  );
 }
 
 export default LearnixLayout;

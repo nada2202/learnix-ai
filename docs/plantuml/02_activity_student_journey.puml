@@ -1,0 +1,51 @@
+@startuml
+title Diagramme d'activite - Parcours d'apprentissage d'un etudiant
+
+skinparam monochrome true
+skinparam shadowing false
+
+start
+:Saisir les informations de connexion;
+if (Authentification valide ?) then (oui)
+  :Acceder a l'espace etudiant;
+else (non)
+  :Afficher un message d'erreur;
+  stop
+endif
+
+:Importer un document PDF ou image;
+if (Type de document ?) then (PDF)
+  :Extraire le texte du PDF;
+else (Image)
+  :Extraire le texte de l'image;
+endif
+
+if (Texte exploitable ?) then (oui)
+  :Enregistrer le document;
+  :Analyse du document par l'IA;
+  :Generer et afficher le resume;
+  :Interaction avec l'assistant IA;
+else (non)
+  :Signaler que le contenu\nne peut pas etre analyse;
+  stop
+endif
+
+:Choisir la difficulte et\nle nombre de questions;
+:Generer le quiz;
+if (Generation valide ?) then (oui)
+  :Afficher le quiz genere;
+else (non)
+  :Signaler l'echec de generation;
+  stop
+endif
+
+:Repondre aux questions;
+:Correction automatique par l'IA;
+:Calculer le score et le feedback;
+:Enregistrer le resultat;
+:Afficher le resultat et\nla correction detaillee;
+:Mettre a jour le profil adaptatif;
+:Afficher les recommandations\npersonnalisees;
+:Consulter l'historique des resultats;
+stop
+@enduml

@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3508" height="2480" viewBox="0 0 3508 2480">
+<rect width="100%" height="100%" fill="white"/>
+<defs><style>text{font-family:Arial,Helvetica,sans-serif;fill:black}.b{font-weight:700}</style></defs>
+<text x="1754.0" y="82.6" font-size="42" text-anchor="middle" class="b">Diagramme d&#x27;activité global - Learnix AI</text>
+<ellipse cx="1750.0" cy="175.0" rx="60.0" ry="30.0" fill="black" stroke="black" stroke-width="2"/>
+<rect x="1500.0" y="260.0" width="500" height="80" fill="white" stroke="black" stroke-width="2"/>
+<text x="1750" y="307.2" font-size="24" text-anchor="middle">Créer compte ou se connecter</text>
+<rect x="1500.0" y="415.0" width="500" height="80" fill="white" stroke="black" stroke-width="2"/>
+<text x="1750" y="462.2" font-size="24" text-anchor="middle">Vérifier JWT et rôle</text>
+<polygon points="1750,575.0 1990.0,650 1750,725.0 1510.0,650" fill="white" stroke="black" stroke-width="2"/>
+<text x="1750" y="656.3" font-size="21" text-anchor="middle">Rôle utilisateur ?</text>
+<line x1="1750" y1="205" x2="1750" y2="260" stroke="black" stroke-width="2"/>
+<polygon points="1750,260 1742,244 1757,244" fill="black" stroke="black" stroke-width="1"/>
+<line x1="1750" y1="340" x2="1750" y2="415" stroke="black" stroke-width="2"/>
+<polygon points="1750,415 1742,399 1757,399" fill="black" stroke="black" stroke-width="1"/>
+<line x1="1750" y1="495" x2="1750" y2="575" stroke="black" stroke-width="2"/>
+<polygon points="1750,575 1742,559 1757,559" fill="black" stroke="black" stroke-width="1"/>
+<line x1="1750" y1="725" x2="520" y2="860" stroke="black" stroke-width="2"/>
+<polygon points="520,860 534,850 536,865" fill="black" stroke="black" stroke-width="1"/>
+<text x="1135.0" y="816.0" font-size="20" text-anchor="middle">Admin</text>
+<rect x="345.0" y="917.5" width="350" height="85" fill="white" stroke="black" stroke-width="2"/>
+<text x="520" y="967.2" font-size="24" text-anchor="middle">Dashboard admin</text>
+<line x1="1750" y1="725" x2="1050" y2="860" stroke="black" stroke-width="2"/>
+<polygon points="1050,860 1063,849 1066,864" fill="black" stroke="black" stroke-width="1"/>
+<text x="1400.0" y="816.0" font-size="20" text-anchor="middle">Directeur</text>
+<polygon points="1050,895.0 1215.0,960 1050,1025.0 885.0,960" fill="white" stroke="black" stroke-width="2"/>
+<text x="1050" y="966.3" font-size="21" text-anchor="middle">École validée ?</text>
+<line x1="1750" y1="725" x2="1580" y2="860" stroke="black" stroke-width="2"/>
+<polygon points="1580,860 1587,844 1596,856" fill="black" stroke="black" stroke-width="1"/>
+<text x="1665.0" y="816.0" font-size="20" text-anchor="middle">Enseignant</text>
+<polygon points="1580,895.0 1745.0,960 1580,1025.0 1415.0,960" fill="white" stroke="black" stroke-width="2"/>
+<text x="1580" y="966.3" font-size="21" text-anchor="middle">Accepté par directeur ?</text>
+<line x1="1750" y1="725" x2="2110" y2="860" stroke="black" stroke-width="2"/>
+<polygon points="2110,860 2093,861 2098,847" fill="black" stroke="black" stroke-width="1"/>
+<text x="1930.0" y="816.0" font-size="20" text-anchor="middle">Élève</text>
+<polygon points="2110,895.0 2275.0,960 2110,1025.0 1945.0,960" fill="white" stroke="black" stroke-width="2"/>
+<text x="2110" y="966.3" font-size="21" text-anchor="middle">Classe affectée ?</text>
+<line x1="1750" y1="725" x2="2640" y2="860" stroke="black" stroke-width="2"/>
+<polygon points="2640,860 2623,864 2625,850" fill="black" stroke="black" stroke-width="1"/>
+<text x="2195.0" y="816.0" font-size="20" text-anchor="middle">Invité</text>
+<rect x="2465.0" y="917.5" width="350" height="85" fill="white" stroke="black" stroke-width="2"/>
+<text x="2640" y="967.2" font-size="24" text-anchor="middle">Mode démonstration</text>
+<rect x="340.0" y="1167.5" width="360" height="85" fill="white" stroke="black" stroke-width="2"/>
+<text x="520" y="1202.2" font-size="24" text-anchor="middle">Accéder aux services</text>
+<text x="520" y="1232.2" font-size="24" text-anchor="middle">autorisés</text>
+<line x1="520" y1="1025" x2="520" y2="1165" stroke="black" stroke-width="2"/>
+<polygon points="520,1165 512,1149 527,1149" fill="black" stroke="black" stroke-width="1"/>
+<line x1="520" y1="1255" x2="1750" y2="1490" stroke="black" stroke-width="2"/>
+<polygon points="1750,1490 1733,1494 1736,1479" fill="black" stroke="black" stroke-width="1"/>
+<rect x="870.0" y="1167.5" width="360" height="85" fill="white" stroke="black" stroke-width="2"/>
+<text x="1050" y="1202.2" font-size="24" text-anchor="middle">Accéder aux services</text>
+<text x="1050" y="1232.2" font-size="24" text-anchor="middle">autorisés</text>
+<line x1="1050" y1="1025" x2="1050" y2="1165" stroke="black" stroke-width="2"/>
+<polygon points="1050,1165 1042,1149 1057,1149" fill="black" stroke="black" stroke-width="1"/>
+<line x1="1050" y1="1255" x2="1750" y2="1490" stroke="black" stroke-width="2"/>
+<polygon points="1750,1490 1733,1492 1737,1478" fill="black" stroke="black" stroke-width="1"/>
+<rect x="1400.0" y="1167.5" width="360" height="85" fill="white" stroke="black" stroke-width="2"/>
+<text x="1580" y="1202.2" font-size="24" text-anchor="middle">Accéder aux services</text>
+<text x="1580" y="1232.2" font-size="24" text-anchor="middle">autorisés</text>
+<line x1="1580" y1="1025" x2="1580" y2="1165" stroke="black" stroke-width="2"/>
+<polygon points="1580,1165 1572,1149 1587,1149" fill="black" stroke="black" stroke-width="1"/>
+<line x1="1580" y1="1255" x2="1750" y2="1490" stroke="black" stroke-width="2"/>
+<polygon points="1750,1490 1735,1481 1746,1473" fill="black" stroke="black" stroke-width="1"/>
+<rect x="1930.0" y="1167.5" width="360" height="85" fill="white" stroke="black" stroke-width="2"/>
+<text x="2110" y="1202.2" font-size="24" text-anchor="middle">Accéder aux services</text>
+<text x="2110" y="1232.2" font-size="24" text-anchor="middle">autorisés</text>
+<line x1="2110" y1="1025" x2="2110" y2="1165" stroke="black" stroke-width="2"/>
+<polygon points="2110,1165 2102,1149 2117,1149" fill="black" stroke="black" stroke-width="1"/>
+<line x1="2110" y1="1255" x2="1750" y2="1490" stroke="black" stroke-width="2"/>
+<polygon points="1750,1490 1758,1475 1766,1487" fill="black" stroke="black" stroke-width="1"/>
+<rect x="2460.0" y="1167.5" width="360" height="85" fill="white" stroke="black" stroke-width="2"/>
+<text x="2640" y="1202.2" font-size="24" text-anchor="middle">Accéder aux services</text>
+<text x="2640" y="1232.2" font-size="24" text-anchor="middle">autorisés</text>
+<line x1="2640" y1="1025" x2="2640" y2="1165" stroke="black" stroke-width="2"/>
+<polygon points="2640,1165 2632,1149 2647,1149" fill="black" stroke="black" stroke-width="1"/>
+<line x1="2640" y1="1255" x2="1750" y2="1490" stroke="black" stroke-width="2"/>
+<polygon points="1750,1490 1762,1478 1766,1493" fill="black" stroke="black" stroke-width="1"/>
+<rect x="1470.0" y="1497.5" width="560" height="85" fill="white" stroke="black" stroke-width="2"/>
+<text x="1750" y="1547.2" font-size="24" text-anchor="middle">Utiliser IA, quiz, cours ou gestion</text>
+<rect x="1470.0" y="1667.5" width="560" height="85" fill="white" stroke="black" stroke-width="2"/>
+<text x="1750" y="1717.2" font-size="24" text-anchor="middle">Enregistrer données et historique</text>
+<rect x="1470.0" y="1837.5" width="560" height="85" fill="white" stroke="black" stroke-width="2"/>
+<text x="1750" y="1887.2" font-size="24" text-anchor="middle">Mettre à jour progression</text>
+<ellipse cx="1750.0" cy="2100.0" rx="60.0" ry="30.0" fill="white" stroke="black" stroke-width="2"/>
+<ellipse cx="1750.0" cy="2100.0" rx="45.0" ry="15.0" fill="black" stroke="black" stroke-width="2"/>
+<line x1="1750" y1="1585" x2="1750" y2="1665" stroke="black" stroke-width="2"/>
+<polygon points="1750,1665 1742,1649 1757,1649" fill="black" stroke="black" stroke-width="1"/>
+<line x1="1750" y1="1755" x2="1750" y2="1835" stroke="black" stroke-width="2"/>
+<polygon points="1750,1835 1742,1819 1757,1819" fill="black" stroke="black" stroke-width="1"/>
+<line x1="1750" y1="1925" x2="1750" y2="2070" stroke="black" stroke-width="2"/>
+<polygon points="1750,2070 1742,2054 1757,2054" fill="black" stroke="black" stroke-width="1"/>
+</svg>

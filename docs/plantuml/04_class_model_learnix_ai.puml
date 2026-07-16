@@ -1,0 +1,174 @@
+@startuml
+title Diagramme de classes metier - Learnix AI
+
+left to right direction
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+package "Utilisateurs" {
+  class User {
+    +id : Integer
+    +nom : String
+    +email : String
+    +role : String
+    +statut : String
+    +authentifier() : Boolean
+  }
+
+  class StudentProfile {
+    +niveau : String
+    +mode : String
+    +objectifs : Text
+    +mettreAJourProfil()
+  }
+
+  class TeacherProfile {
+    +mode : String
+    +specialites : Text
+    +statut : String
+    +definirDisponibilites()
+  }
+}
+
+package "Organisation pedagogique" {
+  class School {
+    +id : Integer
+    +nom : String
+    +ville : String
+    +type : String
+    +statut : String
+  }
+
+  class SchoolClass {
+    +id : Integer
+    +nom : String
+    +niveau : String
+    +anneeScolaire : String
+    +statut : String
+  }
+
+  class Module {
+    +id : Integer
+    +nom : String
+    +description : Text
+    +volumeHebdomadaire : Integer
+  }
+
+  class Schedule {
+    +id : Integer
+    +statut : String
+    +contenu : Text
+    +dateCreation : DateTime
+  }
+}
+
+package "Contenus et evaluations" {
+  class Course {
+    +id : Integer
+    +titre : String
+    +contenu : Text
+    +ressources : Text
+  }
+
+  class Quiz {
+    +id : Integer
+    +titre : String
+    +difficulte : String
+    +porteeAcces : String
+  }
+
+  class Exam {
+    +id : Integer
+    +titre : String
+    +duree : Integer
+    +dateAcces : DateTime
+    +bareme : Text
+  }
+
+  class Question {
+    +id : Integer
+    +enonce : Text
+    +reponseAttendue : Text
+    +points : Integer
+  }
+
+  class Attempt {
+    +id : Integer
+    +score : Integer
+    +feedback : Text
+    +dateRealisation : DateTime
+    +calculerResultat() : Integer
+  }
+
+  class Answer {
+    +id : Integer
+    +contenu : Text
+    +correcte : Boolean
+    +feedback : Text
+  }
+}
+
+package "Suivi adaptatif" {
+  class Notification {
+    +id : Integer
+    +titre : String
+    +contenu : Text
+    +dateLecture : DateTime
+    +marquerCommeLue()
+  }
+
+  class AIProfile {
+    +niveauEstime : String
+    +forces : Text
+    +faiblesses : Text
+    +recommandations : Text
+    +mettreAJour()
+  }
+}
+
+User "1" *-- "0..1" StudentProfile : possede
+User "1" *-- "0..1" TeacherProfile : possede
+User "1" -- "0..*" Notification : recoit
+User "0..1" -- "0..*" School : dirige
+
+School "1" *-- "0..*" SchoolClass : contient
+School "0..1" -- "0..*" StudentProfile : accueille
+School "0..1" -- "0..*" TeacherProfile : rattache
+SchoolClass "0..*" -- "0..*" StudentProfile : inscrit
+SchoolClass "0..*" -- "0..*" TeacherProfile : affecte
+SchoolClass "0..*" -- "0..*" Module : comprend
+Module "0..*" -- "0..*" TeacherProfile : enseigne
+
+TeacherProfile "0..1" -- "0..*" Course : cree
+TeacherProfile "0..1" -- "0..*" Quiz : cree
+TeacherProfile "0..1" -- "0..*" Exam : responsable
+Module "1" -- "0..*" Course : organise
+Module "0..1" -- "0..*" Quiz : evalue
+Module "0..1" -- "0..*" Exam : evalue
+SchoolClass "0..1" -- "0..*" Course : recoit
+SchoolClass "0..1" -- "0..*" Quiz : concerne
+SchoolClass "0..1" -- "0..*" Exam : concerne
+
+Quiz "0..1" *-- "0..*" Question : contient
+Exam "0..1" *-- "0..*" Question : contient
+StudentProfile "1" -- "0..*" Attempt : realise
+Quiz "0..1" -- "0..*" Attempt : concerne
+Exam "0..1" -- "0..*" Attempt : concerne
+Attempt "1" *-- "1..*" Answer : regroupe
+Question "1" -- "0..*" Answer : recoit
+StudentProfile "1" -- "0..*" Answer : fournit
+
+StudentProfile "1" *-- "0..1" AIProfile : personnalise
+AIProfile ..> Attempt : analyse
+
+School "0..1" -- "0..*" Schedule : planifie
+SchoolClass "1" -- "0..*" Schedule : possede
+
+note bottom of Attempt
+  La composition Attempt-Answer exprime le modele metier attendu.
+  Le schema MySQL actuel ne contient pas encore de cle attempt_id
+  dans Answer; les reponses sont reliees a Question et a l'etudiant.
+end note
+@enduml

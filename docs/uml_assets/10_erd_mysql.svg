@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3508" height="2480" viewBox="0 0 3508 2480">
+<rect width="100%" height="100%" fill="white"/>
+<defs><style>text{font-family:Arial,Helvetica,sans-serif;fill:black}.b{font-weight:700}</style></defs>
+<text x="1754.0" y="82.6" font-size="42" text-anchor="middle" class="b">Diagramme ERD - Base de données MySQL</text>
+<rect x="80" y="160" width="270" height="118" fill="white" stroke="black" stroke-width="2"/>
+<text x="215" y="194.6" font-size="22" text-anchor="middle" class="b">roles</text>
+<line x1="80" y1="214" x2="350" y2="214" stroke="black" stroke-width="2"/>
+<text x="92" y="235" font-size="16" text-anchor="start">PK id</text>
+<text x="92" y="260" font-size="16" text-anchor="start">name</text>
+<rect x="420" y="160" width="270" height="168" fill="white" stroke="black" stroke-width="2"/>
+<text x="555" y="194.6" font-size="22" text-anchor="middle" class="b">users</text>
+<line x1="420" y1="214" x2="690" y2="214" stroke="black" stroke-width="2"/>
+<text x="432" y="235" font-size="16" text-anchor="start">PK id</text>
+<text x="432" y="260" font-size="16" text-anchor="start">FK role_id</text>
+<text x="432" y="285" font-size="16" text-anchor="start">email</text>
+<text x="432" y="310" font-size="16" text-anchor="start">status</text>
+<rect x="760" y="160" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="895" y="194.6" font-size="22" text-anchor="middle" class="b">schools</text>
+<line x1="760" y1="214" x2="1030" y2="214" stroke="black" stroke-width="2"/>
+<text x="772" y="235" font-size="16" text-anchor="start">PK id</text>
+<text x="772" y="260" font-size="16" text-anchor="start">FK director_user_id</text>
+<text x="772" y="285" font-size="16" text-anchor="start">status</text>
+<rect x="1100" y="160" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="1235" y="194.6" font-size="22" text-anchor="middle" class="b">school_requests</text>
+<line x1="1100" y1="214" x2="1370" y2="214" stroke="black" stroke-width="2"/>
+<text x="1112" y="235" font-size="16" text-anchor="start">PK id</text>
+<text x="1112" y="260" font-size="16" text-anchor="start">FK school_id</text>
+<text x="1112" y="285" font-size="16" text-anchor="start">FK requester_user_id</text>
+<rect x="80" y="520" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="215" y="554.6" font-size="22" text-anchor="middle" class="b">teachers</text>
+<line x1="80" y1="574" x2="350" y2="574" stroke="black" stroke-width="2"/>
+<text x="92" y="595" font-size="16" text-anchor="start">PK id</text>
+<text x="92" y="620" font-size="16" text-anchor="start">FK user_id</text>
+<text x="92" y="645" font-size="16" text-anchor="start">FK school_id</text>
+<rect x="420" y="520" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="555" y="554.6" font-size="22" text-anchor="middle" class="b">students</text>
+<line x1="420" y1="574" x2="690" y2="574" stroke="black" stroke-width="2"/>
+<text x="432" y="595" font-size="16" text-anchor="start">PK id</text>
+<text x="432" y="620" font-size="16" text-anchor="start">FK user_id</text>
+<text x="432" y="645" font-size="16" text-anchor="start">FK school_id</text>
+<rect x="760" y="520" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="895" y="554.6" font-size="22" text-anchor="middle" class="b">classes</text>
+<line x1="760" y1="574" x2="1030" y2="574" stroke="black" stroke-width="2"/>
+<text x="772" y="595" font-size="16" text-anchor="start">PK id</text>
+<text x="772" y="620" font-size="16" text-anchor="start">FK school_id</text>
+<text x="772" y="645" font-size="16" text-anchor="start">level_name</text>
+<rect x="1100" y="520" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="1235" y="554.6" font-size="22" text-anchor="middle" class="b">modules</text>
+<line x1="1100" y1="574" x2="1370" y2="574" stroke="black" stroke-width="2"/>
+<text x="1112" y="595" font-size="16" text-anchor="start">PK id</text>
+<text x="1112" y="620" font-size="16" text-anchor="start">name</text>
+<text x="1112" y="645" font-size="16" text-anchor="start">weekly_hours</text>
+<rect x="80" y="880" width="270" height="118" fill="white" stroke="black" stroke-width="2"/>
+<text x="215" y="914.6" font-size="22" text-anchor="middle" class="b">class_students</text>
+<line x1="80" y1="934" x2="350" y2="934" stroke="black" stroke-width="2"/>
+<text x="92" y="955" font-size="16" text-anchor="start">PK class_id</text>
+<text x="92" y="980" font-size="16" text-anchor="start">PK student_user_id</text>
+<rect x="420" y="880" width="270" height="118" fill="white" stroke="black" stroke-width="2"/>
+<text x="555" y="914.6" font-size="22" text-anchor="middle" class="b">class_teachers</text>
+<line x1="420" y1="934" x2="690" y2="934" stroke="black" stroke-width="2"/>
+<text x="432" y="955" font-size="16" text-anchor="start">PK class_id</text>
+<text x="432" y="980" font-size="16" text-anchor="start">PK teacher_user_id</text>
+<rect x="760" y="880" width="270" height="118" fill="white" stroke="black" stroke-width="2"/>
+<text x="895" y="914.6" font-size="22" text-anchor="middle" class="b">class_modules</text>
+<line x1="760" y1="934" x2="1030" y2="934" stroke="black" stroke-width="2"/>
+<text x="772" y="955" font-size="16" text-anchor="start">PK class_id</text>
+<text x="772" y="980" font-size="16" text-anchor="start">PK module_id</text>
+<rect x="1100" y="880" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="1235" y="914.6" font-size="22" text-anchor="middle" class="b">teacher_school_requests</text>
+<line x1="1100" y1="934" x2="1370" y2="934" stroke="black" stroke-width="2"/>
+<text x="1112" y="955" font-size="16" text-anchor="start">PK id</text>
+<text x="1112" y="980" font-size="16" text-anchor="start">FK teacher_user_id</text>
+<text x="1112" y="1005" font-size="16" text-anchor="start">FK school_id</text>
+<rect x="1500" y="160" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="1635" y="194.6" font-size="22" text-anchor="middle" class="b">courses</text>
+<line x1="1500" y1="214" x2="1770" y2="214" stroke="black" stroke-width="2"/>
+<text x="1512" y="235" font-size="16" text-anchor="start">PK id</text>
+<text x="1512" y="260" font-size="16" text-anchor="start">FK class_id</text>
+<text x="1512" y="285" font-size="16" text-anchor="start">FK module_id</text>
+<rect x="1840" y="160" width="270" height="118" fill="white" stroke="black" stroke-width="2"/>
+<text x="1975" y="194.6" font-size="22" text-anchor="middle" class="b">course_files</text>
+<line x1="1840" y1="214" x2="2110" y2="214" stroke="black" stroke-width="2"/>
+<text x="1852" y="235" font-size="16" text-anchor="start">PK id</text>
+<text x="1852" y="260" font-size="16" text-anchor="start">FK course_id</text>
+<rect x="2180" y="160" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="2315" y="194.6" font-size="22" text-anchor="middle" class="b">quizzes</text>
+<line x1="2180" y1="214" x2="2450" y2="214" stroke="black" stroke-width="2"/>
+<text x="2192" y="235" font-size="16" text-anchor="start">PK id</text>
+<text x="2192" y="260" font-size="16" text-anchor="start">FK course_id</text>
+<text x="2192" y="285" font-size="16" text-anchor="start">FK module_id</text>
+<rect x="2520" y="160" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="2655" y="194.6" font-size="22" text-anchor="middle" class="b">exams</text>
+<line x1="2520" y1="214" x2="2790" y2="214" stroke="black" stroke-width="2"/>
+<text x="2532" y="235" font-size="16" text-anchor="start">PK id</text>
+<text x="2532" y="260" font-size="16" text-anchor="start">FK course_id</text>
+<text x="2532" y="285" font-size="16" text-anchor="start">FK module_id</text>
+<rect x="1500" y="520" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="1635" y="554.6" font-size="22" text-anchor="middle" class="b">questions</text>
+<line x1="1500" y1="574" x2="1770" y2="574" stroke="black" stroke-width="2"/>
+<text x="1512" y="595" font-size="16" text-anchor="start">PK id</text>
+<text x="1512" y="620" font-size="16" text-anchor="start">FK quiz_id</text>
+<text x="1512" y="645" font-size="16" text-anchor="start">FK exam_id</text>
+<rect x="1840" y="520" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="1975" y="554.6" font-size="22" text-anchor="middle" class="b">answers</text>
+<line x1="1840" y1="574" x2="2110" y2="574" stroke="black" stroke-width="2"/>
+<text x="1852" y="595" font-size="16" text-anchor="start">PK id</text>
+<text x="1852" y="620" font-size="16" text-anchor="start">FK question_id</text>
+<text x="1852" y="645" font-size="16" text-anchor="start">FK student_user_id</text>
+<rect x="2180" y="520" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="2315" y="554.6" font-size="22" text-anchor="middle" class="b">attempts</text>
+<line x1="2180" y1="574" x2="2450" y2="574" stroke="black" stroke-width="2"/>
+<text x="2192" y="595" font-size="16" text-anchor="start">PK id</text>
+<text x="2192" y="620" font-size="16" text-anchor="start">FK quiz_id</text>
+<text x="2192" y="645" font-size="16" text-anchor="start">FK exam_id</text>
+<rect x="2520" y="520" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="2655" y="554.6" font-size="22" text-anchor="middle" class="b">quiz_results</text>
+<line x1="2520" y1="574" x2="2790" y2="574" stroke="black" stroke-width="2"/>
+<text x="2532" y="595" font-size="16" text-anchor="start">PK id</text>
+<text x="2532" y="620" font-size="16" text-anchor="start">FK user_id</text>
+<text x="2532" y="645" font-size="16" text-anchor="start">score</text>
+<rect x="1500" y="880" width="270" height="143" fill="white" stroke="black" stroke-width="2"/>
+<text x="1635" y="914.6" font-size="22" text-anchor="middle" class="b">ai_learning_profiles</text>
+<line x1="1500" y1="934" x2="1770" y2="934" stroke="black" stroke-width="2"/>
+<text x="1512" y="955" font-size="16" text-anchor="start">PK id</text>
+<text x="1512" y="980" font-size="16" text-anchor="start">FK user_id</text>
+<text x="1512" y="1005" font-size="16" text-anchor="start">strengths</text>
+<rect x="1840" y="880" width="270" height="118" fill="white" stroke="black" stroke-width="2"/>
+<text x="1975" y="914.6" font-size="22" text-anchor="middle" class="b">ai_recommendations</text>
+<line x1="1840" y1="934" x2="2110" y2="934" stroke="black" stroke-width="2"/>
+<text x="1852" y="955" font-size="16" text-anchor="start">PK id</text>
+<text x="1852" y="980" font-size="16" text-anchor="start">FK student_user_id</text>
+<rect x="2180" y="880" width="270" height="118" fill="white" stroke="black" stroke-width="2"/>
+<text x="2315" y="914.6" font-size="22" text-anchor="middle" class="b">schedules</text>
+<line x1="2180" y1="934" x2="2450" y2="934" stroke="black" stroke-width="2"/>
+<text x="2192" y="955" font-size="16" text-anchor="start">PK id</text>
+<text x="2192" y="980" font-size="16" text-anchor="start">FK class_id</text>
+<rect x="2520" y="880" width="270" height="118" fill="white" stroke="black" stroke-width="2"/>
+<text x="2655" y="914.6" font-size="22" text-anchor="middle" class="b">schedule_items</text>
+<line x1="2520" y1="934" x2="2790" y2="934" stroke="black" stroke-width="2"/>
+<text x="2532" y="955" font-size="16" text-anchor="start">PK id</text>
+<text x="2532" y="980" font-size="16" text-anchor="start">FK schedule_id</text>
+<rect x="1500" y="1240" width="270" height="118" fill="white" stroke="black" stroke-width="2"/>
+<text x="1635" y="1274.6" font-size="22" text-anchor="middle" class="b">teacher_availability</text>
+<line x1="1500" y1="1294" x2="1770" y2="1294" stroke="black" stroke-width="2"/>
+<text x="1512" y="1315" font-size="16" text-anchor="start">PK id</text>
+<text x="1512" y="1340" font-size="16" text-anchor="start">FK teacher_user_id</text>
+<rect x="1840" y="1240" width="270" height="118" fill="white" stroke="black" stroke-width="2"/>
+<text x="1975" y="1274.6" font-size="22" text-anchor="middle" class="b">notifications</text>
+<line x1="1840" y1="1294" x2="2110" y2="1294" stroke="black" stroke-width="2"/>
+<text x="1852" y="1315" font-size="16" text-anchor="start">PK id</text>
+<text x="1852" y="1340" font-size="16" text-anchor="start">FK user_id</text>
+<rect x="2180" y="1240" width="270" height="118" fill="white" stroke="black" stroke-width="2"/>
+<text x="2315" y="1274.6" font-size="22" text-anchor="middle" class="b">audit_logs</text>
+<line x1="2180" y1="1294" x2="2450" y2="1294" stroke="black" stroke-width="2"/>
+<text x="2192" y="1315" font-size="16" text-anchor="start">PK id</text>
+<text x="2192" y="1340" font-size="16" text-anchor="start">FK actor_user_id</text>
+<rect x="2520" y="1240" width="270" height="118" fill="white" stroke="black" stroke-width="2"/>
+<text x="2655" y="1274.6" font-size="22" text-anchor="middle" class="b">reports</text>
+<line x1="2520" y1="1294" x2="2790" y2="1294" stroke="black" stroke-width="2"/>
+<text x="2532" y="1315" font-size="16" text-anchor="start">PK id</text>
+<text x="2532" y="1340" font-size="16" text-anchor="start">FK reporter_user_id</text>
+<text x="620" y="1382.2" font-size="24" text-anchor="middle">Les clés étrangères principales sont listées dans chaque table. Les tables class_students,</text>
+<text x="620" y="1412.2" font-size="24" text-anchor="middle">class_teachers et class_modules matérialisent les relations plusieurs-à-plusieurs.</text>
+<text x="2240" y="1572.2" font-size="24" text-anchor="middle">Schéma aligné avec les migrations 001/002 et les tables créées dynamiquement par les blueprints</text>
+<text x="2240" y="1602.2" font-size="24" text-anchor="middle">Flask.</text>
+</svg>

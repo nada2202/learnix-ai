@@ -1,12 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BookAiLogo } from "../components/LearnixLayout";
+import { AlertMessage } from "../components/ui";
 import { useLanguage } from "../context/LanguageContext";
-import { useTheme } from "../context/ThemeContext";
 import { formatDuration } from "../utils/duration";
+import { apiErrorMessage, apiFetch, readApiJson } from "../services/api";
+import { localizedCategory } from "../utils/localizedLabels";
 
 function GuestQuiz() {
+  const navigate = useNavigate();
   const { language, setLanguage, t, dir } = useLanguage();
-  const { theme, toggleTheme } = useTheme();
   const [file, setFile] = useState(null);
   const [numQuestions, setNumQuestions] = useState(3);
   const [difficulty, setDifficulty] = useState("Easy");
@@ -20,13 +23,15 @@ function GuestQuiz() {
   const [submitting, setSubmitting] = useState(false);
   const [startedAt, setStartedAt] = useState(null);
   const [downloading, setDownloading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const generateQuiz = async () => {
     if (!file) {
-      alert(t.selectPdf);
+      setMessage(t.selectPdf);
       return;
     }
 
+    setMessage("");
     const formData = new FormData();
     formData.append("file", file);
     formData.append("numQuestions", numQuestions);
@@ -35,13 +40,14 @@ function GuestQuiz() {
 
     try {
       setLoading(true);
-      const response = await fetch("http://127.0.0.1:5000/generate-exercises", {
+      const response = await apiFetch("/generate-exercises", {
         method: "POST",
         body: formData,
       });
-      const data = await response.json();
+      const data = await readApiJson(response, t.generationFailed);
 
       if (data.success) {
+        setMessage("");
         setCategory(data.category);
         setQuestions(data.exercises);
         setAnswers(Array(data.exercises.length).fill(""));
@@ -50,10 +56,10 @@ function GuestQuiz() {
         setStartedAt(new Date().getTime());
         setView("quiz");
       } else {
-        alert(data.message || t.noExercisesGenerated);
+        setMessage(data.message || t.noExercisesGenerated);
       }
-    } catch {
-      alert(t.generationFailed);
+    } catch (error) {
+      setMessage(apiErrorMessage(error, t) || t.generationFailed);
     } finally {
       setLoading(false);
     }
@@ -72,7 +78,7 @@ function GuestQuiz() {
 
     try {
       setSubmitting(true);
-      const response = await fetch("http://127.0.0.1:5000/correct-quiz", {
+      const response = await apiFetch("/correct-quiz", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,17 +92,18 @@ function GuestQuiz() {
           timeSpentSeconds,
         }),
       });
-      const data = await response.json();
+      const data = await readApiJson(response, t.correctionFailed);
 
       if (data.success) {
+        setMessage("");
         setResult(data.result);
         setStartedAt(null);
         setView("result");
       } else {
-        alert(data.message || t.correctionFailed);
+        setMessage(data.message || t.correctionFailed);
       }
-    } catch {
-      alert(t.correctionFailed);
+    } catch (error) {
+      setMessage(apiErrorMessage(error, t) || t.correctionFailed);
     } finally {
       setSubmitting(false);
     }
@@ -109,12 +116,13 @@ function GuestQuiz() {
 
     try {
       setDownloading(true);
-      const response = await fetch("http://127.0.0.1:5000/download-correction-pdf", {
+      const response = await apiFetch("/download-correction-pdf", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          language,
           studentName: t.studentFallback,
           studentEmail: "",
           category,
@@ -124,7 +132,7 @@ function GuestQuiz() {
       });
 
       if (!response.ok) {
-        alert(t.pdfFailed);
+        setMessage(t.pdfFailed);
         return;
       }
 
@@ -138,7 +146,7 @@ function GuestQuiz() {
       link.remove();
       window.URL.revokeObjectURL(url);
     } catch {
-      alert(t.pdfFailed);
+      setMessage(t.pdfFailed);
     } finally {
       setDownloading(false);
     }
@@ -154,44 +162,65 @@ function GuestQuiz() {
       : "low";
 
   return (
-    <div className="shared-page" dir={dir}>
+    <div className="shared-page guest-quiz-page" dir={dir}>
       <header className="shared-header">
-        <div className="shared-brand">
+        <button className="learnix-brand guest-brand-link" type="button" onClick={() => navigate("/guest")}>
           <BookAiLogo />
-          <strong>Learnix AI</strong>
-        </div>
+          <h2>Learnix<span>IA</span></h2>
+        </button>
         <div className="shared-actions">
-          <button className="theme-toggle" onClick={toggleTheme} type="button">
-            {theme === "dark" ? t.lightMode : t.darkMode}
-          </button>
-          <select value={language} onChange={(event) => setLanguage(event.target.value)}>
-            <option value="en">{t.english}</option>
-            <option value="fr">{t.french}</option>
-            <option value="ar">{t.arabic}</option>
-          </select>
+          <label className="guest-language-select">
+            <span aria-hidden="true"><GuestUploadIcon type="globe" /></span>
+            <select value={language} onChange={(event) => setLanguage(event.target.value)} aria-label={t.language}>
+              <option value="en">{t.english}</option>
+              <option value="fr">{t.french}</option>
+              <option value="ar">{t.arabic}</option>
+            </select>
+          </label>
         </div>
       </header>
 
       <main className="shared-main">
         <section className="shared-hero">
-          <span className="badge">{t.guestMode}</span>
-          <h1>{t.guestQuizTitle}</h1>
-          <p>{t.guestQuizSubtitle}</p>
+          <span className="badge">Mode invité</span>
+          <h1>Quiz invité</h1>
+          <p>Importez un PDF de cours, générez un quiz et obtenez une correction instantanée sans connexion.</p>
         </section>
 
+        {message && <AlertMessage tone="warning">{message}</AlertMessage>}
+
         {view === "setup" && (
-          <div className="dash-card quiz-card shared-quiz-card">
-            <h3>{t.createQuiz}</h3>
-            <div className="form-group">
-              <label>{t.uploadLessonPdf}</label>
-              <input
-                type="file"
-                accept="application/pdf"
-                onChange={(event) => setFile(event.target.files[0])}
-              />
+          <div className="guest-setup-grid">
+            <div className="dash-card quiz-card shared-quiz-card guest-create-card">
+            <div className="guest-form-head">
+              <span aria-hidden="true"><GuestUploadIcon type="spark" /></span>
+              <div>
+                <h3>Créer un quiz</h3>
+                <p>Préparez votre questionnaire à partir d'un support PDF.</p>
+              </div>
             </div>
+
+            <div className="form-group guest-upload-group">
+              <label>Support de cours PDF</label>
+              <label className="guest-upload-zone">
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(event) => {
+                    setFile(event.target.files[0]);
+                    setMessage("");
+                  }}
+                />
+                <span className="guest-upload-icon" aria-hidden="true"><GuestUploadIcon type="pdf" /></span>
+                <strong>Déposez votre fichier PDF ici</strong>
+                <em>ou cliquez pour parcourir</em>
+                <b>Choisir un fichier</b>
+              </label>
+              <p className="guest-file-name">{file?.name || "Aucun fichier sélectionné"}</p>
+            </div>
+
             <div className="form-group">
-              <label>{t.questionCount}</label>
+              <label>Nombre de questions</label>
               <input
                 type="number"
                 min="1"
@@ -201,7 +230,7 @@ function GuestQuiz() {
               />
             </div>
             <div className="form-group">
-              <label>{t.difficulty}</label>
+              <label>Niveau de difficulté</label>
               <select value={difficulty} onChange={(event) => setDifficulty(event.target.value)}>
                 <option value="Easy">{t.difficultyEasy}</option>
                 <option value="Medium">{t.difficultyMedium}</option>
@@ -211,19 +240,40 @@ function GuestQuiz() {
             <button className="primary-action" onClick={generateQuiz} disabled={loading}>
               {loading ? t.generating : t.generateQuiz}
             </button>
+
+            </div>
+
+            <aside className="guest-side-column">
+
+            <section className="guest-how-card" aria-label="Comment ça marche ?">
+              <h4>Comment ça marche ?</h4>
+              <ol>
+                <li><span>1</span>Importez votre PDF</li>
+                <li><span>2</span>Choisissez le nombre de questions</li>
+                <li><span>3</span>Lancez le quiz et consultez la correction</li>
+              </ol>
+            </section>
+              <section className="guest-privacy-card">
+                <div className="guest-privacy-icon" aria-hidden="true"><GuestUploadIcon type="shield" /></div>
+                <div>
+                  <h4>Confidentialité garantie</h4>
+                  <p>Aucun fichier n'est stocké. Vos données restent privées et sécurisées.</p>
+                </div>
+              </section>
+            </aside>
           </div>
         )}
 
         {view === "quiz" && question && (
-          <div className="dash-card quiz-card shared-quiz-card">
+          <div className="dash-card quiz-card shared-quiz-card guest-question-card" key={`guest-question-${currentQuestion}`}>
             <div className="quiz-topline">
               <p>
                 {t.question} {currentQuestion + 1} / {questions.length}
               </p>
-              <span>{t.detectedCategory}: {category}</span>
+              <span>{t.detectedCategory}: {localizedCategory(category, language)}</span>
             </div>
             <div className="progress-track" aria-label={t.quizProgressLabel}>
-              <div className="progress-fill" style={{ width: `${progress}%` }} />
+              <div className="progress-fill" style={{ width: `${progress}%` }} key={`guest-progress-${currentQuestion}`} />
             </div>
             <h2>{question.question}</h2>
             {question.instructions && (
@@ -236,13 +286,13 @@ function GuestQuiz() {
             />
             <div className="quiz-actions">
               <button
-                onClick={() => setCurrentQuestion(currentQuestion - 1)}
+                onClick={() => setCurrentQuestion((index) => Math.max(0, index - 1))}
                 disabled={currentQuestion === 0}
               >
                 {t.back}
               </button>
               {currentQuestion < questions.length - 1 ? (
-                <button onClick={() => setCurrentQuestion(currentQuestion + 1)}>
+                <button onClick={() => setCurrentQuestion((index) => Math.min(questions.length - 1, index + 1))}>
                   {t.next}
                 </button>
               ) : (
@@ -284,7 +334,7 @@ function GuestQuiz() {
                 <p>{result.feedback}</p>
               </div>
               <div className="quiz-actions">
-                <button onClick={downloadCorrectionPdf} disabled={downloading}>
+                <button className="restricted-download" onClick={downloadCorrectionPdf} disabled={downloading}>
                   {downloading ? t.downloading : t.downloadPdf}
                 </button>
               </div>
@@ -309,7 +359,48 @@ function GuestQuiz() {
           </div>
         )}
       </main>
+      <footer className="guest-footer">© 2026 Learnix IA. Tous droits réservés.</footer>
     </div>
+  );
+}
+
+function GuestUploadIcon({ type }) {
+  const common = { fill: "none", stroke: "currentColor", strokeWidth: "2.1", strokeLinecap: "round", strokeLinejoin: "round" };
+
+  if (type === "spark") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path {...common} d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" />
+        <path {...common} d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z" />
+      </svg>
+    );
+  }
+
+  if (type === "globe") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle {...common} cx="12" cy="12" r="9" />
+        <path {...common} d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+      </svg>
+    );
+  }
+
+  if (type === "shield") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path {...common} d="M12 3l7 3v5c0 4.6-2.9 8.4-7 10-4.1-1.6-7-5.4-7-10V6z" />
+        <path {...common} d="M9 12l2 2 4-4" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path {...common} d="M7 3h7l4 4v14H7z" />
+      <path {...common} d="M14 3v5h4" />
+      <path {...common} d="M9 15h6M12 18v-6" />
+      <path {...common} d="M9 10h2" />
+    </svg>
   );
 }
 

@@ -1,0 +1,55 @@
+@startuml
+title Diagramme de cas d'utilisation - Etudiant et intelligence artificielle
+
+left to right direction
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam actorStyle stickman
+
+actor Etudiant as Student
+actor "Etudiant invite" as GuestStudent
+
+rectangle "Learnix AI - Apprentissage intelligent" {
+  usecase "S'authentifier" as UCAuth
+  usecase "Consulter les ressources\npedagogiques" as UCResources
+  usecase "Importer un document\nPDF ou image" as UCImport
+  usecase "Extraire le contenu" as UCExtract
+  usecase "Obtenir un resume" as UCSummary
+  usecase "Utiliser l'assistant IA" as UCAssistant
+  usecase "Generer des exercices" as UCExercises
+  usecase "Generer un quiz ou\nun examen par IA" as UCGenerate
+  usecase "Passer une evaluation" as UCTake
+  usecase "Obtenir la correction" as UCCorrection
+  usecase "Consulter les resultats\net recommandations" as UCResults
+  usecase "Consulter l'historique\ndes resultats" as UCHistory
+}
+
+Student --> UCAuth
+Student --> UCResources
+Student --> UCImport
+Student --> UCAssistant
+Student --> UCExercises
+Student --> UCGenerate
+Student --> UCTake
+Student --> UCResults
+Student --> UCHistory
+
+GuestStudent --> UCAuth
+GuestStudent --> UCImport
+GuestStudent --> UCAssistant
+GuestStudent --> UCExercises
+GuestStudent --> UCTake
+GuestStudent --> UCResults
+GuestStudent --> UCHistory
+
+UCImport ..> UCExtract : <<include>>
+UCSummary ..> UCImport : <<include>>
+UCExercises ..> UCImport : <<include>>
+UCGenerate ..> UCImport : <<include>>
+UCAssistant ..> UCSummary : <<extend>>
+UCAssistant ..> UCGenerate : <<extend>>
+UCTake ..> UCCorrection : <<include>>
+UCCorrection ..> UCResults : <<include>>
+UCHistory ..> UCResults : <<extend>>
+@enduml

@@ -1,46 +1,91 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BookAiLogo } from "../components/LearnixLayout";
+import { AlertMessage } from "../components/ui";
 import { useLanguage } from "../context/LanguageContext";
 import { useTheme } from "../context/ThemeContext";
+import { apiErrorMessage, apiFetch, readApiJson } from "../services/api";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
+  const [token, setToken] = useState("");
   const [password, setPassword] = useState("");
+  const [step, setStep] = useState("request");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const { language, setLanguage, t, dir } = useLanguage();
   const { theme, toggleTheme } = useTheme();
 
-  const handleReset = async () => {
-    if (!email || !password) {
-      alert(t.requiredReset);
+  const requestResetToken = async () => {
+    if (!email) {
+      setMessage(t.email);
       return;
     }
 
     try {
+      setMessage("");
       setLoading(true);
 
-      const response = await fetch("http://127.0.0.1:5000/forgot-password", {
+      const response = await apiFetch("/forgot-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email,
+        }),
+      });
+
+      const data = await readApiJson(response, t.serverError);
+
+      if (data.success) {
+        setMessage(data.resetToken ? `${data.message} Token: ${data.resetToken}` : data.message);
+        if (data.resetToken) {
+          setToken(data.resetToken);
+        }
+        setStep("confirm");
+      } else {
+        setMessage(data.message || t.serverError);
+      }
+    } catch (error) {
+      setMessage(apiErrorMessage(error, t));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReset = async () => {
+    if (!email || !token || !password) {
+      setMessage(t.requiredReset || "Email, reset token and new password are required.");
+      return;
+    }
+
+    try {
+      setMessage("");
+      setLoading(true);
+
+      const response = await apiFetch("/reset-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          token,
           password,
         }),
       });
 
-      const data = await response.json();
-
-      alert(data.message);
+      const data = await readApiJson(response, t.serverError);
 
       if (data.success) {
-        navigate("/student-login");
+        navigate("/login");
+      } else {
+        setMessage(data.message || t.serverError);
       }
-    } catch {
-      alert(t.serverError);
+    } catch (error) {
+      setMessage(apiErrorMessage(error, t));
     } finally {
       setLoading(false);
     }
@@ -72,6 +117,7 @@ function ForgotPassword() {
 
         <h1>{t.resetTitle}</h1>
         <p>{t.resetSubtitle}</p>
+        {message && <AlertMessage tone="warning">{message}</AlertMessage>}
 
         <input
           type="email"
@@ -80,19 +126,30 @@ function ForgotPassword() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <input
-          type="password"
-          placeholder={t.newPassword}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        {step === "confirm" && (
+          <>
+            <input
+              type="text"
+              placeholder="Reset token"
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
+            />
 
-        <button onClick={handleReset} disabled={loading}>
-          {loading ? t.updating : t.updatePassword}
+            <input
+              type="password"
+              placeholder={t.newPassword}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </>
+        )}
+
+        <button onClick={step === "request" ? requestResetToken : handleReset} disabled={loading}>
+          {loading ? t.updating : step === "request" ? "Request reset token" : t.updatePassword}
         </button>
 
         <p className="register-text">
-          {t.remembered} <Link to="/student-login">{t.backToLogin}</Link>
+          {t.remembered} <Link to="/login">{t.backToLogin}</Link>
         </p>
       </div>
     </div>

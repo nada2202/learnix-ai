@@ -4,10 +4,20 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
+  const [theme, setTheme] = useState(() => {
+    try {
+      return globalThis.localStorage?.getItem("theme") || "light";
+    } catch {
+      return "light";
+    }
+  });
 
   useEffect(() => {
-    localStorage.setItem("theme", theme);
+    try {
+      globalThis.localStorage?.setItem("theme", theme);
+    } catch {
+      // Keep rendering if storage is unavailable during hydration.
+    }
     document.documentElement.dataset.theme = theme;
   }, [theme]);
 

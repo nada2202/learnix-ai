@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3508" height="2480" viewBox="0 0 3508 2480">
+<rect width="100%" height="100%" fill="white"/>
+<defs><style>text{font-family:Arial,Helvetica,sans-serif;fill:black}.b{font-weight:700}</style></defs>
+<text x="1754.0" y="82.6" font-size="42" text-anchor="middle" class="b">Séquence - Création d&#x27;école et validation administrateur</text>
+<rect x="105" y="180" width="290" height="70" fill="white" stroke="black" stroke-width="2"/>
+<text x="250" y="222.2" font-size="24" text-anchor="middle" class="b">Directeur</text>
+<line x1="250" y1="250" x2="250" y2="2240" stroke="black" stroke-width="2" stroke-dasharray="12 9"/>
+<rect x="857" y="180" width="290" height="70" fill="white" stroke="black" stroke-width="2"/>
+<text x="1002" y="222.2" font-size="24" text-anchor="middle" class="b">Frontend</text>
+<line x1="1002" y1="250" x2="1002" y2="2240" stroke="black" stroke-width="2" stroke-dasharray="12 9"/>
+<rect x="1609" y="180" width="290" height="70" fill="white" stroke="black" stroke-width="2"/>
+<text x="1754" y="222.2" font-size="24" text-anchor="middle" class="b">API Schools</text>
+<line x1="1754" y1="250" x2="1754" y2="2240" stroke="black" stroke-width="2" stroke-dasharray="12 9"/>
+<rect x="2361" y="180" width="290" height="70" fill="white" stroke="black" stroke-width="2"/>
+<text x="2506" y="222.2" font-size="24" text-anchor="middle" class="b">MySQL</text>
+<line x1="2506" y1="250" x2="2506" y2="2240" stroke="black" stroke-width="2" stroke-dasharray="12 9"/>
+<rect x="3113" y="180" width="290" height="70" fill="white" stroke="black" stroke-width="2"/>
+<text x="3258" y="222.2" font-size="24" text-anchor="middle" class="b">Administrateur</text>
+<line x1="3258" y1="250" x2="3258" y2="2240" stroke="black" stroke-width="2" stroke-dasharray="12 9"/>
+<line x1="250" y1="350" x2="1002" y2="350" stroke="black" stroke-width="2"/>
+<polygon points="1002,350 986,357 986,342" fill="black" stroke="black" stroke-width="1"/>
+<text x="626.0" y="330.3" font-size="21" text-anchor="middle">Remplir demande d&#x27;école</text>
+<line x1="1002" y1="495" x2="1754" y2="495" stroke="black" stroke-width="2"/>
+<polygon points="1754,495 1738,502 1738,487" fill="black" stroke="black" stroke-width="1"/>
+<text x="1378.0" y="475.3" font-size="21" text-anchor="middle">POST /api/schools</text>
+<line x1="1754" y1="640" x2="2506" y2="640" stroke="black" stroke-width="2"/>
+<polygon points="2506,640 2490,647 2490,632" fill="black" stroke="black" stroke-width="1"/>
+<text x="2130.0" y="620.3" font-size="21" text-anchor="middle">Créer schools + school_requests</text>
+<line x1="1754" y1="785" x2="3258" y2="785" stroke="black" stroke-width="2"/>
+<polygon points="3258,785 3242,792 3242,777" fill="black" stroke="black" stroke-width="1"/>
+<text x="2506.0" y="765.3" font-size="21" text-anchor="middle">Notifier demande en attente</text>
+<line x1="3258" y1="930" x2="1754" y2="930" stroke="black" stroke-width="2"/>
+<polygon points="1754,930 1769,922 1769,937" fill="black" stroke="black" stroke-width="1"/>
+<text x="2506.0" y="910.3" font-size="21" text-anchor="middle">PATCH décision</text>
+<line x1="1754" y1="1075" x2="2506" y2="1075" stroke="black" stroke-width="2"/>
+<polygon points="2506,1075 2490,1082 2490,1067" fill="black" stroke="black" stroke-width="1"/>
+<text x="2130.0" y="1055.3" font-size="21" text-anchor="middle">Mettre statut approved/rejected</text>
+<line x1="1754" y1="1220" x2="250" y2="1220" stroke="black" stroke-width="2"/>
+<polygon points="250,1220 265,1212 265,1227" fill="black" stroke="black" stroke-width="1"/>
+<text x="1002.0" y="1200.3" font-size="21" text-anchor="middle">Activer tableau de bord si accepté</text>
+</svg>

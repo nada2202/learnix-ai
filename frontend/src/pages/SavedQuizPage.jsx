@@ -4,6 +4,8 @@ import LearnixLayout, { BookAiLogo } from "../components/LearnixLayout";
 import { useLanguage } from "../context/LanguageContext";
 import { useTheme } from "../context/ThemeContext";
 import { formatDuration } from "../utils/duration";
+import { apiFetch } from "../services/api";
+import { localizedCategory, localizedDifficulty } from "../utils/localizedLabels";
 
 function SavedQuizPage({ mode }) {
   const { id } = useParams();
@@ -22,7 +24,7 @@ function SavedQuizPage({ mode }) {
   useEffect(() => {
     const timer = setTimeout(async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/shared-quiz/${id}`);
+        const response = await apiFetch(`/shared-quiz/${id}`);
         const data = await response.json();
 
         if (data.success) {
@@ -51,7 +53,7 @@ function SavedQuizPage({ mode }) {
 
     try {
       setSubmitting(true);
-      const response = await fetch(`http://127.0.0.1:5000/submit-saved-quiz/${id}`, {
+      const response = await apiFetch(`/submit-saved-quiz/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -94,12 +96,13 @@ function SavedQuizPage({ mode }) {
       return;
     }
 
-    const response = await fetch("http://127.0.0.1:5000/download-correction-pdf", {
+    const response = await apiFetch("/download-correction-pdf", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        language,
         studentName: user.name || t.studentFallback,
         studentEmail: user.email || "",
         category: quiz.category,
@@ -139,7 +142,7 @@ function SavedQuizPage({ mode }) {
             <p>
               {t.question} {currentQuestion + 1} / {quiz.questions.length}
             </p>
-            <span>{t.detectedCategory}: {quiz.category}</span>
+            <span>{t.detectedCategory}: {localizedCategory(quiz.category, language)}</span>
           </div>
 
           <div className="progress-track" aria-label={t.quizProgressLabel}>
@@ -210,7 +213,7 @@ function SavedQuizPage({ mode }) {
             </div>
 
             <div className="quiz-actions">
-              <button onClick={downloadCorrectionPdf}>{t.downloadPdf}</button>
+              <button className="restricted-download" onClick={downloadCorrectionPdf}>{t.downloadPdf}</button>
             </div>
 
             <div className="answer-review">
@@ -258,9 +261,9 @@ function SavedQuizPage({ mode }) {
 
         <main className="shared-main">
           <section className="shared-hero">
-            <span className="badge">{quiz ? quiz.category : t.sharedQuizTitle}</span>
+            <span className="badge">{quiz ? localizedCategory(quiz.category, language) : t.sharedQuizTitle}</span>
             <h1>{pageTitle}</h1>
-            <p>{quiz ? `${quiz.category} / ${quiz.difficulty}` : t.loadingQuiz}</p>
+            <p>{quiz ? `${localizedCategory(quiz.category, language)} / ${localizedDifficulty(quiz.difficulty, language)}` : t.loadingQuiz}</p>
           </section>
           {content}
         </main>
@@ -271,7 +274,7 @@ function SavedQuizPage({ mode }) {
   return (
     <LearnixLayout
       title={pageTitle}
-      subtitle={quiz ? `${quiz.category} / ${quiz.difficulty}` : t.loadingQuiz}
+      subtitle={quiz ? `${localizedCategory(quiz.category, language)} / ${localizedDifficulty(quiz.difficulty, language)}` : t.loadingQuiz}
     >
       {content}
     </LearnixLayout>

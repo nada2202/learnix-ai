@@ -1,19 +1,27 @@
-import { useCallback, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import LearnixLayout from "../components/LearnixLayout";
+import { AlertMessage } from "../components/ui";
 import { useLanguage } from "../context/LanguageContext";
-import { demoTeachers, teacherForSubject } from "../data/demoTeachers";
 import { formatDuration } from "../utils/duration";
+import { apiErrorMessage, apiFetch, readApiJson } from "../services/api";
+import { localizedCategory } from "../utils/localizedLabels";
+
+function cleanQuestionText(value) {
+  return String(value || "")
+    .replace(/^\s*(?:question\s*)?\d+\s*[).:-]\s*/i, "")
+    .trim();
+}
 
 function Exercises() {
+  const location = useLocation();
+  const [assessmentType, setAssessmentType] = useState(location.state?.assessmentType || "quiz");
   const [file, setFile] = useState(null);
   const [numQuestions, setNumQuestions] = useState(3);
   const [difficulty, setDifficulty] = useState("Easy");
   const [category, setCategory] = useState("");
-  const [preview, setPreview] = useState("");
-  const [summary, setSummary] = useState("");
-  const [generatedKeyConcepts, setGeneratedKeyConcepts] = useState([]);
-  const [importantNotes, setImportantNotes] = useState([]);
   const [selectedTeacherId, setSelectedTeacherId] = useState("");
+  const [teachers, setTeachers] = useState([]);
   const [exercises, setExercises] = useState([]);
   const [answers, setAnswers] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -23,68 +31,81 @@ function Exercises() {
   const [savingResult, setSavingResult] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [quizStartedAt, setQuizStartedAt] = useState(null);
+  const [message, setMessage] = useState("");
+  const [assessmentModule, setAssessmentModule] = useState(null);
   const { language, t } = useLanguage();
   const user = JSON.parse(localStorage.getItem("studentUser") || "{}");
   const selectedTeacher = useMemo(
-    () => demoTeachers.find((teacher) => teacher.id === selectedTeacherId) || null,
-    [selectedTeacherId]
+    () => teachers.find((teacher) => String(teacher.id) === String(selectedTeacherId)) || (
+      assessmentModule?.teacherId || assessmentModule?.teacherName ? {
+        id: assessmentModule.teacherId || "",
+        name: assessmentModule.teacherName || "",
+        email: "",
+        subjects: assessmentModule.moduleName || category,
+        subject: assessmentModule.moduleName || category,
+        availability: "available",
+      } : null
+    ),
+    [assessmentModule, category, selectedTeacherId, teachers]
   );
-  const difficultyLabel = useCallback((value) => ({
-    Easy: t.difficultyEasy,
-    Medium: t.difficultyMedium,
-    Hard: t.difficultyHard,
-  })[value] || value, [t.difficultyEasy, t.difficultyHard, t.difficultyMedium]);
 
-  const lessonSummary = useMemo(() => {
-    const sourceText = summary || preview;
-    const compact = sourceText.replace(/\s+/g, " ").trim();
-    return compact.length > 520 ? `${compact.slice(0, 520)}...` : compact;
-  }, [preview, summary]);
+  useEffect(() => {
+    apiFetch("/api/student/teachers")
+      .then((response) => readApiJson(response, ""))
+      .then((data) => setTeachers(data.success ? data.teachers || [] : []))
+      .catch(() => setTeachers([]));
+  }, []);
 
-  const keyConcepts = useMemo(() => {
-    if (generatedKeyConcepts.length > 0) {
-      return generatedKeyConcepts;
+  useEffect(() => {
+    let generated = location.state?.generatedQuiz;
+    if (!generated) {
+      try {
+        generated = JSON.parse(sessionStorage.getItem("learnixGeneratedQuiz") || "null");
+      } catch {
+        generated = null;
+      }
     }
-
-    const words = preview
-      .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, " ")
-      .split(/\s+/)
-      .filter((word) => word.length > 5);
-    const counts = words.reduce((acc, word) => {
-      acc[word] = (acc[word] || 0) + 1;
-      return acc;
-    }, {});
-
-    const concepts = Object.entries(counts)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 6)
-      .map(([word]) => word);
-
-    return concepts.length ? concepts : [category || t.lessonFallback, difficultyLabel(difficulty)];
-  }, [category, difficulty, difficultyLabel, generatedKeyConcepts, preview, t.lessonFallback]);
-
+    if (!generated?.exercises?.length) return undefined;
+    const timer = window.setTimeout(() => {
+      const moduleContext = generated.moduleId || generated.moduleName || generated.teacherId || generated.teacherName ? {
+        moduleId: generated.moduleId || "",
+        moduleName: generated.moduleName || generated.category || "",
+        teacherId: generated.teacherId || "",
+        teacherName: generated.teacherName || "",
+        classId: generated.classId || "",
+        schoolId: generated.schoolId || "",
+      } : null;
+      setAssessmentModule(moduleContext);
+      setCategory(moduleContext?.moduleName || generated.category || generated.sourcePrompt || "General");
+      setDifficulty(generated.difficulty || "Medium");
+      setAssessmentType(generated.assessmentType || location.state?.assessmentType || "quiz");
+      setExercises(generated.exercises);
+      setAnswers(Array(generated.exercises.length).fill(""));
+      setSelectedTeacherId(moduleContext?.teacherId || "");
+      setView("choice");
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [location.state, teachers]);
   const resetQuiz = () => {
+    setMessage("");
     setView("setup");
     setResult(null);
     setExercises([]);
     setAnswers([]);
     setCurrentQuestion(0);
-    setPreview("");
-    setSummary("");
-    setGeneratedKeyConcepts([]);
-    setImportantNotes([]);
     setSelectedTeacherId("");
     setCategory("");
+    setAssessmentModule(null);
     setQuizStartedAt(null);
   };
 
   const handleGenerate = async () => {
     if (!file) {
-      alert(t.selectPdf);
+      setMessage(t.selectPdf);
       return;
     }
 
+    setMessage("");
     const formData = new FormData();
     formData.append("file", file);
     formData.append("numQuestions", numQuestions);
@@ -94,46 +115,39 @@ function Exercises() {
     try {
       setLoading(true);
 
-      const response = await fetch("http://127.0.0.1:5000/generate-exercises", {
+      const response = await apiFetch("/generate-exercises", {
         method: "POST",
         body: formData,
       });
 
-      const data = await response.json();
+      const data = await readApiJson(response, t.generationFailed);
 
       if (data.success && Array.isArray(data.exercises) && data.exercises.length > 0) {
-        setPreview(data.preview);
-        setSummary(data.summary || "");
-        setGeneratedKeyConcepts(Array.isArray(data.keyConcepts) ? data.keyConcepts : []);
-        setImportantNotes(Array.isArray(data.importantNotes) ? data.importantNotes : []);
         setCategory(data.category);
-        setSelectedTeacherId(teacherForSubject(data.category)?.id || "");
+        setSelectedTeacherId(teachers[0]?.id || "");
+        setAssessmentModule(null);
         setExercises(data.exercises);
         setAnswers(Array(data.exercises.length).fill(""));
         setCurrentQuestion(0);
         setResult(null);
         setView("choice");
       } else {
-        alert(data.message || t.noExercisesGenerated);
+        setMessage(data.message || t.noExercisesGenerated);
       }
     } catch (error) {
       console.error(error);
-      alert(t.generationFailed);
+      setMessage(apiErrorMessage(error, t) || t.generationFailed);
     } finally {
       setLoading(false);
     }
   };
 
   const startQuiz = () => {
-    const teacher = demoTeachers.find((item) => item.id === selectedTeacherId);
+    const teacher = teachers.find((item) => String(item.id) === String(selectedTeacherId));
 
-    if (!teacher) {
-      alert(t.chooseSubjectTeacherBeforeStart);
-      return;
-    }
-
-    if (category === "General") {
-      setCategory(teacher.subject);
+    setMessage("");
+    if (!assessmentModule && category === "General" && teacher) {
+      setCategory(teacher.subjects || teacher.subject || category);
     }
 
     setCurrentQuestion(0);
@@ -155,10 +169,10 @@ function Exercises() {
 
     try {
       setSavingResult(true);
-      const teacher = selectedTeacher || teacherForSubject(category);
-      const assignedCategory = category === "General" && teacher ? teacher.subject : category;
+      const teacher = selectedTeacher;
+      const assignedCategory = assessmentModule?.moduleName || (category === "General" && teacher ? teacher.subject : category);
 
-      const response = await fetch("http://127.0.0.1:5000/correct-quiz", {
+      const response = await apiFetch("/correct-quiz", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -169,10 +183,10 @@ function Exercises() {
           studentEmail: user.email || null,
           category: assignedCategory,
           difficulty,
-          teacherId: teacher?.id || "",
-          teacherName: teacher?.name || "",
+          teacherId: assessmentModule?.teacherId || teacher?.id || "",
+          teacherName: assessmentModule?.teacherName || teacher?.name || "",
           teacherEmail: teacher?.email || "",
-          teacherSubject: teacher?.subject || assignedCategory,
+          teacherSubject: assessmentModule?.moduleName || teacher?.subjects || assignedCategory,
           exercises,
           answers,
           timeSpentSeconds,
@@ -180,19 +194,20 @@ function Exercises() {
         }),
       });
 
-      const data = await response.json();
+      const data = await readApiJson(response, t.correctionFailed);
 
       if (data.success) {
+        setMessage("");
         setResult(data.result);
         setQuizStartedAt(null);
         setView("result");
         localStorage.setItem("dashboardStatsRefresh", String(new Date().getTime()));
         window.dispatchEvent(new Event("quizResultUpdated"));
       } else {
-        alert(data.message || t.correctionFailed);
+        setMessage(data.message || t.correctionFailed);
       }
-    } catch {
-      alert(t.correctionFailed);
+    } catch (error) {
+      setMessage(apiErrorMessage(error, t) || t.correctionFailed);
     } finally {
       setSavingResult(false);
     }
@@ -206,12 +221,13 @@ function Exercises() {
     try {
       setDownloading(true);
 
-      const response = await fetch("http://127.0.0.1:5000/download-correction-pdf", {
+      const response = await apiFetch("/download-correction-pdf", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          language,
           studentName: user.name || t.studentFallback,
           studentEmail: user.email || "",
           category,
@@ -224,7 +240,7 @@ function Exercises() {
       });
 
       if (!response.ok) {
-        alert(t.pdfFailed);
+        setMessage(t.pdfFailed);
         return;
       }
 
@@ -238,13 +254,16 @@ function Exercises() {
       link.remove();
       window.URL.revokeObjectURL(url);
     } catch {
-      alert(t.pdfFailed);
+      setMessage(t.pdfFailed);
     } finally {
       setDownloading(false);
     }
   };
 
   const question = exercises[currentQuestion];
+  const displayedQuestionNumber = exercises.length
+    ? Math.min(currentQuestion + 1, exercises.length)
+    : 0;
   const progress = exercises.length
     ? ((currentQuestion + 1) / exercises.length) * 100
     : 0;
@@ -261,7 +280,12 @@ function Exercises() {
       : t.keepImproving;
 
   return (
-    <LearnixLayout title={t.quizTitle} subtitle={t.quizSubtitle}>
+    <LearnixLayout
+      title={assessmentType === "exam" ? "Examen généré par IA" : t.quizTitle}
+      subtitle={assessmentType === "exam" ? "Répondez aux questions puis soumettez votre examen pour une correction sémantique." : t.quizSubtitle}
+    >
+        {message && <AlertMessage tone="warning">{message}</AlertMessage>}
+
         {view === "setup" && (
           <div className="dash-card quiz-card">
             <h3>{t.createQuiz}</h3>
@@ -271,7 +295,10 @@ function Exercises() {
               <input
                 type="file"
                 accept="application/pdf"
-                onChange={(e) => setFile(e.target.files[0])}
+                onChange={(e) => {
+                  setFile(e.target.files[0]);
+                  setMessage("");
+                }}
               />
             </div>
 
@@ -304,100 +331,55 @@ function Exercises() {
         {view === "choice" && (
           <div className="dash-card quiz-card choice-card">
             <span className="badge">
-              {t.detectedCategory}: {category}
+              {t.detectedCategory}: {localizedCategory(category, language)}
             </span>
             {selectedTeacher ? (
               <div className="teacher-assignment-card">
                 <strong>{t.assignedTeacher}</strong>
-                <p>{selectedTeacher.name} / {selectedTeacher.subject} / {selectedTeacher.section}</p>
+                <p>{selectedTeacher.name} / {localizedCategory(selectedTeacher.subjects || category, language)} / {selectedTeacher.availability}</p>
               </div>
             ) : (
               <div className="form-group teacher-assignment-card">
-                <label>{t.chooseSubjectTeacher}</label>
+                <label>{t.chooseSubjectTeacher} ({language === "fr" ? "facultatif" : "optional"})</label>
                 <select
                   value={selectedTeacherId}
                   onChange={(event) => setSelectedTeacherId(event.target.value)}
                 >
-                  <option value="">{t.chooseSubjectTeacher}</option>
-                  {demoTeachers.map((teacher) => (
+                  <option value="">{language === "fr" ? "Continuer sans enseignant" : "Continue without a teacher"}</option>
+                  {teachers.map((teacher) => (
                     <option value={teacher.id} key={teacher.id}>
-                      {teacher.subject} - {teacher.name} - {teacher.section}
+                      {localizedCategory(teacher.subjects || category, language)} - {teacher.name} - {teacher.availability}
                     </option>
                   ))}
                 </select>
               </div>
             )}
-            <h2>{t.quizReady}</h2>
-            <p>{t.quizReadyText}</p>
+            <h2>{assessmentType === "exam" ? "Votre examen est prêt" : t.quizReady}</h2>
+            <p>{language === "fr" ? "Lancez le quiz lorsque vous êtes prêt." : "Start the quiz when you are ready."}</p>
             <div className="choice-actions">
-              <button onClick={startQuiz}>{t.startQuiz}</button>
-              <button className="secondary-action" onClick={() => setView("summary")}>
-                {t.lessonSummary}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {view === "summary" && (
-          <div className="dash-card result-card">
-            <div className="result-header">
-              <div>
-                <p>
-                  {t.detectedCategory}: {category}
-                </p>
-                <h2>{t.summaryTitle}</h2>
-              </div>
-              <button className="secondary-action" onClick={() => setView("choice")}>
-                {t.backToChoices}
-              </button>
-            </div>
-
-            <div className="summary-grid">
-              <div className="feedback-box">
-                <h3>{t.lessonSummary}</h3>
-                <p>{lessonSummary}</p>
-              </div>
-
-              <div className="feedback-box">
-                <h3>{t.keyConcepts}</h3>
-                <div className="concept-list">
-                  {keyConcepts.map((concept) => (
-                    <span key={concept}>{concept}</span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="feedback-box">
-                <h3>{t.importantNotes}</h3>
-                <p>
-                  {category} - {difficultyLabel(difficulty)}. {t.importantNoteBody}
-                </p>
-                {importantNotes.map((note) => (
-                  <p key={note}>{note}</p>
-                ))}
-              </div>
+              <button onClick={startQuiz}>{assessmentType === "exam" ? "Commencer l'examen" : t.startQuiz}</button>
             </div>
           </div>
         )}
 
         {view === "quiz" && question && (
-          <div className="dash-card quiz-card">
+          <div className="dash-card quiz-card" key={`quiz-question-${currentQuestion}`}>
             <div className="quiz-topline">
               <p>
-                {t.question} {currentQuestion + 1} / {exercises.length}
+                {t.question} {displayedQuestionNumber} / {exercises.length}
               </p>
               {category && (
                 <span>
-                  {t.detectedCategory}: {category}
+                  {t.detectedCategory}: {localizedCategory(category, language)}
                 </span>
               )}
             </div>
 
             <div className="progress-track" aria-label={t.quizProgressLabel}>
-              <div className="progress-fill" style={{ width: `${progress}%` }} />
+              <div className="progress-fill" style={{ width: `${progress}%` }} key={`quiz-progress-${currentQuestion}`} />
             </div>
 
-            <h2>{question.question}</h2>
+            <h2>{cleanQuestionText(question.question)}</h2>
 
             {question.instructions && (
               <p className="question-instructions">{question.instructions}</p>
@@ -411,14 +393,14 @@ function Exercises() {
 
             <div className="quiz-actions">
               <button
-                onClick={() => setCurrentQuestion(currentQuestion - 1)}
+                onClick={() => setCurrentQuestion((index) => Math.max(0, index - 1))}
                 disabled={currentQuestion === 0}
               >
                 {t.back}
               </button>
 
               {currentQuestion < exercises.length - 1 ? (
-                <button onClick={() => setCurrentQuestion(currentQuestion + 1)}>
+                <button onClick={() => setCurrentQuestion((index) => Math.min(exercises.length - 1, index + 1))}>
                   {t.next}
                 </button>
               ) : (
@@ -484,7 +466,7 @@ function Exercises() {
               </div>
 
               <div className="quiz-actions">
-                <button onClick={downloadCorrectionPdf} disabled={downloading}>
+                <button className="restricted-download" onClick={downloadCorrectionPdf} disabled={downloading}>
                   {downloading ? t.downloading : t.downloadPdf}
                 </button>
                 <button className="secondary-action" onClick={resetQuiz}>
@@ -523,12 +505,6 @@ function Exercises() {
           </div>
         )}
 
-        {preview && view !== "result" && view !== "summary" && (
-          <div className="dash-card preview-card">
-            <h3>{t.lessonPreview}</h3>
-            <p>{preview}</p>
-          </div>
-        )}
     </LearnixLayout>
   );
 }

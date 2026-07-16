@@ -1,5 +1,20 @@
-/* eslint-disable react-refresh/only-export-components */
-function QuizResultModal({ mode, result, t, onBack, onDownload }) {
+﻿/* eslint-disable react-refresh/only-export-components */
+import { useEffect } from "react";
+import { scoreToneClass } from "../utils/scoreTone";
+import { useLanguage } from "../context/LanguageContext";
+import { localizedCategory, localizedDifficulty } from "../utils/localizedLabels";
+function QuizResultModal({ mode, result, t, onBack, onDownload, showDownload = false }) {
+  const { language } = useLanguage();
+
+  useEffect(() => {
+    if (!result) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [result]);
+
   if (!result) {
     return null;
   }
@@ -16,57 +31,60 @@ function QuizResultModal({ mode, result, t, onBack, onDownload }) {
       : t.lowMessage;
 
   return (
-    <div className="modal-backdrop" role="dialog" aria-modal="true">
-      <div className={`result-modal result-${level}`}>
+    <div className={`modal-backdrop ${mode !== "results" ? "modal-backdrop-correction" : ""}`} role="dialog" aria-modal="true">
+      <div className={`result-modal result-${level} result-modal-mode-${mode} ${mode !== "results" ? correctionScoreTone(result.percentage) : resultScoreTone(result.percentage)} ${scoreToneClass(result.percentage)}`}>
         <div className="modal-header">
           <div>
-            <span className="modal-kicker">{result.category} / {result.difficulty}</span>
+            <span className="modal-kicker">{localizedCategory(result.category, language)} / {localizedDifficulty(result.difficulty, language)}</span>
             <h2>{mode === "results" ? t.scoreSummary : t.correctionDetails}</h2>
-            <p>{t.completedOn}: {formatDate(result.createdAt)}</p>
-            <p>{t.duration}: {duration}</p>
+            <div className="correction-hero-meta">
+              <span>{t.completedOn}: {formatDate(result.createdAt)}</span>
+              <span>{t.duration}: {duration}</span>
+            </div>
           </div>
+          {mode !== "results" && (
+            <div className="correction-hero-score" aria-label={`${Math.round(result.percentage)}%`}>
+              <span>{Math.round(result.percentage)}%</span>
+            </div>
+          )}
           <button className="modal-close" onClick={onBack} aria-label={t.back}>
             x
           </button>
         </div>
 
-        {mode === "results" ? (
-          <div className="modal-result-summary">
+        <div className="modal-scroll-region">
+          {mode === "results" && <div className="modal-result-summary">
             <div className="modal-score">
-              <div className="percent-circle">
-                <span>{Math.round(result.percentage)}%</span>
-              </div>
-              <h3>{message}</h3>
-              <p>{result.feedback}</p>
+            <div className="percent-circle">
+              <span>{Math.round(result.percentage)}%</span>
             </div>
+            <h3>{message}</h3>
+            <p>{result.feedback}</p>
+          </div>
 
-            <div className="modal-stat-grid">
-              <div className="modal-stat-card">
-                <strong>{correctCount}</strong>
-                <span>{t.correct}</span>
-              </div>
-              <div className="modal-stat-card">
-                <strong>{incorrectCount}</strong>
-                <span>{t.incorrect}</span>
-              </div>
-              <div className="modal-stat-card">
-                <strong>{result.totalQuestions}</strong>
-                <span>{t.question}</span>
-              </div>
-              <div className="modal-stat-card">
-                <strong>{duration}</strong>
-                <span>{t.duration}</span>
-              </div>
+          <div className="modal-stat-grid">
+            <div className="modal-stat-card">
+              <strong>{correctCount}</strong>
+              <span>{t.correct}</span>
+            </div>
+            <div className="modal-stat-card">
+              <strong>{incorrectCount}</strong>
+              <span>{t.incorrect}</span>
+            </div>
+            <div className="modal-stat-card">
+              <strong>{result.totalQuestions}</strong>
+              <span>{t.question}</span>
+            </div>
+            <div className="modal-stat-card">
+              <strong>{duration}</strong>
+              <span>{t.duration}</span>
             </div>
           </div>
-        ) : (
-          <>
-            <div className="modal-toolbar">
-              <button onClick={onDownload}>{t.downloadPdf}</button>
-            </div>
+          </div>}
+            {mode !== "results" && showDownload && <div className="modal-toolbar"><button onClick={onDownload}>{t.downloadPdf}</button></div>}
 
-            <div className="correction-list">
-              {details.map((item, index) => (
+            {mode !== "results" && <div className="correction-list">
+              {details.length ? details.map((item, index) => (
                 <article
                   className={`correction-card ${item.isCorrect ? "correct" : "wrong"}`}
                   key={`${item.question}-${index}`}
@@ -77,32 +95,63 @@ function QuizResultModal({ mode, result, t, onBack, onDownload }) {
                       <h3>{item.question}</h3>
                     </div>
                     <span className="status-chip">
-                      {item.isCorrect ? "✓" : "✗"} {item.isCorrect ? t.correct : t.incorrect}
+                      {item.isCorrect ? "✓" : "×"} {item.isCorrect ? t.correct : "À revoir"}
                     </span>
                   </div>
 
                   <div className="answer-columns">
-                    <div className="answer-block">
-                      <span>{t.yourAnswer}</span>
+                    <div className={`answer-block answer-student ${item.isCorrect ? "answer-student-correct" : "answer-student-wrong"}`}>
+                      <span><PanelIcon type={item.isCorrect ? "student-correct" : "student"} />{t.yourAnswer}</span>
                       <p>{item.studentAnswer || t.noAnswer}</p>
                     </div>
-                    <div className="answer-block">
-                      <span>{t.correctAnswer}</span>
+                    <div className="answer-block answer-expected">
+                      <span><PanelIcon type="expected" />{t.correctAnswer}</span>
                       <p>{item.correctAnswer}</p>
                     </div>
-                    <div className="answer-block feedback">
-                      <span>{t.aiFeedback}</span>
+                    <div className="answer-block feedback answer-ai">
+                      <span><PanelIcon type="ai" />{t.aiFeedback}</span>
                       <p>{item.explanation}</p>
                     </div>
                   </div>
                 </article>
-              ))}
-            </div>
-          </>
-        )}
+              )) : (
+                <article className="correction-card">
+                  <p>{t.noQuestionDetails || "Aucun détail par question n'est disponible pour ce résultat."}</p>
+                </article>
+              )}
+            </div>}
+        </div>
       </div>
     </div>
   );
+}
+
+function correctionScoreTone(value) {
+  const score = Number(value || 0);
+  if (score >= 70) return "correction-score-green";
+  if (score >= 40) return "correction-score-yellow";
+  return "correction-score-red";
+}
+
+function resultScoreTone(value) {
+  const score = Number(value || 0);
+  if (score >= 70) return "result-score-green";
+  if (score >= 40) return "result-score-yellow";
+  return "result-score-red";
+}
+
+function PanelIcon({ type }) {
+  const common = { fill: "none", stroke: "currentColor", strokeWidth: "2.2", strokeLinecap: "round", strokeLinejoin: "round" };
+  if (type === "student-correct") {
+    return <svg {...common} viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="m8.5 12.5 2.2 2.2 4.8-5.4" /></svg>;
+  }
+  if (type === "expected") {
+    return <svg {...common} viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="m8.5 12.5 2.2 2.2 4.8-5.4" /></svg>;
+  }
+  if (type === "ai") {
+    return <svg {...common} viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="7" width="14" height="11" rx="4" /><path d="M12 7V4M9 13h.01M15 13h.01M9 18l-2 2M15 18l2 2" /></svg>;
+  }
+  return <svg {...common} viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M9 9l6 6M15 9l-6 6" /></svg>;
 }
 
 export function formatDate(value) {
